@@ -155,7 +155,7 @@
     <ClCompile Include="src\ResourceManager.cpp">
       <Filter>소스 파일\매니저</Filter>
     </ClCompile>
-    <ClCompile Include="src\sceneManager.cpp">
+    <ClCompile Include="src\SceneManager.cpp">
       <Filter>소스 파일\매니저</Filter>
     </ClCompile>
     <ClCompile Include="src\TimeManager.cpp">

@@ -19,11 +19,6 @@ namespace GOTOEngine
 		Scene(const std::wstring sceneName) : m_sceneName(sceneName) {}
 		virtual ~Scene() { Clear(); }
 
-		//삭제할 코드--------------------//
-		virtual void Update() {}		//
-		virtual void FixedUpdate() {}	//
-		//------------------------------//
-
 		void Clear();
 		void Reset() { Exit(); Enter(); }
 

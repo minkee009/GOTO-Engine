@@ -20,38 +20,38 @@ void TitleScene::Enter()
 {
 	RenderManager::Get()->SetVSyncInterval(0);
 
-	if (!m_font)
-	{
-		m_font = std::make_unique<D2DFont>(L"Segoe UI", IRenderFontStyle::Bold, 24);
-	}
-	if (!m_image)
-	{
-		m_image = std::make_unique<D2DImage>(L"../Resources/Mushroom.png",(49/2),(41/2));
-	}
+	//if (!m_font)
+	//{
+	//	m_font = std::make_unique<D2DFont>(L"Segoe UI", IRenderFontStyle::Bold, 24);
+	//}
+	//if (!m_image)
+	//{
+	//	m_image = std::make_unique<D2DImage>(L"../Resources/Mushroom.png",(49/2),(41/2));
+	//}
 
-	if (!m_imageAtlas)
-	{
-		m_imageAtlas = std::make_unique<D2DImage>(L"../Resources/atk_1.png");
-	}
+	//if (!m_imageAtlas)
+	//{
+	//	m_imageAtlas = std::make_unique<D2DImage>(L"../Resources/atk_1.png");
+	//}
 
-	if (!m_animationClip)
-	{
-		auto animWidth = 171;
-		auto animHeight = 144;
+	//if (!m_animationClip)
+	//{
+	//	auto animWidth = 171;
+	//	auto animHeight = 144;
 
-		m_animationClip = AnimationClip::CreateShared({
-			new D2DImage(m_imageAtlas.get(),0,0,animWidth,animHeight,animWidth / 2, animHeight / 2),
-			new D2DImage(m_imageAtlas.get(),1 * animWidth,0,animWidth,animHeight,animWidth / 2, animHeight / 2),
-			new D2DImage(m_imageAtlas.get(),2 * animWidth,0,animWidth,animHeight,animWidth / 2, animHeight / 2),
-			new D2DImage(m_imageAtlas.get(),3 * animWidth,0,animWidth,animHeight,animWidth / 2, animHeight / 2),
-			new D2DImage(m_imageAtlas.get(),4 * animWidth,0,animWidth,animHeight,animWidth / 2, animHeight / 2),
-			new D2DImage(m_imageAtlas.get(),5 * animWidth,0,animWidth,animHeight,animWidth / 2, animHeight / 2),
-			new D2DImage(m_imageAtlas.get(),6 * animWidth,0,animWidth,animHeight,animWidth / 2, animHeight / 2),
-			}, 1 / 8.0f, true);
-	}
+	//	m_animationClip = AnimationClip::CreateShared({
+	//		new D2DImage(m_imageAtlas.get(),0,0,animWidth,animHeight,animWidth / 2, animHeight / 2),
+	//		new D2DImage(m_imageAtlas.get(),1 * animWidth,0,animWidth,animHeight,animWidth / 2, animHeight / 2),
+	//		new D2DImage(m_imageAtlas.get(),2 * animWidth,0,animWidth,animHeight,animWidth / 2, animHeight / 2),
+	//		new D2DImage(m_imageAtlas.get(),3 * animWidth,0,animWidth,animHeight,animWidth / 2, animHeight / 2),
+	//		new D2DImage(m_imageAtlas.get(),4 * animWidth,0,animWidth,animHeight,animWidth / 2, animHeight / 2),
+	//		new D2DImage(m_imageAtlas.get(),5 * animWidth,0,animWidth,animHeight,animWidth / 2, animHeight / 2),
+	//		new D2DImage(m_imageAtlas.get(),6 * animWidth,0,animWidth,animHeight,animWidth / 2, animHeight / 2),
+	//		}, 1 / 8.0f, true);
+	//}
 
-	m_animController.AddAnimationState(L"Attack", *m_animationClip.get());
-	m_animController.Play(L"Attack");
+	//m_animController.AddAnimationState(L"Attack", *m_animationClip.get());
+	//m_animController.Play(L"Attack");
 
 	g_test01 = new GameObject(L"Player");
 	g_test02 = new GameObject(L"Child");
@@ -61,33 +61,6 @@ void TitleScene::Enter()
 	g_test02->GetTransform()->SetPosition(Vector3{ 2.5f,0,0 });
 }
 
-void TitleScene::Update()
-{
-	Scene::Update();
-	m_animController.Update(TIME_GET_DELTATIME());
-
-	static Vector3 angle{ 0,0,0 };
-
-
-	if (Object::IsValidObject(g_test01))
-	{
-		angle += (Vector3{0,0, 125.0f } *TIME_GET_DELTATIME());
-		g_test01->GetTransform()->GetTransform()->SetEulerAngle(angle);
-		std::cout << g_test01->GetTransform()->GetLocalEulerAngle().z << std::endl;
-
-		Object::Destroy(g_test01, 5.0f); // 5초 후에 파괴 예약
-	}
-
-	if (Object::IsValidObject(g_test02))
-	{
-		std::cout << "child : " << g_test02->GetTransform()->GetPosition().x << std::endl;
-	}
-}
-void TitleScene::FixedUpdate()
-{
-
-
-}
 //
 //void TitleScene::Render()
 //{

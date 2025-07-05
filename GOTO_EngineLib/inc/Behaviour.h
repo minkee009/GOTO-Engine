@@ -5,6 +5,7 @@
 
 namespace GOTOEngine
 {
+	//루프 제어에 영향받는 컴포넌트입니다.
 	class Behaviour : public Component
 	{
 	protected:

@@ -43,15 +43,15 @@ void GOTOEngine::TimeManager::Update()
     m_currentTime = std::chrono::high_resolution_clock::now();
 
     // 이전 프레임과의 시간 간격 (std::chrono::duration으로 반환)
-    auto delta = m_currentTime - m_prevTime;
-    m_unscaledDeltaTime = std::chrono::duration<float>(delta).count();
+    m_deltaDuration = m_currentTime - m_prevTime;
+	m_unscaledDeltaTime = m_deltaDuration.count(); // 초 단위 float으로 변환
 
     // timeScale을 곱한 deltaTime
     m_deltaTime = m_unscaledDeltaTime * m_timeScale;
 
     // 시작 이후 누적 시간
-    std::chrono::duration<float> unscaledTotalDuration = m_currentTime - m_initTime;
-    m_unscaledTotalTime = unscaledTotalDuration.count(); // 초 단위 float으로 변환
+    m_totalDuration = m_currentTime - m_initTime;
+    m_unscaledTotalTime = m_totalDuration.count(); // 초 단위 float으로 변환
 
     m_totalTime = m_unscaledTotalTime * m_timeScale;
 

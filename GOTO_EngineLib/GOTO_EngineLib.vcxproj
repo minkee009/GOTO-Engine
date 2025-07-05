@@ -195,7 +195,7 @@
     <ClCompile Include="src\RenderManager.cpp" />
     <ClCompile Include="src\ResourceManager.cpp" />
     <ClCompile Include="src\Scene.cpp" />
-    <ClCompile Include="src\sceneManager.cpp" />
+    <ClCompile Include="src\SceneManager.cpp" />
     <ClCompile Include="src\TimeManager.cpp" />
     <ClCompile Include="src\Transform.cpp" />
     <ClCompile Include="src\WICHelper.cpp" />

@@ -8,7 +8,6 @@ namespace GOTOEngine
 	class TimeManager : public Singleton<TimeManager>
 	{
 	public:
-
 		TimeManager() = default;
 		~TimeManager() = default;
 		
@@ -40,6 +39,8 @@ namespace GOTOEngine
 		std::chrono::high_resolution_clock::time_point m_initTime;
 		std::chrono::high_resolution_clock::time_point m_prevTime;
 		std::chrono::high_resolution_clock::time_point m_currentTime;
+		std::chrono::high_resolution_clock::duration m_deltaDuration;
+		std::chrono::high_resolution_clock::duration m_totalDuration;
 
 		float m_deltaTime;
 		float m_fixedDeltaTime = 0.03125f;

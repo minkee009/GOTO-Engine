@@ -14,10 +14,6 @@ namespace GOTOEngine
 
 		void Update();
 
-		//삭제할 코드------------//
-		void FixedUpdate();		//
-		//----------------------//
-
 		void ChangeScene(const std::wstring& sceneName)
 		{
 			m_nextScene = FindScene(sceneName);

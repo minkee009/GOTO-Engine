@@ -32,15 +32,6 @@ void SceneManager::Update()
 
 		m_currentScene->Enter();
 	}
-
-	//삭제할 코드
-	m_currentScene->Update();
-}
- 
-//삭제할 코드
-void GOTOEngine::SceneManager::FixedUpdate()
-{
-	m_currentScene->FixedUpdate();
 }
 
 

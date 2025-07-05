@@ -29,9 +29,7 @@ namespace GOTOEngine
 	public:
 		Transform();
 
-		void SetSiblingIndex(size_t idx);
-		size_t GetSiblingIndex() const;
-
+		// 트랜스폼 프로퍼티
 		void SetPosition(const Vector3& position) { MarkDirty(); m_localPosition = position; }
 		const Vector3& GetLocalPosition() const { return m_localPosition; }
 		const Vector3 GetPosition() const;
@@ -47,6 +45,7 @@ namespace GOTOEngine
 		const Vector3& GetLocalScale() const { return m_localScale; }
 		const Vector3 GetLossyScale() const;
 
+		// 씬 그래프
 		void SetParent(Transform* parent);
 		void SetParent(Transform* parent, bool worldPositionStays);
 		Transform* GetParent() const { return m_parent; }
@@ -56,6 +55,10 @@ namespace GOTOEngine
 		const Transform* GetRoot() const;
 		void DetachChildren();
 
+		void SetSiblingIndex(size_t idx);
+		size_t GetSiblingIndex() const;
+
+		// 월드 공간 변환
 		void LookAt(const Vector3& target, const Vector3& worldUp);
 		void Rotate(const Vector3& eulerAngles, bool worldSpace = false);
 		void Translate(const Vector3& translation, bool worldSpace);
@@ -64,6 +67,7 @@ namespace GOTOEngine
 		Vector3 TransformDirection(const Vector3& direction) const;
 		Vector3 InverseTransformDirection(const Vector3& direction) const;
 
+		// 행렬
 		Matrix4x4 GetLocalMatrix() const;
 		Matrix4x4 GetWorldMatrix() const;
 	};

@@ -93,8 +93,6 @@ void Engine::ProcessFrame()
 		//실제 고정틱 실행
 		accumulator -= fixedDelta;
 		TimeManager::Get()->FixedUpdate();
-
-		SceneManager::Get()->FixedUpdate();
 		//BehaviourManager::Get()->FixedUpdate();
 	}
 
