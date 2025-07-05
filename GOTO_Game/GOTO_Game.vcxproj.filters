@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="헤더 파일\씬">
+      <UniqueIdentifier>{7c6cd0a5-bf85-4d3e-80db-ff2059102906}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\씬">
+      <UniqueIdentifier>{c38e7692-c625-4ab9-961c-8e8fb4f69126}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\컴포넌트">
+      <UniqueIdentifier>{344271f4-4d53-4f40-8f50-3d54bb3c3a6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\컴포넌트">
+      <UniqueIdentifier>{69218c7e-b0b3-4fc4-93ce-271b6d64529e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GameApp.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="TilteScene.cpp">
+      <Filter>소스 파일\씬</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationController.cpp">
+      <Filter>소스 파일\컴포넌트</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="TitleScene.h">
+      <Filter>헤더 파일\씬</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationController.h">
+      <Filter>헤더 파일\컴포넌트</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

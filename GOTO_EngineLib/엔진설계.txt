@@ -1,0 +1,60 @@
+엔진 코어 - 매니저 -> 시스템을 엔진외의 사용자가 접근해서 사용할 수 있게 도와주는 인터페이스 역할의 클래스다.
+엔진 코어 - 시스템 -> 게임엔진의 직접로직을 가지고 있는 클래스다, 엔진외의 사용자가 접근해서 사용하지 못하게 막아야 함 ->공개수준을 전부 private으로 / friend는 Engine클래스만.
+
+오브젝트 -> 컴포넌트와 게임오브젝트의 베이스클래스, new / delete 키워드로 쉽게 생성 및 삭제가 불가능하게, 오브젝트로 구현된 객체는 엔진루프에 의해 관리될 수 있도록 제한시키는 베이스 클래스다.
+컴포넌트  -> 시스템에 등록해서 사용하는 엔진루프의 요소다. 단 게임오브젝트에 귀속되며, 게임오브젝트의 활성화 상태에 의해 엔진루프가 호출하는 함수의 접근이 일시적으로 제한될 수 있다.
+게임오브젝트 -> 컴포넌트의 컨테이너다.
+씬 -> 게임오브젝트의 컨테이너다.
+
+
+B안
+살려야한다!!! 
+Object를 에셋에 적용시켜보자!!
+
+기형적인 리소스 구조도 바꿔보자
+-> GPU에 최대한 직접 올리도록 해보자
+
+
+~~오브젝트 생성 / 파괴 관리~~
+
+~~트랜스폼 컴포넌트 작성~~
+
+~~Fixed Update 및 TimeScale과 Unscaled Time 만들기~~
+
+~~SetSiblingIndex(), GetSiblingIndex()~~ 
+
+BehaviourManager만들기 ScriptBehaviour 만들기
+
+
+
+> 한꺼번에 할것 
+https://gemini.google.com/app/20079e6f69d4da6d?hl=ko
+
+CameraComponent
+
+IRenderImage 개념 바꾸기 -> D2DImage 수정
+
+ResourceManager와 D2DRenderer의 GPUResourceMap 수정
+
+Renderer 컴포넌트 정의, RenderManager 등록 및 Update()실행
+
+SpriteRenderer 컴포넌트 작성
+
+TextRenderer 컴포넌트 작성
+
+>> 여기까지
+
+
+Animator State 보강 -> transition 정의 ( 벡터 배열 )
+AnimationController에 animation parameter 정의 ( 벡터 배열 )
+-> FSM구조 확립
+
+>> PhysicsManager, Physcis클래스(혹은 네임스페이스) , Collider 만들기
+
+IRoutine을 이용한 코루틴 구현하기
+
+// 루틴 인터페이스
+struct IRoutine {
+    virtual bool MoveNext() = 0;
+    virtual ~IRoutine() = default;
+};
