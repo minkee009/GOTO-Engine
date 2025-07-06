@@ -25,7 +25,6 @@ namespace GOTOEngine
 		void AddChild(Transform* child);
 		void RemoveChild(Transform* child);
 		void MarkDirty();
-
 	public:
 		Transform();
 

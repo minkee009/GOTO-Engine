@@ -28,12 +28,12 @@ namespace GOTOEngine
 		void RegisterComponent(Component* comp);
 		void UnregisterComponent(Component* comp);
 		void UpdateActiveInHierarchy();
-
+		~GameObject();
 		static std::vector<GameObject*> s_allGameObjects;
 	public:
 		GameObject(std::wstring name);
 		GameObject();
-		~GameObject();
+
 
 		void SetActive(bool active);
 		void SetTag(const std::wstring& tag) { m_tag = tag; }
