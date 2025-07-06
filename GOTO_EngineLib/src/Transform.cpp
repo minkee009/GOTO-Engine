@@ -210,6 +210,8 @@ void GOTOEngine::Transform::SetParent(Transform* parent, bool worldPositionStays
 		}
 	}
 
+	GetGameObject()->UpdateActiveInHierarchy(); // 부모가 바뀌었으므로 Hierarchy 활성화 상태 업데이트
+
 	MarkDirty();
 }
 

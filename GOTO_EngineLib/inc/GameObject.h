@@ -12,28 +12,34 @@ namespace GOTOEngine
 	class GameObject final : public Object
 	{
 	private:
-		friend class Component;
+		friend class Engine;
 		friend class Scene;
+		friend class Component;
+		friend class Transform;
 
 		std::vector<Component*> m_components;
 		std::wstring m_tag;
 		Transform* m_transform;
 		Scene* m_scene;
 		bool m_active;
+		bool m_activeInHierarchy = true; // Hierarchy에서 활성화 여부
 		
 		void InitInstance();
 		void RegisterComponent(Component* comp);
 		void UnregisterComponent(Component* comp);
+		void UpdateActiveInHierarchy();
+
+		static std::vector<GameObject*> s_allGameObjects;
 	public:
 		GameObject(std::wstring name);
 		GameObject();
 		~GameObject();
 
-		void SetActive(bool active) { m_active = active; }
+		void SetActive(bool active);
 		void SetTag(const std::wstring& tag) { m_tag = tag; }
 
 		bool IsActiveSelf() const { return m_active; }
-		bool IsActiveInHierarchy() const;
+		bool IsActiveInHierarchy() const { return m_activeInHierarchy; }
 
 		const std::wstring& GetTag() const { return m_tag; }
 		const Scene* GetScene() const { return m_scene; }
@@ -73,8 +79,8 @@ namespace GOTOEngine
 
 		unsigned int layer = 1;
 
-		//static GameObject* Find(const std::wstring& name);
-		//static GameObject* FindWithTag(const std::wstring& name);
+		static GameObject* Find(const std::wstring& name);
+		static GameObject* FindWithTag(const std::wstring& name);
 	};
 }
 

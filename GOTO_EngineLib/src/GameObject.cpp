@@ -3,6 +3,8 @@
 #include "ObjectDestructionManager.h"
 #include "Transform.h"
 
+std::vector<GOTOEngine::GameObject*> GOTOEngine::GameObject::s_allGameObjects;
+
 void GOTOEngine::GameObject::InitInstance()
 {
 	m_scene = SceneManager::Get() ? SCENE_GET_CURRENTSCENE() : nullptr;
@@ -14,6 +16,10 @@ void GOTOEngine::GameObject::InitInstance()
 	m_transform->SetParent(nullptr); // 부모가 없으므로 nullptr로 설정
 
 	RegisterComponent(m_transform); // Transform을 컴포넌트로 등록
+
+	UpdateActiveInHierarchy();
+
+	s_allGameObjects.push_back(this); // 모든 게임 오브젝트 목록에 추가
 }
 
 void GOTOEngine::GameObject::RegisterComponent(Component* comp)
@@ -27,6 +33,24 @@ void GOTOEngine::GameObject::UnregisterComponent(Component* comp)
 	if (it != m_components.end()) {
 		*it = std::move(m_components.back()); // 마지막 원소를 덮어씀
 		m_components.pop_back();
+	}
+}
+
+void GOTOEngine::GameObject::UpdateActiveInHierarchy()
+{
+	if (Transform* parent = m_transform->GetParent())
+	{
+		m_activeInHierarchy = parent->GetGameObject()->IsActiveInHierarchy() && m_active;
+	}
+	else
+	{
+		m_activeInHierarchy = m_active; // 부모가 없으면 자기 자신만 활성화 여부를 따짐
+	}
+
+	// 자식들의 활성화 상태 갱신
+	for (auto& child : m_transform->m_childs)
+	{
+		child->GetGameObject()->UpdateActiveInHierarchy();
 	}
 }
 
@@ -88,9 +112,6 @@ GOTOEngine::GameObject::~GameObject()
 	//
 	////===========================////
 
-
-
-
 	////====== 씬 등록 해제 ========////
 	if (m_scene)
 	{
@@ -98,14 +119,63 @@ GOTOEngine::GameObject::~GameObject()
 		m_scene = nullptr;
 	}
 	////===========================////
+
+	// 모든 게임 오브젝트 목록에서 제거
+	auto it = std::find(s_allGameObjects.begin(), s_allGameObjects.end(), this);
+	if (it != s_allGameObjects.end())
+	{
+		*it = std::move(s_allGameObjects.back()); // 마지막 원소를 덮어씀
+		s_allGameObjects.pop_back();
+	}
 }
 
-bool GOTOEngine::GameObject::IsActiveInHierarchy() const
+void GOTOEngine::GameObject::SetActive(bool active)
 {
-	if (!m_active) return false;
-	
-	if (Transform* parent = m_transform->GetParent()) 
-		return parent->GetGameObject()->IsActiveInHierarchy();
-	
-	return true;
+	m_active = active;
+
+	UpdateActiveInHierarchy();
 }
+
+GOTOEngine::GameObject* GOTOEngine::GameObject::Find(const std::wstring& name)
+{
+	//s_allGameObjects에서 이름으로 검색
+	for (auto& go : s_allGameObjects)
+	{
+		if (!go->IsActiveInHierarchy())
+			continue;
+
+		if (go->name == name)
+		{
+			return go;
+		}
+	}
+
+	return nullptr;
+}
+
+GOTOEngine::GameObject* GOTOEngine::GameObject::FindWithTag(const std::wstring& name)
+{
+	//s_allGameObjects에서 태그로 검색
+	for (auto& go : s_allGameObjects)
+	{
+		if (!go->IsActiveInHierarchy())
+			continue;
+
+		if (go->GetTag() == name)
+		{
+			return go;
+		}
+	}
+
+	return nullptr;
+}
+
+//bool GOTOEngine::GameObject::IsActiveInHierarchy() const
+//{
+//	if (!m_active) return false;
+//	
+//	if (Transform* parent = m_transform->GetParent()) 
+//		return parent->GetGameObject()->IsActiveInHierarchy();
+//	
+//	return true;
+//}

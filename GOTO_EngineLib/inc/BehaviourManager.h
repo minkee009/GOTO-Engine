@@ -14,12 +14,14 @@ namespace GOTOEngine
 		void ShutDown();
 	private:
 		friend class Engine;
-		void Update();
-		void LateUpdate();
-		void FixedUpdate();
 
-		std::vector<Behaviour*> m_behaviours;
-		std::unordered_map<std::string, Behaviour*> m_activatedBehaviours;
-		std::queue<Behaviour*> m_createdBehaviors;
+		struct BehaviourData
+		{
+			Behaviour* behaviour;
+			std::unordered_map<std::string,std::function<void()> > funcs;
+		};
+
+		std::vector<Behaviour*> m_behaviours;	
+		std::queue<BehaviourData> m_createdBehaviors;
 	};
 }

@@ -4,7 +4,6 @@
 
 namespace GOTOEngine
 {
-	// 범용적인 KeyCode 열거형 정의 (예시)
 	enum class KeyCode
 	{
 		// 알파벳
