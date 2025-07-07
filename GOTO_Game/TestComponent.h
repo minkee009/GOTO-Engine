@@ -6,31 +6,66 @@ namespace GOTOEngine
 {
 	class TestComponent : public ScriptBehaviour
 	{
+	private:
+		float m_timer = 0.0f;
 	public:
+		GameObject* otherGameObject = nullptr; // 다른 게임 오브젝트를 참조할 수 있는 변수
+		virtual ~TestComponent() = default;
 		TestComponent()
 		{
-			SetExecutionOrder(12);
-
-			//OnDestroy 등록
-			RegisterBehaviourMessage("OnDestroy", [this]() { OnDestroy(); });
+			REGISTER_BEHAVIOUR_MESSAGE(Awake);
+			REGISTER_BEHAVIOUR_MESSAGE(Start);
+			REGISTER_BEHAVIOUR_MESSAGE(OnEnable);
+			REGISTER_BEHAVIOUR_MESSAGE(FixedUpdate);
+			REGISTER_BEHAVIOUR_MESSAGE(Update);
+			REGISTER_BEHAVIOUR_MESSAGE(OnDestroy);
 		}
-		virtual ~TestComponent() = default;
-		void Awake() override
+		void Awake()
 		{
 			// 초기화 코드 작성
+			if (Object::IsValidObject(otherGameObject))
+			{
+				otherGameObject->SetActive(false);
+			}
+			std::cout << "TestComponent Awake called for GameObject: " << std::endl;
 		}
-		void Start() override
+		void Start()
 		{
 			// 시작 시 실행할 코드 작성
+
+			std::cout << "TestComponent Start called for GameObject: " << std::endl;
 		}
-		void Update() override
+		void OnEnable()
+		{
+			// 시작 시 실행할 코드 작성
+
+			std::cout << "TestComponent OnEnable called for GameObject: " << std::endl;
+		}
+
+		void FixedUpdate()
+		{
+			// 고정 업데이트 시 실행할 코드 작성
+			// 이 예제에서는 사용하지 않지만, 필요시 구현할 수 있습니다.
+		}
+
+		void Update()
 		{
 			// 매 프레임마다 실행할 코드 작성
+			m_timer += TimeManager::Get()->GetDeltaTime();
+
+			if (m_timer > 3.0f && Object::IsValidObject(otherGameObject) && !otherGameObject->IsActiveSelf())
+			{
+				otherGameObject->SetActive(true);
+			}
 		}
-		void OnDestroy() override
+		void OnDestroy()
 		{
 			// 오브젝트 파괴 시 실행할 코드 작성
 			std::cout << "TestComponent OnDestroy called for GameObject: " << std::endl;
+		}
+
+		void OnCollisionEnter(GameObject* other)
+		{
 		}
 	};
 }

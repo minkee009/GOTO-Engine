@@ -191,6 +191,7 @@
     <ClCompile Include="src\InputManager.cpp" />
     <ClCompile Include="src\Matrix4x4.cpp" />
     <ClCompile Include="src\Object.cpp" />
+    <ClCompile Include="src\ObjectDestructionManager.cpp" />
     <ClCompile Include="src\pch.cpp" />
     <ClCompile Include="src\Quaternion.cpp" />
     <ClCompile Include="src\RenderManager.cpp" />

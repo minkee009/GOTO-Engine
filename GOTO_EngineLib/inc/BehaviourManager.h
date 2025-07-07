@@ -26,7 +26,19 @@ namespace GOTOEngine
 		// ExcutionOrder에 따라 Behaviour를 정렬하는 함수
 		void SortBehaviours();
 
+		void InitializeBehaviours();
+
 		void BroadCastBehaviourMessage(const std::string& messageName);
+
+		// 매개변수 있는 브로드캐스트
+		template<typename... Args>
+		void BroadCastBehaviourMessage(const std::string& messageName, Args... args)
+		{
+			for (auto& behaviour : m_activeBehaviours)
+			{
+				behaviour->CallBehaviourMessage(messageName, args...);
+			}
+		}
 
 		void CheckAndSortBehaviours();
 		void StartUp();

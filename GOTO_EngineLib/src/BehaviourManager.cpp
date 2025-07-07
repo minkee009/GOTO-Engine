@@ -43,6 +43,51 @@ void GOTOEngine::BehaviourManager::SortBehaviours()
 		});
 }
 
+void GOTOEngine::BehaviourManager::InitializeBehaviours()
+{
+	std::vector<Behaviour*> changedBehaviours;
+
+	//활성화 객체 수집
+	for (auto& behaviour : m_inactiveBehaviours)
+	{
+		if (behaviour->IsActiveAndEnabled())
+		{
+			m_activeBehaviours.push_back(behaviour);
+			changedBehaviours.push_back(behaviour);
+		}
+	}
+
+	//Awake 호출
+	for (auto& behaviour : changedBehaviours)
+	{
+		behaviour->CallBehaviourMessage("Awake");
+	}
+
+	//OnEnable 호출
+	for (auto& behaviour : changedBehaviours)
+	{
+		behaviour->CallBehaviourMessage("OnEnable");
+	}
+
+	//Start 호출
+	for (auto& behaviour : changedBehaviours)
+	{
+		behaviour->CallBehaviourMessage("Start", true);
+	}
+
+	//changedBehaviours의 요소를 m_inactiveBehaviours에서 제거
+	for (auto& behaviour : changedBehaviours)
+	{
+		auto it = std::find(m_inactiveBehaviours.begin(), m_inactiveBehaviours.end(), behaviour);
+		if (it != m_inactiveBehaviours.end())
+		{
+			m_inactiveBehaviours.erase(it);
+		}
+	}
+
+	m_needSort = true; // Behaviour 정렬이 필요함을 표시
+}
+
 void GOTOEngine::BehaviourManager::CheckAndSortBehaviours()
 {
 	if (m_needSort)

@@ -61,7 +61,10 @@ void TitleScene::Enter()
 
     g_test02->GetTransform()->SetPosition(Vector3{ 2.5f,0,0 });
 
-    g_test01->AddComponent<TestComponent>();
+    auto s = g_test01->AddComponent<TestComponent>();
+
+    s->otherGameObject = g_test02;
+
     g_test02->AddComponent<TestComponent>();
 
     Object::Destroy(g_test02, 5.0f); // 5초 후에 g_test02 파괴 예약

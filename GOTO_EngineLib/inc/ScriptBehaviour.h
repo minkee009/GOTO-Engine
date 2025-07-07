@@ -3,21 +3,13 @@
 
 namespace GOTOEngine 
 {
+    // 매크로 정의
+#define REGISTER_BEHAVIOUR_MESSAGE(methodName) \
+    RegisterBehaviourMessage(#methodName, [this]() { methodName(); })
 	class ScriptBehaviour : public Behaviour
 	{
 	public:
 		ScriptBehaviour() = default;
-		virtual ~ScriptBehaviour() { OnDisable(); OnDestroy(); }
-
-		virtual void Awake() {}
-		virtual void Start() {}
-		virtual void OnEnable() {}
-		virtual void OnDisable() {}
-		virtual void Update() {}
-		virtual void LateUpdate() {}
-		virtual void FixedUpdate() {}
-		virtual void PreRender() {}
-		virtual void PostRender() {}
-		virtual void OnDestroy() {}
+		virtual ~ScriptBehaviour() = default;
 	};
 }

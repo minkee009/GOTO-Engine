@@ -78,14 +78,14 @@ void Engine::ProcessFrame()
 	TimeManager::Get()->Update();
 	SceneManager::Get()->Update();
 
-	//Behaviour 정렬 (필요시)
-	BehaviourManager::Get()->CheckAndSortBehaviours();
-
 	//Behaviour 초기화 메시지 (필요한 객체에 한해)
-	//Behaviour 각자가 호출 순서를 보장하는 방식으로 적용
 	//BehaviourManager::Get()->BroadCastBehaviourMessage("Awake");
 	//BehaviourManager::Get()->BroadCastBehaviourMessage("OnEnable");
 	//BehaviourManager::Get()->BroadCastBehaviourMessage("Start");
+	BehaviourManager::Get()->InitializeBehaviours();
+
+	//Behaviour 정렬 (필요시)
+	BehaviourManager::Get()->CheckAndSortBehaviours();
 
 	//고정 업데이트
 	static float accumulator = 0.0f;

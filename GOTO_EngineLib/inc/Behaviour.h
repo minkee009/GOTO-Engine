@@ -12,6 +12,7 @@ namespace GOTOEngine
 		Behaviour* owner;
 		std::string messageName;
 		std::function<void()> func;
+		bool isFirstCall = true; // 첫 호출 여부를 나타내는 플래그
 	};
 
 	//루프 제어에 영향받는 컴포넌트입니다.
@@ -23,11 +24,12 @@ namespace GOTOEngine
 
 		std::unordered_map <std::string, BehaviourMessageData> m_behaviourMessages; // 함수 이름과 함수 포인터를 저장하는 벡터
 
-		void CallBehaviourMessage(const std::string& messageName);
+		void CallBehaviourMessage(const std::string& messageName, bool checkFirstCall = false);
 
 	protected:
 		Behaviour() : Component()
 		{
+			m_enabled = true;
 			BehaviourManager::Get()->RegisterBehaviour(this); // BehaviourManager에 등록
 		}
 
