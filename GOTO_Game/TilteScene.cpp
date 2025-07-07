@@ -10,6 +10,7 @@
 #include <GameObject.h>
 #include <Transform.h>
 #include <iostream>
+#include "TestComponent.h"
 
 using namespace GOTOEngine;
 
@@ -18,48 +19,53 @@ GameObject* g_test02 = nullptr;
 
 void TitleScene::Enter()
 {
-	RenderManager::Get()->SetVSyncInterval(0);
+    RenderManager::Get()->SetVSyncInterval(0);
 
-	//if (!m_font)
-	//{
-	//	m_font = std::make_unique<D2DFont>(L"Segoe UI", IRenderFontStyle::Bold, 24);
-	//}
-	//if (!m_image)
-	//{
-	//	m_image = std::make_unique<D2DImage>(L"../Resources/Mushroom.png",(49/2),(41/2));
-	//}
+    //if (!m_font)
+    //{
+    //	m_font = std::make_unique<D2DFont>(L"Segoe UI", IRenderFontStyle::Bold, 24);
+    //}
+    //if (!m_image)
+    //{
+    //	m_image = std::make_unique<D2DImage>(L"../Resources/Mushroom.png",(49/2),(41/2));
+    //}
 
-	//if (!m_imageAtlas)
-	//{
-	//	m_imageAtlas = std::make_unique<D2DImage>(L"../Resources/atk_1.png");
-	//}
+    //if (!m_imageAtlas)
+    //{
+    //	m_imageAtlas = std::make_unique<D2DImage>(L"../Resources/atk_1.png");
+    //}
 
-	//if (!m_animationClip)
-	//{
-	//	auto animWidth = 171;
-	//	auto animHeight = 144;
+    //if (!m_animationClip)
+    //{
+    //	auto animWidth = 171;
+    //	auto animHeight = 144;
 
-	//	m_animationClip = AnimationClip::CreateShared({
-	//		new D2DImage(m_imageAtlas.get(),0,0,animWidth,animHeight,animWidth / 2, animHeight / 2),
-	//		new D2DImage(m_imageAtlas.get(),1 * animWidth,0,animWidth,animHeight,animWidth / 2, animHeight / 2),
-	//		new D2DImage(m_imageAtlas.get(),2 * animWidth,0,animWidth,animHeight,animWidth / 2, animHeight / 2),
-	//		new D2DImage(m_imageAtlas.get(),3 * animWidth,0,animWidth,animHeight,animWidth / 2, animHeight / 2),
-	//		new D2DImage(m_imageAtlas.get(),4 * animWidth,0,animWidth,animHeight,animWidth / 2, animHeight / 2),
-	//		new D2DImage(m_imageAtlas.get(),5 * animWidth,0,animWidth,animHeight,animWidth / 2, animHeight / 2),
-	//		new D2DImage(m_imageAtlas.get(),6 * animWidth,0,animWidth,animHeight,animWidth / 2, animHeight / 2),
-	//		}, 1 / 8.0f, true);
-	//}
+    //	m_animationClip = AnimationClip::CreateShared({
+    //		new D2DImage(m_imageAtlas.get(),0,0,animWidth,animHeight,animWidth / 2, animHeight / 2),
+    //		new D2DImage(m_imageAtlas.get(),1 * animWidth,0,animWidth,animHeight,animWidth / 2, animHeight / 2),
+    //		new D2DImage(m_imageAtlas.get(),2 * animWidth,0,animWidth,animHeight,animWidth / 2, animHeight / 2),
+    //		new D2DImage(m_imageAtlas.get(),3 * animWidth,0,animWidth,animHeight,animWidth / 2, animHeight / 2),
+    //		new D2DImage(m_imageAtlas.get(),4 * animWidth,0,animWidth,animHeight,animWidth / 2, animHeight / 2),
+    //		new D2DImage(m_imageAtlas.get(),5 * animWidth,0,animWidth,animHeight,animWidth / 2, animHeight / 2),
+    //		new D2DImage(m_imageAtlas.get(),6 * animWidth,0,animWidth,animHeight,animWidth / 2, animHeight / 2),
+    //		}, 1 / 8.0f, true);
+    //}
 
-	//m_animController.AddAnimationState(L"Attack", *m_animationClip.get());
-	//m_animController.Play(L"Attack");
+    //m_animController.AddAnimationState(L"Attack", *m_animationClip.get());
+    //m_animController.Play(L"Attack");
 
-	g_test01 = new GameObject(L"Player");
-	g_test02 = new GameObject(L"Child");
+    g_test01 = new GameObject(L"Player");
+    g_test02 = new GameObject(L"Child");
 
-	g_test02->GetTransform()->SetParent(g_test01->GetTransform());
+    g_test02->GetTransform()->SetParent(g_test01->GetTransform());
 
-	g_test02->GetTransform()->SetPosition(Vector3{ 2.5f,0,0 });
-}
+    g_test02->GetTransform()->SetPosition(Vector3{ 2.5f,0,0 });
+
+    g_test01->AddComponent<TestComponent>();
+    g_test02->AddComponent<TestComponent>();
+
+    Object::Destroy(g_test02, 5.0f); // 5초 후에 g_test02 파괴 예약
+}     
 
 //
 //void TitleScene::Render()
@@ -79,7 +85,7 @@ void TitleScene::Enter()
 
 void TitleScene::Exit()
 {
-	Scene::Exit();
+    Scene::Exit();
 }
 
 TitleScene::~TitleScene()

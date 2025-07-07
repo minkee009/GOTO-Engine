@@ -7,7 +7,7 @@ namespace GOTOEngine
 	{
 	public:
 		ScriptBehaviour() = default;
-		virtual ~ScriptBehaviour() = default;
+		virtual ~ScriptBehaviour() { OnDisable(); OnDestroy(); }
 
 		virtual void Awake() {}
 		virtual void Start() {}

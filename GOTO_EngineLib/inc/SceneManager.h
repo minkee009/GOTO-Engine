@@ -9,11 +9,6 @@ namespace GOTOEngine
 	class SceneManager : public Singleton<SceneManager>
 	{
 	public:
-		void StartUp();
-		void ShutDown();
-
-		void Update();
-
 		void ChangeScene(const std::wstring& sceneName)
 		{
 			m_nextScene = FindScene(sceneName);
@@ -45,9 +40,16 @@ namespace GOTOEngine
 		}
 
 	private:
+		friend class Engine;
 		Scene* m_currentScene;
 		Scene* m_nextScene;
 		std::unordered_map<std::wstring, Scene*> m_sceneMap;
+
+
+		void StartUp();
+		void ShutDown();
+
+		void Update();
 	};
 }
 

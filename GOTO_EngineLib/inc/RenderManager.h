@@ -13,7 +13,6 @@ namespace GOTOEngine
 	class RenderManager : public Singleton<RenderManager>
 	{
 	public:
-		void StartUp(IWindow* window);
 		void Clear();
 		void DrawImage(int x, int y, float scale, bool flipX, const IRenderImage* image);
 		void DrawImage(int x, int y, float scale, const IRenderImage* image);
@@ -29,10 +28,11 @@ namespace GOTOEngine
 		void DrawString(int x, int y, const wchar_t* string, const IRenderFont* font, bool rightAlign, Color color);
 		void DrawString(int x, int y, const wchar_t* string, const IRenderFont* font, Color color);
 		void SwapBuffer();
-		void ShutDown();
 		void SetVSyncInterval(int interval);
-
 	private:
+		friend class Engine;
+		void StartUp(IWindow* window);
+		void ShutDown();
 		IRenderAPI* m_pRenderer = nullptr;
 	};
 }

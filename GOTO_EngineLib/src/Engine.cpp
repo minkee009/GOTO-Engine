@@ -78,8 +78,14 @@ void Engine::ProcessFrame()
 	TimeManager::Get()->Update();
 	SceneManager::Get()->Update();
 
-	//Behaviour 정렬
+	//Behaviour 정렬 (필요시)
 	BehaviourManager::Get()->CheckAndSortBehaviours();
+
+	//Behaviour 초기화 메시지 (필요한 객체에 한해)
+	//Behaviour 각자가 호출 순서를 보장하는 방식으로 적용
+	//BehaviourManager::Get()->BroadCastBehaviourMessage("Awake");
+	//BehaviourManager::Get()->BroadCastBehaviourMessage("OnEnable");
+	//BehaviourManager::Get()->BroadCastBehaviourMessage("Start");
 
 	//고정 업데이트
 	static float accumulator = 0.0f;
@@ -106,12 +112,17 @@ void Engine::ProcessFrame()
 	//업데이트
 	BehaviourManager::Get()->BroadCastBehaviourMessage("Update");
 	BehaviourManager::Get()->BroadCastBehaviourMessage("LateUpdate");
-	ObjectDestructionManager::Get()->Update();
 
 	//렌더
 	RenderManager::Get()->Clear();
 	//RenderManager::Get()->Render();
 	RenderManager::Get()->SwapBuffer();
+
+	//렌더 후 후처리
+	//ObjectDestructionManager가 호출 순서를 보장하는 방식으로 적용
+	//BehaviourManager::Get()->BroadCastBehaviourMessage("OnDisable"); 
+	//BehaviourManager::Get()->BroadCastBehaviourMessage("OnDestroy");
+	ObjectDestructionManager::Get()->Update();
 }
 
 void Engine::Quit()

@@ -18,6 +18,7 @@ namespace GOTOEngine
 	{
 	private:
 		friend class BehaviourManager; // BehaviourManager가 접근할 수 있도록
+		friend class ObjectDestructionManager; // ObjectDestructionManager가 접근할 수 있도록
 
 		std::unordered_map <std::string, BehaviourMessageData> m_behaviourMessages; // 함수 이름과 함수 포인터를 저장하는 벡터
 
@@ -57,6 +58,7 @@ namespace GOTOEngine
 			m_executionOrder = order;
 		}
 
+		virtual ~Behaviour() {}
 	public:
 		bool GetEnabled() const { return m_enabled; }
 		void SetEnabled(bool value);

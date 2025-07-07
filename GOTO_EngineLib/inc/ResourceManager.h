@@ -18,12 +18,13 @@ namespace GOTOEngine
 	class ResourceManager : public Singleton<ResourceManager>
 	{
 	public:
-		void StartUp();
-		void ShutDown();
 		IRenderImage* LoadStaticImage(const std::wstring& filePath);
 		IRenderFont* LoadStaticFont(const std::wstring& fontFamily,IRenderFontStyle fontStyle,int size);
 	private:
 		friend class Engine;
 		static std::unordered_map<std::wstring, ResourceEntry> m_resources;
+
+		void StartUp();
+		void ShutDown();
 	};
 }

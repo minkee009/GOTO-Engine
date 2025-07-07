@@ -17,9 +17,6 @@ namespace GOTOEngine
 		std::vector<Behaviour*> m_activeBehaviours; // 활성화된 Behaviour를 저장하는 벡터
 		std::vector<Behaviour*> m_inactiveBehaviours; // 비활성화된 Behaviour를 저장하는 벡터
 
-		// Behaviour가 실행대기 시킨 함수들을 저장하는 큐
-		std::queue<std::function<void()>> m_pendingFunctions;
-
 		// Behaviour를 등록하는 함수
 		void RegisterBehaviour(Behaviour* behaviour)
 		{
@@ -30,6 +27,25 @@ namespace GOTOEngine
 			else
 			{
 				m_inactiveBehaviours.push_back(behaviour);
+			}
+			m_needSort = true; // Behaviour 정렬이 필요함을 표시
+		}
+
+		// Behaviour를 제거하는 함수
+		void UnregisterBehaviour(Behaviour* behaviour)
+		{
+			auto it = std::find(m_activeBehaviours.begin(), m_activeBehaviours.end(), behaviour);
+			if (it != m_activeBehaviours.end())
+			{
+				m_activeBehaviours.erase(it);
+			}
+			else
+			{
+				it = std::find(m_inactiveBehaviours.begin(), m_inactiveBehaviours.end(), behaviour);
+				if (it != m_inactiveBehaviours.end())
+				{
+					m_inactiveBehaviours.erase(it);
+				}
 			}
 			m_needSort = true; // Behaviour 정렬이 필요함을 표시
 		}
@@ -53,8 +69,6 @@ namespace GOTOEngine
 				m_needSort = false;
 			}
 		}
-
-	public:
 		void StartUp();
 		void ShutDown();
 	};

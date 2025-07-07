@@ -3,6 +3,7 @@
 #include "Transform.h"
 #include "Object.h"
 #include "TimeManager.h"
+#include "Behaviour.h"
 #include <vector>
 #include <unordered_map>
 
@@ -74,6 +75,15 @@ namespace GOTOEngine
 				delete it->second; 
 				m_destroySchedule[obj] = nullptr;
 			}
+
+			if (auto behaviour = dynamic_cast<Behaviour*>(obj))
+			{
+				//Behaviour인 경우 BehaviourManager에서 제거
+				if(behaviour->IsActiveAndEnabled())
+					behaviour->CallBehaviourMessage("OnDisable");
+				behaviour->CallBehaviourMessage("OnDestroy");
+			}
+
 			delete obj; // 실제 파괴
 		}
 
@@ -95,6 +105,15 @@ namespace GOTOEngine
 				{
 					// 예약 파괴 시간이 지난 오브젝트를 파괴
 					Object* obj = destroyInfo->obj;
+
+					if (auto behaviour = dynamic_cast<Behaviour*>(obj))
+					{
+						//Behaviour인 경우 BehaviourManager에서 제거
+						if (behaviour->IsActiveAndEnabled())
+							behaviour->CallBehaviourMessage("OnDisable");
+						behaviour->CallBehaviourMessage("OnDestroy");
+					}
+
 					delete obj; // 실제 파괴
 					delete destroyInfo; // 예약 정보도 삭제
 					it = m_destroySchedule.erase(it); // 맵에서 제거
@@ -134,6 +153,13 @@ namespace GOTOEngine
 				ObjectDestroyInfo* destroyInfo = pair.second;
 				if (destroyInfo)
 				{
+					if (auto behaviour = dynamic_cast<Behaviour*>(destroyInfo->obj))
+					{
+						//Behaviour인 경우 BehaviourManager에서 제거
+						if (behaviour->IsActiveAndEnabled())
+							behaviour->CallBehaviourMessage("OnDisable");
+						behaviour->CallBehaviourMessage("OnDestroy");
+					}
 					delete destroyInfo->obj; // 실제 파괴
 					delete destroyInfo; // 예약 정보도 삭제
 				}
