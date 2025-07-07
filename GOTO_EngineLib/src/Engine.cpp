@@ -5,6 +5,7 @@
 #include "ObjectDestructionManager.h"
 #include "RenderManager.h"
 #include "ResourceManager.h"
+#include "BehaviourManager.h"
 #ifdef _OS_WINDOWS
 #include "WICHelper.h"
 #include "DWriteHelper.h"
@@ -77,6 +78,9 @@ void Engine::ProcessFrame()
 	TimeManager::Get()->Update();
 	SceneManager::Get()->Update();
 
+	//Behaviour 정렬
+	BehaviourManager::Get()->CheckAndSortBehaviours();
+
 	//고정 업데이트
 	static float accumulator = 0.0f;
 	accumulator += TimeManager::Get()->GetDeltaTime();
@@ -93,15 +97,15 @@ void Engine::ProcessFrame()
 		//실제 고정틱 실행
 		accumulator -= fixedDelta;
 		TimeManager::Get()->FixedUpdate();
-		//BehaviourManager::Get()->FixedUpdate();
+		BehaviourManager::Get()->BroadCastBehaviourMessage("FixedUpdate");
 	}
 
 	//GetTime -> 일반시간 반환으로 변경
 	TimeManager::Get()->SetExecutionContext(TimeManager::ExcutionContext::Normal);
 
 	//업데이트
-	//BehaviourManager::Get()->Update();
-	//BehaviourManager::Get()->LateUpdate();
+	BehaviourManager::Get()->BroadCastBehaviourMessage("Update");
+	BehaviourManager::Get()->BroadCastBehaviourMessage("LateUpdate");
 	ObjectDestructionManager::Get()->Update();
 
 	//렌더

@@ -180,6 +180,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BBox.cpp" />
+    <ClCompile Include="src\Behaviour.cpp" />
     <ClCompile Include="src\BehaviourManager.cpp" />
     <ClCompile Include="src\D2DFont.cpp" />
     <ClCompile Include="src\D2DRenderer.cpp" />

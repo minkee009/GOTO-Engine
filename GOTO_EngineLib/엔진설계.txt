@@ -44,7 +44,6 @@ Animator State 보강 -> transition 정의 ( 벡터 배열 )
 AnimationController에 animation parameter 정의 ( 벡터 배열 )
 -> FSM구조 확립
 
->> PhysicsManager, Physcis클래스(혹은 네임스페이스) , Collider 만들기
 
 IRoutine을 이용한 코루틴 구현하기
 
@@ -53,3 +52,6 @@ struct IRoutine {
     virtual bool MoveNext() = 0;
     virtual ~IRoutine() = default;
 };
+
+>> PhysicsManager, Physcis클래스(혹은 네임스페이스) , Collider 만들기
+

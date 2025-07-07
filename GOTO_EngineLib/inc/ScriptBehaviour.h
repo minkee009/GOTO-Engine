@@ -8,17 +8,16 @@ namespace GOTOEngine
 	public:
 		ScriptBehaviour() = default;
 		virtual ~ScriptBehaviour() = default;
-		// 스크립트 초기화
+
+		virtual void Awake() {}
 		virtual void Start() {}
-		// 매 프레임 업데이트
-		virtual void Update(float deltaTime) {}
-		// 고정 업데이트 (물리 연산 등)
-		virtual void FixedUpdate(float fixedDeltaTime) {}
-		// 렌더링 전 호출
+		virtual void OnEnable() {}
+		virtual void OnDisable() {}
+		virtual void Update() {}
+		virtual void LateUpdate() {}
+		virtual void FixedUpdate() {}
 		virtual void PreRender() {}
-		// 렌더링 후 호출
 		virtual void PostRender() {}
-		// 스크립트 종료
 		virtual void OnDestroy() {}
 	};
 }
