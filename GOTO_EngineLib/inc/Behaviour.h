@@ -2,6 +2,7 @@
 #include "Component.h"
 #include "GameObject.h"
 #include "Delegate.h"
+#include "BehaviourManager.h"
 
 namespace GOTOEngine
 {
@@ -17,48 +18,33 @@ namespace GOTOEngine
 	class Behaviour : public Component
 	{
 	private:
-		friend class BehaviourManager; // BehaviourManager가 접근할 수 있도록
-		friend class ObjectDestructionManager; // ObjectDestructionManager가 접근할 수 있도록
+		friend class BehaviourManager;
+		friend class ObjectDestructionManager; 
 
 		std::unordered_map <std::string, BehaviourMessageData> m_behaviourMessages; // 함수 이름과 함수 포인터를 저장하는 벡터
 
-		void CallBehaviourMessage(const std::string& messageName)
-		{
-			auto it = m_behaviourMessages.find(messageName);
-			if (it != m_behaviourMessages.end())
-			{
-				it->second.func();
-			}
-		}
+		void CallBehaviourMessage(const std::string& messageName);
 
 	protected:
+		Behaviour() : Component()
+		{
+			BehaviourManager::Get()->RegisterBehaviour(this); // BehaviourManager에 등록
+		}
+
 		bool m_enabled;
 		int m_executionOrder = 0; // 실행 순서를 나타내는 변수
 
-		void RegisterBehaviourMessage(const std::string& messageName, std::function<void()> func)
+		void RegisterBehaviourMessage(const std::string& messageName, std::function<void()> func);
+		void UnregisterBehaviourMessage(const std::string& messageName);
+
+		void SetExecutionOrder(int order) { m_executionOrder = order; }
+
+		virtual ~Behaviour() 
 		{
-			BehaviourMessageData data;
-			data.owner = this;
-			data.messageName = messageName;
-			data.func = func;
-			m_behaviourMessages.insert({ messageName, data });
+			BehaviourManager::Get()->UnregisterBehaviour(this); // BehaviourManager에서 제거
+			m_behaviourMessages.clear();
 		}
 
-		void UnregisterBehaviourMessage(const std::string& messageName)
-		{
-			auto it = m_behaviourMessages.find(messageName);
-			if (it != m_behaviourMessages.end())
-			{
-				m_behaviourMessages.erase(it);
-			}
-		}
-
-		void SetExecutionOrder(int order)
-		{
-			m_executionOrder = order;
-		}
-
-		virtual ~Behaviour() {}
 	public:
 		bool GetEnabled() const { return m_enabled; }
 		void SetEnabled(bool value);

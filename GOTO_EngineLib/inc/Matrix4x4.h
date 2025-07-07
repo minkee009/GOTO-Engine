@@ -229,6 +229,7 @@ namespace GOTOEngine
                 m[8] * m[1] * m[6] -
                 m[8] * m[2] * m[5];
 
+			// 역행렬의 행렬식 계산
             float det = m[0] * invOut[0] + m[1] * invOut[4] + m[2] * invOut[8] + m[3] * invOut[12];
             if (std::fabs(det) < 1e-6f)
             {
