@@ -4,6 +4,7 @@
 #include <string>
 #include <queue>
 #include <algorithm>
+#include "Behaviour.h"
 
 namespace GOTOEngine
 {
@@ -38,9 +39,14 @@ namespace GOTOEngine
 		template<typename... Args>
 		void BroadCastBehaviourMessage(const std::string& messageName, Args... args)
 		{
+			std::vector<std::any> params;
+			params.reserve(sizeof...(args)); // 성능 최적화를 위해 미리 크기 예약
+			(params.emplace_back(args), ...); // C++17 fold expression을 사용하여 각 인자를 vector에 추가
+
 			for (auto& behaviour : m_activeBehaviours)
 			{
-				behaviour->CallBehaviourMessage(messageName, args...);
+				// 변환된 std::vector<std::any>를 CallBehaviourMessage에 전달합니다.
+				behaviour->CallBehaviourMessage(messageName, params);
 			}
 		}
 

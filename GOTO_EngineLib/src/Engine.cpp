@@ -111,7 +111,6 @@ void Engine::ProcessFrame()
 		accumulator -= fixedDelta;
 		TimeManager::Get()->FixedUpdate();
 		BehaviourManager::Get()->BroadCastBehaviourMessage("FixedUpdate");
-
 	}
 
 	//GetTime -> 일반시간 반환으로 변경

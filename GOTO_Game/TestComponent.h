@@ -20,7 +20,9 @@ namespace GOTOEngine
 			REGISTER_BEHAVIOUR_MESSAGE(FixedUpdate);
 			REGISTER_BEHAVIOUR_MESSAGE(Update);
 			REGISTER_BEHAVIOUR_MESSAGE(OnDestroy);
+			RegisterBehaviourParamMessage("OnCollisionEnter", std::function<void(int)>([this](int num) { OnCollisionEnter(num); }));
 		}
+
 		void Awake()
 		{
 			// 초기화 코드 작성
@@ -45,13 +47,12 @@ namespace GOTOEngine
 		{
 			// 시작 시 실행할 코드 작성
 
-			std::wcout << "TestComponent OnDisable called for GameObject: " << (Object::IsValidObject(GetGameObject()) ? GetGameObject()->name : L"ss") << std::endl;
+			std::wcout << "TestComponent OnDisable called for GameObject: " << GetGameObject()->name << std::endl;
 		}
 
 		void FixedUpdate()
 		{
-			// 고정 업데이트 시 실행할 코드 작성
-			// 이 예제에서는 사용하지 않지만, 필요시 구현할 수 있습니다.
+			std::wcout << "TestComponent FixedUpdate called for GameObject: " << GetGameObject()->name << std::endl;
 		}
 
 		void Update()
@@ -67,11 +68,12 @@ namespace GOTOEngine
 		void OnDestroy()
 		{
 			// 오브젝트 파괴 시 실행할 코드 작성
-			std::wcout << "TestComponent OnDestroy called for GameObject: " << (Object::IsValidObject(GetGameObject()) ? GetGameObject()->name : L"ss") << std::endl;
+			std::wcout << "TestComponent OnDestroy called for GameObject: " << GetGameObject()->name << std::endl;
 		}
 
-		void OnCollisionEnter(GameObject* other)
+		void OnCollisionEnter(int num)
 		{
+			std::wcout << "TestComponent OnCollisionEnter called for GameObject: " << GetGameObject()->name << "/ num : " << num << std::endl;
 		}
 	};
 }
