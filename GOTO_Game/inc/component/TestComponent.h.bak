@@ -10,6 +10,18 @@ namespace GOTOEngine
 	private:
 		float m_timer = 0.0f;
 	public:
+    TestComponent()
+    {
+        REGISTER_BEHAVIOUR_METHOD(Awake);
+        REGISTER_BEHAVIOUR_METHOD(FixedUpdate);
+        REGISTER_BEHAVIOUR_METHOD(OnDestroy);
+        REGISTER_BEHAVIOUR_METHOD(OnDisable);
+        REGISTER_BEHAVIOUR_METHOD(OnEnable);
+        REGISTER_BEHAVIOUR_METHOD(Start);
+        REGISTER_BEHAVIOUR_METHOD(Update);
+    }
+
+
 		GameObject* otherGameObject = nullptr; // 다른 게임 오브젝트를 참조할 수 있는 변수
 		virtual ~TestComponent() = default;
 		
@@ -33,6 +45,19 @@ namespace GOTOEngine
 		{
 			std::wcout << "TestComponent OnEnable called for GameObject: " << GetGameObject()->name << std::endl;
 		}
+		
+		void OnDisable()
+		{
+			// 시작 시 실행할 코드 작성
+
+			std::wcout << "TestComponent OnDisable called for GameObject: " << GetGameObject()->name << std::endl;
+		}
+
+		void FixedUpdate()
+		{
+			std::wcout << "TestComponent FixedUpdate called for GameObject: " << GetGameObject()->name << std::endl;
+		}
+
 		void Update()
 		{
 			// 매 프레임마다 실행할 코드 작성
@@ -43,21 +68,15 @@ namespace GOTOEngine
 				otherGameObject->SetActive(true);
 			}
 		}
-
-		void LateUpdate() 
-		{
-
-		}
-
 		void OnDestroy()
 		{
 			// 오브젝트 파괴 시 실행할 코드 작성
 			std::wcout << "TestComponent OnDestroy called for GameObject: " << GetGameObject()->name << std::endl;
 		}
 
-		void OnCollisionEnter(int num)
+		void OnCollisionEnter(int layer)
 		{
-			std::wcout << "TestComponent OnCollisionEnter called for GameObject: " << GetGameObject()->name << "/ num : " << num << std::endl;
+			std::wcout << "TestComponent OnCollisionEnter called for GameObject: " << GetGameObject()->name << "/ num : " << layer << std::endl;
 		}
 	};
 }

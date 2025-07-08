@@ -3,57 +3,69 @@ import sys
 import os
 from pathlib import Path
 
+# 시그니처 목록 로드
 def load_signatures(signatures_path):
-    signatures = set()
+    signatures = {}
     with open(signatures_path, encoding="utf-8") as f:
         for line in f:
             line = line.strip()
             if not line:
                 continue
-            match = re.match(r'void\s+(\w+)\s*\(', line)
+            match = re.match(r'void\s+(\w+)\s*\((.*)\)', line)
             if match:
-                signatures.add(match.group(1))
+                name = match.group(1)
+                params = match.group(2).strip()
+                if not params:
+                    param_list = []
+                else:
+                    # 공백 및 const 제거 (원하시면 더 고도화 가능)
+                    param_list = [p.strip().replace("const ", "") for p in params.split(",")]
+                signatures[name] = param_list
     return signatures
 
+# 클래스 이름 추출
 def extract_class_name(header_text):
     match = re.search(r'class\s+(\w+)\s*:\s*public\s+\w+', header_text)
     if match:
         return match.group(1)
     raise Exception("클래스 이름을 찾을 수 없습니다.")
 
+# 헤더에서 함수 목록 추출
 def extract_functions(header_text):
-    pattern = r'void\s+(\w+)\s*\('
-    return set(re.findall(pattern, header_text))
+    pattern = r'void\s+(\w+)\s*\(([^)]*)\)'
+    matches = re.findall(pattern, header_text)
+    result = []
+    for name, params in matches:
+        params = params.strip()
+        if not params:
+            param_list = []
+        else:
+            param_list = [p.strip().replace("const ", "") for p in params.split(",")]
+        result.append((name, param_list))
+    return result
 
-def has_default_constructor(header_text, class_name):
-    pattern = rf'{class_name}\s*\(\s*\)'
-    return re.search(pattern, header_text) is not None
-
+# 생성자 항상 새로 생성
 def inject_constructor(header_text, class_name, functions_to_register):
-    # 매크로 한 줄당 1탭 + 4칸 스페이스 들여쓰기(원하시면 조정 가능)
-    indent = '    '  # 클래스 멤버 함수라 보통 4칸 스페이스
-    macro_indent = indent * 2  # 생성자 내부이므로 2단계 들여쓰기
+    register_lines = [f'        REGISTER_BEHAVIOUR_METHOD({func});' for func in sorted(functions_to_register)]
+    register_code = "\n".join(register_lines)
 
-    register_lines = [f'{macro_indent}REGISTER_BEHAVIOUR_METHOD({func});' for func in sorted(functions_to_register)]
-    register_code = '\n'.join(register_lines)
+    # 기존 생성자 제거
+    pattern_ctor = rf'\s*{class_name}\s*\(\s*\)\s*\{{[^}}]*\}}'
+    header_text = re.sub(pattern_ctor, '', header_text, flags=re.DOTALL)
 
-    # 기존 생성자 블럭 제거
-    constructor_pattern = rf'{class_name}\s*\(\s*\)\s*\{{[^{{}}]*\}}'
-    header_text_no_ctor = re.sub(constructor_pattern, '', header_text, flags=re.DOTALL)
-
-    # 새 생성자 블럭 생성 (클래스 멤버 함수 스타일)
-    new_constructor = f'\n{indent}{class_name}()\n{indent}{{\n{register_code}\n{indent}}}\n'
-
-    # public: 뒤에 삽입
-    public_pattern = r'(public\s*:)'
-
-    if re.search(public_pattern, header_text_no_ctor):
-        new_text = re.sub(public_pattern, r'\1' + new_constructor, header_text_no_ctor, count=1)
-    else:
-        new_text = new_constructor + header_text_no_ctor
+    # public: 바로 뒤에 생성자 삽입
+    constructor_code = (
+        f"\n    {class_name}()\n"
+        f"    {{\n"
+        f"{register_code}\n"
+        f"    }}\n"
+    )
+    pattern_public = r'(public\s*:)'
+    new_text = re.sub(pattern_public, r'\1' + constructor_code, header_text, count=1)
 
     return new_text
 
+# 헤더파일 처리
 def process_header_file(header_path, signatures):
     with open(header_path, encoding="utf-8") as f:
         header_text = f.read()
@@ -65,7 +77,11 @@ def process_header_file(header_path, signatures):
         return
 
     declared_functions = extract_functions(header_text)
-    functions_to_register = signatures & declared_functions
+
+    functions_to_register = []
+    for name, ptypes in declared_functions:
+        if name in signatures and signatures[name] == ptypes:
+            functions_to_register.append(name)
 
     if not functions_to_register:
         print(f"[{header_path.name}] 등록할 함수 없음")
@@ -75,15 +91,18 @@ def process_header_file(header_path, signatures):
 
     new_header_text = inject_constructor(header_text, class_name, functions_to_register)
 
-    if new_header_text != header_text:
-        backup_path = str(header_path) + ".bak"
-        os.replace(header_path, backup_path)  # 항상 새로 백업
-        with open(header_path, 'w', encoding="utf-8") as f:
-            f.write(new_header_text)
-        print(f"[{header_path.name}] 변경됨 -> 백업: {backup_path}")
-    else:
-        print(f"[{header_path.name}] 변경사항 없음")
+    # 백업 생성
+    backup_path = str(header_path) + ".bak"
+    if os.path.exists(backup_path):
+        os.remove(backup_path)
+    os.rename(header_path, backup_path)
 
+    with open(header_path, "w", encoding="utf-8") as f:
+        f.write(new_header_text)
+
+    print(f"[{header_path.name}] 완료 (백업: {backup_path})")
+
+# 메인
 def main():
     if len(sys.argv) != 3:
         print("사용법: python generate_registers.py <헤더폴더> <시그니처파일>")
