@@ -111,6 +111,7 @@ void Engine::ProcessFrame()
 		accumulator -= fixedDelta;
 		TimeManager::Get()->FixedUpdate();
 		BehaviourManager::Get()->BroadCastBehaviourMessage("FixedUpdate");
+		BehaviourManager::Get()->BroadCastBehaviourMessage("OnCollisionEnter");
 	}
 
 	//GetTime -> 일반시간 반환으로 변경

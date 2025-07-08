@@ -13,14 +13,14 @@ namespace GOTOEngine
 		virtual ~TestComponent() = default;
 		TestComponent()
 		{
-			REGISTER_BEHAVIOUR_MESSAGE(Awake);
-			REGISTER_BEHAVIOUR_MESSAGE(Start);
-			REGISTER_BEHAVIOUR_MESSAGE(OnEnable);
-			REGISTER_BEHAVIOUR_MESSAGE(OnDisable);
-			REGISTER_BEHAVIOUR_MESSAGE(FixedUpdate);
-			REGISTER_BEHAVIOUR_MESSAGE(Update);
-			REGISTER_BEHAVIOUR_MESSAGE(OnDestroy);
-			RegisterBehaviourParamMessage("OnCollisionEnter", std::function<void(int)>([this](int num) { OnCollisionEnter(num); }));
+			REGISTER_BEHAVIOUR_METHOD(Awake);
+			REGISTER_BEHAVIOUR_METHOD(OnEnable);
+			RegisterMessage("Start", &TestComponent::Start);
+			RegisterMessage("FixedUpdate", &TestComponent::FixedUpdate);
+			RegisterMessage("Update", &TestComponent::Update);
+			RegisterMessage("OnDisable", &TestComponent::OnDisable);
+			RegisterMessage("OnDestroy", &TestComponent::OnDestroy);
+			RegisterMessage("OnCollisionEnter", &TestComponent::OnCollisionEnter);
 		}
 
 		void Awake()

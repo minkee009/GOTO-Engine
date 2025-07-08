@@ -6,7 +6,7 @@ void GOTOEngine::BehaviourManager::BroadCastBehaviourMessage(const std::string& 
 {
 	for (auto& behaviour : m_activeBehaviours)
 	{
-		behaviour->CallBehaviourMessage(funcName);
+		behaviour->CallMessage(funcName);
 	}
 }
 
@@ -79,19 +79,19 @@ void GOTOEngine::BehaviourManager::InitializeBehaviours()
 	// Awake 호출 (newBehaviours 사용)
 	for (auto& behaviour : newBehaviours)
 	{
-		behaviour->CallBehaviourMessage("Awake");
+		behaviour->CallMessage("Awake");
 	}
 
 	// OnEnable 호출 (changedBehavioursToProcess 사용)
 	for (auto& behaviour : changedBehavioursToProcess)
 	{
-		behaviour->CallBehaviourMessage("OnEnable");
+		behaviour->CallMessage("OnEnable");
 	}
 
 	// Start 호출 (newBehaviours 사용)
 	for (auto& behaviour : newBehaviours)
 	{
-		behaviour->CallBehaviourMessage("Start");
+		behaviour->CallMessage("Start");
 	}
 }
 
@@ -103,7 +103,7 @@ void GOTOEngine::BehaviourManager::DisableBehaviours()
 		Behaviour* currentBehaviour = *it;
 		if (!currentBehaviour->IsActiveAndEnabled() || currentBehaviour->Destroyed())
 		{
-			(*it)->CallBehaviourMessage("OnDisable");
+			(*it)->CallMessage("OnDisable");
 			m_needSort = true;
 
 			m_inactiveBehaviours.push_back(currentBehaviour); // 바로 m_inactiveBehaviours로 이동
@@ -119,7 +119,7 @@ void GOTOEngine::BehaviourManager::DisableBehaviours()
 	{
 		if (inactive->Destroyed())
 		{
-			inactive->CallBehaviourMessage("OnDestroy");
+			inactive->CallMessage("OnDestroy");
 		}
 	}
 }
