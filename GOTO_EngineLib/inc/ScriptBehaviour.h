@@ -4,7 +4,7 @@
 namespace GOTOEngine 
 {
     // 매크로 정의
-#define REGISTER_BEHAVIOUR_METHOD(func) RegisterMessage(#func, &std::remove_reference_t<decltype(*this)>::func);
+#define REGISTER_BEHAVIOUR_MESSAGE(func) RegisterMessage(#func, &std::remove_reference_t<decltype(*this)>::func);
 	class ScriptBehaviour : public Behaviour
 	{
 	public:

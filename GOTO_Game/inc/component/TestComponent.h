@@ -12,14 +12,14 @@ namespace GOTOEngine
 	public:
     TestComponent()
     {
-        REGISTER_BEHAVIOUR_METHOD(Awake);
-        REGISTER_BEHAVIOUR_METHOD(FixedUpdate);
-        REGISTER_BEHAVIOUR_METHOD(OnCollisionEnter);
-        REGISTER_BEHAVIOUR_METHOD(OnDestroy);
-        REGISTER_BEHAVIOUR_METHOD(OnDisable);
-        REGISTER_BEHAVIOUR_METHOD(OnEnable);
-        REGISTER_BEHAVIOUR_METHOD(Start);
-        REGISTER_BEHAVIOUR_METHOD(Update);
+        REGISTER_BEHAVIOUR_MESSAGE(Awake);
+        REGISTER_BEHAVIOUR_MESSAGE(FixedUpdate);
+        REGISTER_BEHAVIOUR_MESSAGE(OnCollisionEnter);
+        REGISTER_BEHAVIOUR_MESSAGE(OnDestroy);
+        REGISTER_BEHAVIOUR_MESSAGE(OnDisable);
+        REGISTER_BEHAVIOUR_MESSAGE(OnEnable);
+        REGISTER_BEHAVIOUR_MESSAGE(Start);
+        REGISTER_BEHAVIOUR_MESSAGE(Update);
     }
 		GameObject* otherGameObject = nullptr; // 다른 게임 오브젝트를 참조할 수 있는 변수
 		virtual ~TestComponent() = default;

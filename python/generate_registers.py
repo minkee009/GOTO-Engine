@@ -46,7 +46,7 @@ def extract_functions(header_text):
 
 # 생성자 항상 새로 생성
 def inject_constructor(header_text, class_name, functions_to_register):
-    register_lines = [f'        REGISTER_BEHAVIOUR_METHOD({func});' for func in sorted(functions_to_register)]
+    register_lines = [f'        REGISTER_BEHAVIOUR_MESSAGE({func});' for func in sorted(functions_to_register)]
     register_code = "\n".join(register_lines)
 
     # 기존 생성자 제거
