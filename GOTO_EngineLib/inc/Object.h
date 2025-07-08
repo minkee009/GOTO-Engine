@@ -3,20 +3,24 @@
 #include "string"
 #include "SceneManager.h"
 #include <unordered_set>
+#include "IDisopose.h"
 
 namespace GOTOEngine
 {
-	class Object
+	class Object : public IDispose
 	{
 	private:
 		friend class Engine;
 		friend class ObjectDestructionManager;
 		long long m_instanceID;
+		bool m_isDestroyed = false; // 오브젝트가 파괴되었는지 여부
 
 		static std::atomic<long long> s_nextInstanceId;
 		static std::vector<Object*> s_registry; // 탐색용 레지스트리 (생성/파괴 주기 관리 X)
 		static std::unordered_set<Object*> s_validObjects; // 유효한 오브젝트들 (생성/파괴 주기 관리용)
 	protected:
+		virtual void Dispose() override { m_isDestroyed = true; }
+
 		virtual ~Object()
 		{
 			auto it = std::find(s_registry.begin(), s_registry.end(), this);
@@ -44,6 +48,7 @@ namespace GOTOEngine
 		std::wstring name;
 
 		long long GetInstanceID() { return m_instanceID; }
+		bool Destroyed() const { return m_isDestroyed; }
 
 		//static Object* Instantiate(const Object& src);
 		static void Destroy(Object* obj, float delay = 0.0f);

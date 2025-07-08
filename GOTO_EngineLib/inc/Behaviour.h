@@ -3,6 +3,9 @@
 #include "GameObject.h"
 #include "Delegate.h"
 #include "BehaviourManager.h"
+#include <functional>
+#include <any>
+#include <typeindex>
 
 namespace GOTOEngine
 {
@@ -12,7 +15,6 @@ namespace GOTOEngine
 		Behaviour* owner;
 		std::string messageName;
 		std::function<void()> func;
-		bool isFirstCall = true; // 첫 호출 여부를 나타내는 플래그
 	};
 
 	//루프 제어에 영향받는 컴포넌트입니다.
@@ -20,7 +22,6 @@ namespace GOTOEngine
 	{
 	private:
 		friend class BehaviourManager;
-		friend class ObjectDestructionManager; 
 		friend class GameObject;
 
 		std::unordered_map <std::string, BehaviourMessageData> m_behaviourMessages; // 함수 이름과 함수 포인터를 저장하는 벡터

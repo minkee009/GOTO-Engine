@@ -29,6 +29,8 @@ namespace GOTOEngine
 		void UnregisterComponent(Component* comp);
 		void UpdateActiveInHierarchy();
 
+		void Dispose() override;
+
 		~GameObject();
 		static std::vector<GameObject*> s_allGameObjects;
 	public:

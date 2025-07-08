@@ -13,14 +13,32 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="소스 파일\매니저">
-      <UniqueIdentifier>{c9a0aa3d-dbc0-445f-bf87-c871ae6c8f19}</UniqueIdentifier>
-    </Filter>
     <Filter Include="헤더 파일\인터페이스">
       <UniqueIdentifier>{1aa21f01-0cb3-496b-b846-4d654ab0fd85}</UniqueIdentifier>
     </Filter>
     <Filter Include="헤더 파일\매니저">
       <UniqueIdentifier>{27b0898a-1aab-47f2-80eb-ca3ed1790c84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\코어 컴포넌트">
+      <UniqueIdentifier>{07fb9b90-ae04-4315-8304-46cd83e1c8d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\구조체">
+      <UniqueIdentifier>{26b1ff74-5442-4842-a154-1126a195005d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\헬퍼">
+      <UniqueIdentifier>{8be03591-20a0-4c9d-b06a-6062ee75b743}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\헬퍼">
+      <UniqueIdentifier>{68f16de1-72be-46f9-8591-32a18601eb5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\구조체">
+      <UniqueIdentifier>{010caf0b-35d7-422e-815d-7b7b80c805b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\코어 컴포넌트">
+      <UniqueIdentifier>{f4344f32-e5cb-4fc9-9719-909b99e02ab4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\매니저">
+      <UniqueIdentifier>{c9a0aa3d-dbc0-445f-bf87-c871ae6c8f19}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -48,16 +66,7 @@
     <ClInclude Include="inc\Singleton.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="inc\Vector2.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="inc\WinAPIWindow.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\BBox.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\Color.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="inc\IRenderImage.h">
@@ -93,12 +102,6 @@
     <ClInclude Include="inc\D2DImage.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="inc\WICHelper.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\DWriteHelper.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="inc\D2DFont.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -111,32 +114,8 @@
     <ClInclude Include="inc\ObjectDestructionManager.h">
       <Filter>헤더 파일\매니저</Filter>
     </ClInclude>
-    <ClInclude Include="inc\Transform.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\Vector3.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\Vector4.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\Matrix4x4.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\Quaternion.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\Behaviour.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\WStringHelper.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="inc\BehaviourManager.h">
       <Filter>헤더 파일\매니저</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\ScriptBehaviour.h">
-      <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="inc\WinAPIInputSystem.h">
       <Filter>헤더 파일</Filter>
@@ -146,6 +125,45 @@
     </ClInclude>
     <ClInclude Include="inc\IDisopose.h">
       <Filter>헤더 파일\인터페이스</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\ScriptBehaviour.h">
+      <Filter>헤더 파일\코어 컴포넌트</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Behaviour.h">
+      <Filter>헤더 파일\코어 컴포넌트</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Transform.h">
+      <Filter>헤더 파일\코어 컴포넌트</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Color.h">
+      <Filter>헤더 파일\구조체</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\BBox.h">
+      <Filter>헤더 파일\구조체</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Matrix4x4.h">
+      <Filter>헤더 파일\구조체</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Quaternion.h">
+      <Filter>헤더 파일\구조체</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Vector2.h">
+      <Filter>헤더 파일\구조체</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Vector3.h">
+      <Filter>헤더 파일\구조체</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Vector4.h">
+      <Filter>헤더 파일\구조체</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\DWriteHelper.h">
+      <Filter>헤더 파일\헬퍼</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\WStringHelper.h">
+      <Filter>헤더 파일\헬퍼</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\WICHelper.h">
+      <Filter>헤더 파일\헬퍼</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -170,9 +188,6 @@
     <ClCompile Include="src\WinAPIWindow.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="src\BBox.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="src\Engine.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -188,12 +203,6 @@
     <ClCompile Include="src\D2DImage.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="src\WICHelper.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="src\DWriteHelper.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="src\D2DFont.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -203,29 +212,38 @@
     <ClCompile Include="src\GameObject.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="src\Transform.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Quaternion.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Matrix4x4.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="src\WStringHelper.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="src\BehaviourManager.cpp">
       <Filter>소스 파일\매니저</Filter>
     </ClCompile>
     <ClCompile Include="src\WinAPIInputSystem.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="src\Behaviour.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="src\ObjectDestructionManager.cpp">
       <Filter>소스 파일\매니저</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Matrix4x4.cpp">
+      <Filter>소스 파일\구조체</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BBox.cpp">
+      <Filter>소스 파일\구조체</Filter>
+    </ClCompile>
+    <ClCompile Include="src\WStringHelper.cpp">
+      <Filter>소스 파일\헬퍼</Filter>
+    </ClCompile>
+    <ClCompile Include="src\WICHelper.cpp">
+      <Filter>소스 파일\헬퍼</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DWriteHelper.cpp">
+      <Filter>소스 파일\헬퍼</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Quaternion.cpp">
+      <Filter>소스 파일\구조체</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Transform.cpp">
+      <Filter>소스 파일\코어 컴포넌트</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Behaviour.cpp">
+      <Filter>소스 파일\코어 컴포넌트</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

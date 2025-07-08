@@ -3,7 +3,8 @@
 void GOTOEngine::ObjectDestructionManager::ScheduleDestroy(Object* obj, float delay)
 {
 	//유효한 오브젝트인지 확인
-	if (!Object::IsValidObject(obj))
+	if (!Object::IsValidObject(obj)
+		|| obj->Destroyed())
 		return;
 
 	//Transform의 경우엔 Destroy불가능
@@ -32,7 +33,8 @@ void GOTOEngine::ObjectDestructionManager::ScheduleDestroy(Object* obj, float de
 void GOTOEngine::ObjectDestructionManager::ImmediateDestroy(Object* obj)
 {
 	//유효한 오브젝트인지 확인
-	if (!Object::IsValidObject(obj))
+	if (!Object::IsValidObject(obj)
+		|| obj->Destroyed())
 		return;
 
 	//Transform의 경우엔 Destroy불가능
@@ -49,16 +51,9 @@ void GOTOEngine::ObjectDestructionManager::ImmediateDestroy(Object* obj)
 		delete it->second;
 		m_destroySchedule[obj] = nullptr;
 	}
-
-	if (auto behaviour = dynamic_cast<Behaviour*>(obj))
-	{
-		//Behaviour인 경우 BehaviourManager에서 제거
-		if (behaviour->IsActiveAndEnabled())
-			behaviour->CallBehaviourMessage("OnDisable");
-		behaviour->CallBehaviourMessage("OnDestroy");
-	}
-
-	delete obj; // 실제 파괴
+	
+	obj->Dispose();
+	m_pendingDeleteObjects.push_back(obj); // 즉시 파괴할 오브젝트 목록에 추가
 }
 
 void GOTOEngine::ObjectDestructionManager::Update()
@@ -74,16 +69,8 @@ void GOTOEngine::ObjectDestructionManager::Update()
 		{
 			// 예약 파괴 시간이 지난 오브젝트를 파괴
 			Object* obj = destroyInfo->obj;
-
-			if (auto behaviour = dynamic_cast<Behaviour*>(obj))
-			{
-				//Behaviour인 경우 BehaviourManager에서 제거
-				if (behaviour->IsActiveAndEnabled())
-					behaviour->CallBehaviourMessage("OnDisable");
-				behaviour->CallBehaviourMessage("OnDestroy");
-			}
-
-			delete obj; // 실제 파괴
+			obj->Dispose();
+			m_pendingDeleteObjects.push_back(obj); // 즉시 파괴할 오브젝트 목록에 추가
 			delete destroyInfo; // 예약 정보도 삭제
 			it = m_destroySchedule.erase(it); // 맵에서 제거
 		}
@@ -108,6 +95,15 @@ void GOTOEngine::ObjectDestructionManager::Update()
 	}
 }
 
+void GOTOEngine::ObjectDestructionManager::Clear()
+{
+	for (auto& obj : m_pendingDeleteObjects)
+	{
+		delete obj; // 실제 파괴
+	}
+	m_pendingDeleteObjects.clear(); // 파괴된 오브젝트 목록 초기화
+}
+
 void GOTOEngine::ObjectDestructionManager::ShutDown()
 {
 	// 모든 예약 파괴된 오브젝트들 파괴
@@ -117,16 +113,16 @@ void GOTOEngine::ObjectDestructionManager::ShutDown()
 		ObjectDestroyInfo* destroyInfo = pair.second;
 		if (destroyInfo)
 		{
-			if (auto behaviour = dynamic_cast<Behaviour*>(destroyInfo->obj))
-			{
-				//Behaviour인 경우 BehaviourManager에서 제거
-				if (behaviour->GetEnabled())
-					behaviour->CallBehaviourMessage("OnDisable");
-				behaviour->CallBehaviourMessage("OnDestroy");
-			}
-			delete destroyInfo->obj; // 실제 파괴
+			if (!Object::IsValidObject(destroyInfo->obj) 
+				|| destroyInfo->obj->Destroyed())
+				continue; // 유효하지 않은 오브젝트는 무시
+			
+			destroyInfo->obj->Dispose();
+			destroyInfo->obj->m_isDestroyed = true;
+			m_pendingDeleteObjects.push_back(destroyInfo->obj);
 			delete destroyInfo; // 예약 정보도 삭제
 		}
 	}
 	m_destroySchedule.clear();
+	Clear();
 }

@@ -27,6 +27,7 @@ void SceneManager::Update()
 	{
 		if (m_currentScene)
 			m_currentScene->Exit();
+
 		m_currentScene = m_nextScene;
 		m_nextScene = nullptr;
 

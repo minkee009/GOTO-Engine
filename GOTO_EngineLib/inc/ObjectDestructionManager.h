@@ -3,7 +3,6 @@
 #include "Transform.h"
 #include "Object.h"
 #include "TimeManager.h"
-#include "Behaviour.h"
 #include <vector>
 #include <unordered_map>
 
@@ -13,6 +12,7 @@ namespace GOTOEngine
 	{
 	private:
 		friend class Object;
+		friend class Engine;
 		struct ObjectDestroyInfo
 		{
 			Object* obj;
@@ -23,18 +23,21 @@ namespace GOTOEngine
 			}
 		};
 		std::unordered_map<Object*, ObjectDestroyInfo*> m_destroySchedule; // Instance ID를 키로 하는 예약 파괴 정보
+		std::vector<Object*> m_pendingDeleteObjects; // 실제 삭제시킬 오브젝트들
 
 		//오브젝트 파괴를 예약하는 함수
 		void ScheduleDestroy(Object* obj, float delay);
 
-		//예약없이 즉시 파괴(안전하지 않은방법)하는 함수
+		//예약없이(혹은 예약지우고) 즉시 파괴하는 함수
 		void ImmediateDestroy(Object* obj);
 
-	public:
-		ObjectDestructionManager() = default;
-
 		void Update();
+		void Clear();
 		void StartUp() { }
 		void ShutDown();
+
+	public:
+
+		ObjectDestructionManager() = default;
  	};
 }

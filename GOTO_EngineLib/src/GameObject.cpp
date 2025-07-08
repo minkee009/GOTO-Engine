@@ -54,6 +54,38 @@ void GOTOEngine::GameObject::UpdateActiveInHierarchy()
 	}
 }
 
+void GOTOEngine::GameObject::Dispose()
+{
+	Object::Dispose();
+
+	////====== 트랜스 폼 파괴 ======////
+	// 
+	// 
+	//트랜스폼의 차일드들도 일괄 파괴해야함...
+	for (auto& child : m_transform->m_childs)
+	{
+		DestroyImmediate(child->GetGameObject()); //
+	}
+	//
+	//
+	////===========================////
+
+
+
+	////====== 컴포넌트 파괴 =======////
+	//
+	//
+	for (auto& comp : m_components)
+	{
+		if (!Object::IsValidObject(comp))
+			continue; // 이미 파괴된 컴포넌트는 무시
+		DestroyImmediate(comp);
+	}
+	//
+	//
+	////===========================////
+}
+
 GOTOEngine::GameObject::GameObject(std::wstring name)
 	: Object(name)
 	, m_tag(L"")
@@ -77,13 +109,14 @@ GOTOEngine::GameObject::~GameObject()
 	//트랜스폼의 차일드들도 일괄 파괴해야함...
 	for (auto& child : m_transform->m_childs)
 	{
+		if (!Object::IsValidObject(child))
+			continue; // 이미 파괴된 차일드는 무시
 		//iterator 오염 방지 -> RemoveChild()방지;
 		child->m_parent = nullptr;
-		Object::DestroyImmediate(child->GetGameObject()); // 즉시 파괴
 	}
 	m_transform->m_childs.clear(); // 자식 트랜스폼 목록 초기화
 
-	if (m_transform->m_parent)
+	if (Object::IsValidObject(m_transform->m_parent))
 		m_transform->m_parent->RemoveChild(m_transform);
 
 	delete m_transform; // Transform 컴포넌트 파괴
@@ -104,15 +137,6 @@ GOTOEngine::GameObject::~GameObject()
 
 		//iterator 오염 방지 -> UnregisterComponent()호출 방지
 		comp->m_gameObject = nullptr;
-
-		if (auto behaviour = dynamic_cast<Behaviour*>(comp))
-		{
-			// Behaviour인 경우 OnDisable을 호출
-			if (m_activeInHierarchy && behaviour->GetEnabled())
-				behaviour->CallBehaviourMessage("OnDisable");
-		}
-
-		Object::DestroyImmediate(comp);
 	}
 	m_components.clear();
 	//

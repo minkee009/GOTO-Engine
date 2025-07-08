@@ -47,7 +47,7 @@ void GOTOEngine::BehaviourManager::SortBehaviours()
 void GOTOEngine::BehaviourManager::InitializeBehaviours()
 {
 	// 임시로 newBehaviours를 수집할 컨테이너 (std::set이 효율적)
-	std::unordered_set<Behaviour*> newBehavioursSet;
+	std::vector<Behaviour*> newBehaviours;
 	std::vector<Behaviour*> changedBehavioursToProcess; // CallBehaviourMessage를 위한 임시 컨테이너
 
 	// m_inactiveBehaviours를 순회하며 활성화 객체 처리
@@ -63,7 +63,7 @@ void GOTOEngine::BehaviourManager::InitializeBehaviours()
 			// m_firstCallBehaviours에서 찾고, newBehavioursSet에 추가 및 m_firstCallBehaviours에서 제거
 			if (m_firstCallBehaviours.erase(currentBehaviour) > 0) // 요소가 성공적으로 제거되면
 			{
-				newBehavioursSet.insert(currentBehaviour); // 새로운 Behaviour로 간주
+				newBehaviours.push_back(currentBehaviour); // 새로운 Behaviour로 간주
 			}
 			m_needSort = true;
 
@@ -76,8 +76,8 @@ void GOTOEngine::BehaviourManager::InitializeBehaviours()
 		}
 	}
 
-	// Awake 호출 (newBehavioursSet 사용)
-	for (auto& behaviour : newBehavioursSet)
+	// Awake 호출 (newBehaviours 사용)
+	for (auto& behaviour : newBehaviours)
 	{
 		behaviour->CallBehaviourMessage("Awake");
 	}
@@ -88,8 +88,8 @@ void GOTOEngine::BehaviourManager::InitializeBehaviours()
 		behaviour->CallBehaviourMessage("OnEnable");
 	}
 
-	// Start 호출 (newBehavioursSet 사용)
-	for (auto& behaviour : newBehavioursSet)
+	// Start 호출 (newBehaviours 사용)
+	for (auto& behaviour : newBehaviours)
 	{
 		behaviour->CallBehaviourMessage("Start");
 	}
@@ -100,17 +100,26 @@ void GOTOEngine::BehaviourManager::DisableBehaviours()
 	auto it = m_activeBehaviours.begin();
 	while (it != m_activeBehaviours.end())
 	{
-		if (!(*it)->IsActiveAndEnabled())
+		Behaviour* currentBehaviour = *it;
+		if (!currentBehaviour->IsActiveAndEnabled() || currentBehaviour->Destroyed())
 		{
 			(*it)->CallBehaviourMessage("OnDisable");
 			m_needSort = true;
 
-			m_inactiveBehaviours.push_back(*it); // 바로 m_inactiveBehaviours로 이동
+			m_inactiveBehaviours.push_back(currentBehaviour); // 바로 m_inactiveBehaviours로 이동
 			it = m_activeBehaviours.erase(it); // m_activeBehaviours에서 제거
 		}
 		else
 		{
 			++it;
+		}
+	}
+	
+	for (auto inactive : m_inactiveBehaviours)
+	{
+		if (inactive->Destroyed())
+		{
+			inactive->CallBehaviourMessage("OnDestroy");
 		}
 	}
 }
