@@ -21,7 +21,7 @@ void SceneManager::ShutDown()
 	m_nextScene = nullptr;
 }
 
-void SceneManager::Update()
+bool SceneManager::CheckSceneChange()
 {
 	if (m_nextScene)
 	{
@@ -32,7 +32,10 @@ void SceneManager::Update()
 		m_nextScene = nullptr;
 
 		m_currentScene->Enter();
+		return true;
 	}
+
+	return false;
 }
 
 

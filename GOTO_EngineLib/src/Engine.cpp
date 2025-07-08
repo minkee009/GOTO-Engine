@@ -76,7 +76,14 @@ void Engine::ProcessFrame()
 	//코어 업데이트
 	InputManager::Get()->Update();
 	TimeManager::Get()->Update();
-	SceneManager::Get()->Update();
+	bool changedScene = SceneManager::Get()->CheckSceneChange();
+	if (changedScene)
+	{
+		ObjectDestructionManager::Get()->Update();
+		BehaviourManager::Get()->DisableBehaviours();
+		ObjectDestructionManager::Get()->Clear();
+		BehaviourManager::Get()->BroadCastBehaviourMessage("OnSceneLoaded");
+	}
 
 	//Behaviour 초기화 메시지 (필요한 객체에 한해)
 	//BehaviourManager::Get()->BroadCastBehaviourMessage("Awake");

@@ -49,7 +49,7 @@ namespace GOTOEngine
 		void StartUp();
 		void ShutDown();
 
-		void Update();
+		bool CheckSceneChange();
 	};
 }
 
