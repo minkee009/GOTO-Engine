@@ -24,6 +24,14 @@ namespace GOTOEngine
 
 
 
+
+
+
+
+
+
+
+
 		GameObject* otherGameObject = nullptr; // 다른 게임 오브젝트를 참조할 수 있는 변수
 		virtual ~TestComponent() = default;
 		

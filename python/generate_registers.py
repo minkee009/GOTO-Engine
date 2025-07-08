@@ -18,7 +18,6 @@ def load_signatures(signatures_path):
                 if not params:
                     param_list = []
                 else:
-                    # 공백 및 const 제거 (원하시면 더 고도화 가능)
                     param_list = [p.strip().replace("const ", "") for p in params.split(",")]
                 signatures[name] = param_list
     return signatures
@@ -30,7 +29,7 @@ def extract_class_name(header_text):
         return match.group(1)
     raise Exception("클래스 이름을 찾을 수 없습니다.")
 
-# 헤더에서 함수 목록 추출
+# 함수 목록 추출
 def extract_functions(header_text):
     pattern = r'void\s+(\w+)\s*\(([^)]*)\)'
     matches = re.findall(pattern, header_text)
@@ -44,16 +43,19 @@ def extract_functions(header_text):
         result.append((name, param_list))
     return result
 
-# 생성자 항상 새로 생성
+# 생성자 제거
+def remove_constructor(header_text, class_name):
+    pattern_ctor = rf'\s*{class_name}\s*\(\s*\)\s*\{{[^}}]*\}}'
+    new_text, count = re.subn(pattern_ctor, '', header_text, flags=re.DOTALL)
+    if count > 0:
+        print("기존 생성자를 제거했습니다.")
+    return new_text
+
+# 생성자 삽입
 def inject_constructor(header_text, class_name, functions_to_register):
     register_lines = [f'        REGISTER_BEHAVIOUR_METHOD({func});' for func in sorted(functions_to_register)]
     register_code = "\n".join(register_lines)
 
-    # 기존 생성자 제거
-    pattern_ctor = rf'\s*{class_name}\s*\(\s*\)\s*\{{[^}}]*\}}'
-    header_text = re.sub(pattern_ctor, '', header_text, flags=re.DOTALL)
-
-    # public: 바로 뒤에 생성자 삽입
     constructor_code = (
         f"\n    {class_name}()\n"
         f"    {{\n"
@@ -62,7 +64,6 @@ def inject_constructor(header_text, class_name, functions_to_register):
     )
     pattern_public = r'(public\s*:)'
     new_text = re.sub(pattern_public, r'\1' + constructor_code, header_text, count=1)
-
     return new_text
 
 # 헤더파일 처리
@@ -83,15 +84,25 @@ def process_header_file(header_path, signatures):
         if name in signatures and signatures[name] == ptypes:
             functions_to_register.append(name)
 
+    # 항상 생성자 제거
+    header_text = remove_constructor(header_text, class_name)
+
     if not functions_to_register:
-        print(f"[{header_path.name}] 등록할 함수 없음")
+        print(f"[{header_path.name}] 등록할 함수 없음. 생성자 제거만 수행.")
+        # 생성자 제거만 하고 종료
+        backup_path = str(header_path) + ".bak"
+        if os.path.exists(backup_path):
+            os.remove(backup_path)
+        os.rename(header_path, backup_path)
+        with open(header_path, "w", encoding="utf-8") as f:
+            f.write(header_text)
+        print(f"[{header_path.name}] 완료 (백업: {backup_path})")
         return
 
     print(f"[{header_path.name}] 등록할 함수: {', '.join(functions_to_register)}")
 
     new_header_text = inject_constructor(header_text, class_name, functions_to_register)
 
-    # 백업 생성
     backup_path = str(header_path) + ".bak"
     if os.path.exists(backup_path):
         os.remove(backup_path)

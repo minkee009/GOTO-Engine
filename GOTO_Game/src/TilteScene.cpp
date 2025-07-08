@@ -11,6 +11,7 @@
 #include <Transform.h>
 #include <iostream>
 #include "TestComponent.h"
+#include "PlayerMove.h"
 
 using namespace GOTOEngine;
 
@@ -66,6 +67,7 @@ void TitleScene::Enter()
     s->otherGameObject = g_test02;
 
     g_test02->AddComponent<TestComponent>();
+    g_test02->AddComponent<PlayerMove>();
 
     Object::Destroy(g_test02, 5.0f); // 5초 후에 g_test02 파괴 예약
 }     
