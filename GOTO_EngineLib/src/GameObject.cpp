@@ -105,6 +105,13 @@ GOTOEngine::GameObject::~GameObject()
 		//iterator 오염 방지 -> UnregisterComponent()호출 방지
 		comp->m_gameObject = nullptr;
 
+		if (auto behaviour = dynamic_cast<Behaviour*>(comp))
+		{
+			// Behaviour인 경우 OnDisable을 호출
+			if (m_activeInHierarchy && behaviour->GetEnabled())
+				behaviour->CallBehaviourMessage("OnDisable");
+		}
+
 		Object::DestroyImmediate(comp);
 	}
 	m_components.clear();

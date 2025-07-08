@@ -1,18 +1,10 @@
 #include "Behaviour.h"
 
-void GOTOEngine::Behaviour::CallBehaviourMessage(const std::string& messageName, bool checkFirstCall)
+void GOTOEngine::Behaviour::CallBehaviourMessage(const std::string& messageName)
 {
 	auto it = m_behaviourMessages.find(messageName);
 	if (it != m_behaviourMessages.end())
 	{
-		if (checkFirstCall && it->second.isFirstCall)
-		{
-			it->second.isFirstCall = false; // 첫 호출 이후에는 false로 설정
-		}
-		else if (checkFirstCall && !it->second.isFirstCall)
-		{
-			return; // 첫 호출이 아니면 함수 실행하지 않음
-		}
 		it->second.func();
 	}
 }
@@ -45,5 +37,5 @@ void GOTOEngine::Behaviour::SetEnabled(bool value)
 
 bool GOTOEngine::Behaviour::IsActiveAndEnabled()
 {
-	return m_enabled && GetGameObject()->IsActiveInHierarchy(); // Object::IsValidObject(GetGameObject()) &&;
+	return m_enabled && Object::IsValidObject(GetGameObject()) && GetGameObject()->IsActiveInHierarchy();
 }

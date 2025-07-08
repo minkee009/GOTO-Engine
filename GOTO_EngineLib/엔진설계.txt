@@ -18,9 +18,8 @@
 BehaviourManager만들기 ScriptBehaviour 만들기
 
 
-- isFirstCall 삭제
-	- 대신 BehaviourManager에 RegisterBehaviour할 때 최초 활성화 해쉬(Behaviour*)에 동시에 추가하고 나중에 그 해쉬에서 삭제할 수 있도록 
-	   변경
+~~- isFirstCall 삭제~~
+	~~- 대신 BehaviourManager에 RegisterBehaviour할 때 최초 활성화 해쉬(Behaviour*)에 동시에 추가하고 나중에 그 해쉬에서 삭제할 수 있도록 변경~~
 - OnDisable 처리
 - CRTP로 간단히 작성하는 방법
 - MessageData에 Func을 매개변수를 받아 처리할 수 있도록 변경시키기

@@ -21,10 +21,11 @@ namespace GOTOEngine
 	private:
 		friend class BehaviourManager;
 		friend class ObjectDestructionManager; 
+		friend class GameObject;
 
 		std::unordered_map <std::string, BehaviourMessageData> m_behaviourMessages; // 함수 이름과 함수 포인터를 저장하는 벡터
 
-		void CallBehaviourMessage(const std::string& messageName, bool checkFirstCall = false);
+		void CallBehaviourMessage(const std::string& messageName);
 
 	protected:
 		Behaviour() : Component()

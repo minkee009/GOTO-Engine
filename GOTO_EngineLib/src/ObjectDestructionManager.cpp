@@ -120,7 +120,7 @@ void GOTOEngine::ObjectDestructionManager::ShutDown()
 			if (auto behaviour = dynamic_cast<Behaviour*>(destroyInfo->obj))
 			{
 				//Behaviour인 경우 BehaviourManager에서 제거
-				if (behaviour->IsActiveAndEnabled())
+				if (behaviour->GetEnabled())
 					behaviour->CallBehaviourMessage("OnDisable");
 				behaviour->CallBehaviourMessage("OnDestroy");
 			}

@@ -122,6 +122,7 @@ void Engine::ProcessFrame()
 	//ObjectDestructionManager가 호출 순서를 보장하는 방식으로 적용
 	//BehaviourManager::Get()->BroadCastBehaviourMessage("OnDisable"); 
 	//BehaviourManager::Get()->BroadCastBehaviourMessage("OnDestroy");
+	BehaviourManager::Get()->DisableBehaviours();
 	ObjectDestructionManager::Get()->Update();
 }
 

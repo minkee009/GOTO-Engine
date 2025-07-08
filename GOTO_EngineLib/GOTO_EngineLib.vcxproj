@@ -148,6 +148,7 @@
     <ClInclude Include="inc\DWriteHelper.h" />
     <ClInclude Include="inc\Engine.h" />
     <ClInclude Include="inc\framework.h" />
+    <ClInclude Include="inc\IDisopose.h" />
     <ClInclude Include="inc\IInputSystem.h" />
     <ClInclude Include="inc\Mathf.h" />
     <ClInclude Include="inc\GameObject.h" />

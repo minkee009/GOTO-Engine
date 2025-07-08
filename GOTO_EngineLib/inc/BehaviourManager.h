@@ -1,6 +1,6 @@
 #pragma once
 #include <Singleton.h>
-#include <unordered_map>
+#include <unordered_set>
 #include <string>
 #include <queue>
 #include <algorithm>
@@ -16,6 +16,7 @@ namespace GOTOEngine
 		bool m_needSort = false; // Behaviour 정렬이 필요한지 여부
 		std::vector<Behaviour*> m_activeBehaviours; // 활성화된 Behaviour를 저장하는 벡터
 		std::vector<Behaviour*> m_inactiveBehaviours; // 비활성화된 Behaviour를 저장하는 벡터
+		std::unordered_set<Behaviour*> m_firstCallBehaviours;
 
 		// Behaviour를 등록하는 함수
 		void RegisterBehaviour(Behaviour* behaviour);
@@ -27,6 +28,9 @@ namespace GOTOEngine
 		void SortBehaviours();
 
 		void InitializeBehaviours();
+		
+		// 비활성화된 Behaviour를 감지하는 함수
+		void DisableBehaviours();
 
 		void BroadCastBehaviourMessage(const std::string& messageName);
 

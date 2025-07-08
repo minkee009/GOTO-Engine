@@ -16,6 +16,7 @@ namespace GOTOEngine
 			REGISTER_BEHAVIOUR_MESSAGE(Awake);
 			REGISTER_BEHAVIOUR_MESSAGE(Start);
 			REGISTER_BEHAVIOUR_MESSAGE(OnEnable);
+			REGISTER_BEHAVIOUR_MESSAGE(OnDisable);
 			REGISTER_BEHAVIOUR_MESSAGE(FixedUpdate);
 			REGISTER_BEHAVIOUR_MESSAGE(Update);
 			REGISTER_BEHAVIOUR_MESSAGE(OnDestroy);
@@ -27,19 +28,24 @@ namespace GOTOEngine
 			{
 				otherGameObject->SetActive(false);
 			}
-			std::cout << "TestComponent Awake called for GameObject: " << std::endl;
+			std::wcout << "TestComponent Awake called for GameObject: " << GetGameObject()->name << std::endl;
 		}
 		void Start()
 		{
 			// 시작 시 실행할 코드 작성
 
-			std::cout << "TestComponent Start called for GameObject: " << std::endl;
+			std::wcout << "TestComponent Start called for GameObject: " << GetGameObject()->name << std::endl;
 		}
 		void OnEnable()
 		{
+			std::wcout << "TestComponent OnEnable called for GameObject: " << GetGameObject()->name << std::endl;
+		}
+		
+		void OnDisable()
+		{
 			// 시작 시 실행할 코드 작성
 
-			std::cout << "TestComponent OnEnable called for GameObject: " << std::endl;
+			std::wcout << "TestComponent OnDisable called for GameObject: " << (Object::IsValidObject(GetGameObject()) ? GetGameObject()->name : L"ss") << std::endl;
 		}
 
 		void FixedUpdate()
@@ -61,7 +67,7 @@ namespace GOTOEngine
 		void OnDestroy()
 		{
 			// 오브젝트 파괴 시 실행할 코드 작성
-			std::cout << "TestComponent OnDestroy called for GameObject: " << std::endl;
+			std::wcout << "TestComponent OnDestroy called for GameObject: " << (Object::IsValidObject(GetGameObject()) ? GetGameObject()->name : L"ss") << std::endl;
 		}
 
 		void OnCollisionEnter(GameObject* other)

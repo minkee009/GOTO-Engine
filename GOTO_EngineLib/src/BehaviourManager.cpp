@@ -13,6 +13,7 @@ void GOTOEngine::BehaviourManager::BroadCastBehaviourMessage(const std::string& 
 void GOTOEngine::BehaviourManager::RegisterBehaviour(Behaviour* behaviour)
 {
 	m_inactiveBehaviours.push_back(behaviour);
+	m_firstCallBehaviours.insert(behaviour);
 	m_needSort = true; // Behaviour 정렬이 필요함을 표시
 }
 
@@ -45,47 +46,73 @@ void GOTOEngine::BehaviourManager::SortBehaviours()
 
 void GOTOEngine::BehaviourManager::InitializeBehaviours()
 {
-	std::vector<Behaviour*> changedBehaviours;
+	// 임시로 newBehaviours를 수집할 컨테이너 (std::set이 효율적)
+	std::unordered_set<Behaviour*> newBehavioursSet;
+	std::vector<Behaviour*> changedBehavioursToProcess; // CallBehaviourMessage를 위한 임시 컨테이너
 
-	//활성화 객체 수집
-	for (auto& behaviour : m_inactiveBehaviours)
+	// m_inactiveBehaviours를 순회하며 활성화 객체 처리
+	auto it = m_inactiveBehaviours.begin();
+	while (it != m_inactiveBehaviours.end())
 	{
-		if (behaviour->IsActiveAndEnabled())
+		Behaviour* currentBehaviour = *it;
+		if (currentBehaviour->IsActiveAndEnabled())
 		{
-			m_activeBehaviours.push_back(behaviour);
-			changedBehaviours.push_back(behaviour);
+			m_activeBehaviours.push_back(currentBehaviour);
+			changedBehavioursToProcess.push_back(currentBehaviour); // OnEnable 호출을 위해 추가
+
+			// m_firstCallBehaviours에서 찾고, newBehavioursSet에 추가 및 m_firstCallBehaviours에서 제거
+			if (m_firstCallBehaviours.erase(currentBehaviour) > 0) // 요소가 성공적으로 제거되면
+			{
+				newBehavioursSet.insert(currentBehaviour); // 새로운 Behaviour로 간주
+			}
+			m_needSort = true;
+
+			// m_inactiveBehaviours에서 현재 요소를 제거
+			it = m_inactiveBehaviours.erase(it);
+		}
+		else
+		{
+			++it;
 		}
 	}
 
-	//Awake 호출
-	for (auto& behaviour : changedBehaviours)
+	// Awake 호출 (newBehavioursSet 사용)
+	for (auto& behaviour : newBehavioursSet)
 	{
 		behaviour->CallBehaviourMessage("Awake");
 	}
 
-	//OnEnable 호출
-	for (auto& behaviour : changedBehaviours)
+	// OnEnable 호출 (changedBehavioursToProcess 사용)
+	for (auto& behaviour : changedBehavioursToProcess)
 	{
 		behaviour->CallBehaviourMessage("OnEnable");
 	}
 
-	//Start 호출
-	for (auto& behaviour : changedBehaviours)
+	// Start 호출 (newBehavioursSet 사용)
+	for (auto& behaviour : newBehavioursSet)
 	{
-		behaviour->CallBehaviourMessage("Start", true);
+		behaviour->CallBehaviourMessage("Start");
 	}
+}
 
-	//changedBehaviours의 요소를 m_inactiveBehaviours에서 제거
-	for (auto& behaviour : changedBehaviours)
+void GOTOEngine::BehaviourManager::DisableBehaviours()
+{
+	auto it = m_activeBehaviours.begin();
+	while (it != m_activeBehaviours.end())
 	{
-		auto it = std::find(m_inactiveBehaviours.begin(), m_inactiveBehaviours.end(), behaviour);
-		if (it != m_inactiveBehaviours.end())
+		if (!(*it)->IsActiveAndEnabled())
 		{
-			m_inactiveBehaviours.erase(it);
+			(*it)->CallBehaviourMessage("OnDisable");
+			m_needSort = true;
+
+			m_inactiveBehaviours.push_back(*it); // 바로 m_inactiveBehaviours로 이동
+			it = m_activeBehaviours.erase(it); // m_activeBehaviours에서 제거
+		}
+		else
+		{
+			++it;
 		}
 	}
-
-	m_needSort = true; // Behaviour 정렬이 필요함을 표시
 }
 
 void GOTOEngine::BehaviourManager::CheckAndSortBehaviours()
