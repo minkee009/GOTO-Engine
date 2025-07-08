@@ -5,11 +5,5 @@ namespace GOTOEngine
 {
 	class PlayerMove : public ScriptBehaviour
 	{
-		void Awake(){}
-	public:
-    PlayerMove()
-    {
-        REGISTER_BEHAVIOUR_METHOD(Awake);
-    }
 	};
 }
