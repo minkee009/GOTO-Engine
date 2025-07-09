@@ -12,6 +12,7 @@ namespace GOTOEngine
 	public:
     TestComponent()
     {
+        SetExecutionOrder(1);
         REGISTER_BEHAVIOUR_MESSAGE(Awake);
         REGISTER_BEHAVIOUR_MESSAGE(FixedUpdate);
         REGISTER_BEHAVIOUR_MESSAGE(OnCollisionEnter);
@@ -73,9 +74,9 @@ namespace GOTOEngine
 			std::wcout << "TestComponent OnDestroy called for GameObject: " << GetGameObject()->name << std::endl;
 		}
 
-		void OnCollisionEnter(int layer)
+		void OnCollisionEnter(const GameObject* other)
 		{
-			std::wcout << "TestComponent OnCollisionEnter called for GameObject: " << GetGameObject()->name << "/ num : " << layer << std::endl;
+			std::wcout << "TestComponent OnCollisionEnter called for GameObject: " << GetGameObject()->name << "/ num : " << other << std::endl;
 		}
 	};
 }

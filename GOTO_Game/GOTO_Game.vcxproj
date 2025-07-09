@@ -141,7 +141,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\AnimationController.cpp" />
+    <ClCompile Include="src\component\AnimationController.cpp" />
     <ClCompile Include="src\GameApp.cpp" />
     <ClCompile Include="src\TilteScene.cpp" />
   </ItemGroup>

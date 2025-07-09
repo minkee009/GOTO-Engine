@@ -30,7 +30,7 @@
     <ClCompile Include="src\GameApp.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="src\AnimationController.cpp">
+    <ClCompile Include="src\component\AnimationController.cpp">
       <Filter>소스 파일\컴포넌트</Filter>
     </ClCompile>
     <ClCompile Include="src\TilteScene.cpp">

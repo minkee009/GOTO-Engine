@@ -82,7 +82,6 @@ void Engine::ProcessFrame()
 		ObjectDestructionManager::Get()->Update();
 		BehaviourManager::Get()->DisableBehaviours();
 		ObjectDestructionManager::Get()->Clear();
-		BehaviourManager::Get()->BroadCastBehaviourMessage("OnSceneLoaded");
 	}
 
 	//Behaviour 초기화 메시지 (필요한 객체에 한해)
@@ -127,7 +126,6 @@ void Engine::ProcessFrame()
 	RenderManager::Get()->SwapBuffer();
 
 	//렌더 후 후처리
-	//ObjectDestructionManager가 호출 순서를 보장하는 방식으로 적용
 	//BehaviourManager::Get()->BroadCastBehaviourMessage("OnDisable"); 
 	//BehaviourManager::Get()->BroadCastBehaviourMessage("OnDestroy");
 	ObjectDestructionManager::Get()->Update();
