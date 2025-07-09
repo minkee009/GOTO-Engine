@@ -9,6 +9,7 @@ namespace GOTOEngine
 	public:
     PlayerMove()
     {
+        SetExecutionOrder(1);
         REGISTER_BEHAVIOUR_MESSAGE(OnSceneLoad);
     }
 	};

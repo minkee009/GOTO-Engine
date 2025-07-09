@@ -3,34 +3,27 @@ import sys
 import os
 from pathlib import Path
 
-# 파라미터 타입 정규화 함수
-def normalize_parameter_type(param_str):
-    """파라미터 문자열을 정규화하여 타입을 추출"""
+# 파라미터 문자열 정규화 함수 (전체 시그니처 유지)
+def normalize_parameter(param_str):
+    """파라미터 문자열을 정규화하되 전체 시그니처 유지"""
     if not param_str:
         return ""
     
     # 공백 정리
     param_str = param_str.strip()
     
-    # const 제거
-    param_str = re.sub(r'\bconst\b\s*', '', param_str)
+    # 연속된 공백을 하나로 만들기
+    param_str = re.sub(r'\s+', ' ', param_str)
     
-    # 변수명 제거 (타입만 남기기)
-    # 포인터나 참조가 있는 경우를 고려
-    # 예: "int* other" -> "int*", "const char* name" -> "char*"
-    match = re.match(r'(.+?)(?:\s+\w+)?$', param_str)
-    if match:
-        type_part = match.group(1).strip()
-        # 공백 정리 (int * -> int*)
-        type_part = re.sub(r'\s*\*\s*', '*', type_part)
-        type_part = re.sub(r'\s*&\s*', '&', type_part)
-        return type_part
+    # 포인터와 참조 기호 주변 공백 정리
+    param_str = re.sub(r'\s*\*\s*', '*', param_str)
+    param_str = re.sub(r'\s*&\s*', '&', param_str)
     
     return param_str
 
 # 파라미터 리스트 파싱 함수
 def parse_parameters(params_str):
-    """파라미터 문자열을 파싱하여 타입 리스트 반환"""
+    """파라미터 문자열을 파싱하여 정규화된 파라미터 리스트 반환"""
     if not params_str.strip():
         return []
     
@@ -51,7 +44,7 @@ def parse_parameters(params_str):
             bracket_count -= 1
         elif char == ',' and bracket_count == 0 and angle_count == 0:
             if current_param.strip():
-                params.append(normalize_parameter_type(current_param))
+                params.append(normalize_parameter(current_param))
             current_param = ""
             continue
         
@@ -59,7 +52,7 @@ def parse_parameters(params_str):
     
     # 마지막 파라미터 처리
     if current_param.strip():
-        params.append(normalize_parameter_type(current_param))
+        params.append(normalize_parameter(current_param))
     
     return params
 
@@ -107,14 +100,24 @@ def extract_functions(header_text):
     
     return result
 
+# 매개변수 시그니처 비교 함수
+def compare_signatures(sig_params, header_params):
+    """시그니처 파일의 매개변수와 헤더의 매개변수를 정확히 비교"""
+    if len(sig_params) != len(header_params):
+        return False
+    
+    for sig_param, header_param in zip(sig_params, header_params):
+        # 정확한 매칭 검사
+        if sig_param != header_param:
+            return False
+    
+    return True
+
 # 생성자 항상 새로 생성
 def inject_constructor(header_text, class_name, functions_to_register):
     # 기존 생성자를 찾아 SetExecutionOrder() 호출 등 REGISTER_BEHAVIOUR_MESSAGE 이외의 내용 추출
     existing_constructor_body_lines = []
-    # SetExecutionOrder()나 다른 커스텀 로직을 포함하는 줄을 찾습니다.
-    # REGISTER_BEHAVIOUR_MESSAGE 호출은 무시합니다.
-    pattern_ctor_body_non_register = r'^\s*(?!REGISTER_BEHAVIOUR_MESSAGE)\s*(SetExecutionOrder\(|[^;]*;)\s*$'
-
+    
     pattern_ctor = rf'\s*{class_name}\s*\(\s*\)\s*\{{([^}}]*)\}}'
     ctor_match = re.search(pattern_ctor, header_text, flags=re.DOTALL)
     
@@ -145,7 +148,6 @@ def inject_constructor(header_text, class_name, functions_to_register):
     constructor_body = "\n".join(constructor_body_lines)
 
     # public: 바로 뒤에 생성자 삽입
-    # 이전에 public: 이 없었으면 추가하는 경우도 고려 (현재 코드는 public: 이 있다고 가정)
     constructor_code = (
         f"\n    {class_name}()\n"
         f"    {{\n"
@@ -171,12 +173,21 @@ def process_header_file(header_path, signatures):
     declared_functions = extract_functions(header_text)
 
     functions_to_register = []
-    for name, ptypes in declared_functions:
+    for name, header_params in declared_functions:
         if name in signatures:
-            sig_types = signatures[name]
-            # print(f"[DEBUG] {name}: 헤더={ptypes}, 시그니처={sig_types}")
-            if sig_types == ptypes:
+            sig_params = signatures[name]
+            
+            # 디버깅 정보 출력
+            # print(f"[DEBUG] {name}:")
+            # print(f"  시그니처: {sig_params}")
+            # print(f"  헤더:     {header_params}")
+            
+            # 정확한 시그니처 비교
+            if compare_signatures(sig_params, header_params):
                 functions_to_register.append(name)
+                # print(f"  -> 매칭 성공!")
+            # else:
+            #     print(f"  -> 매칭 실패")
 
     # 등록할 함수가 없어도 생성자는 새로 생성하여 기존 REGISTER_BEHAVIOUR_MESSAGE 제거
     print(f"[{header_path.name}] 등록할 함수: {', '.join(functions_to_register) if functions_to_register else '없음'}")
@@ -193,7 +204,6 @@ def process_header_file(header_path, signatures):
         f.write(new_header_text)
 
     print(f"[{header_path.name}] 완료 (백업: {backup_path})")
-
 # 메인
 def main():
     if len(sys.argv) != 3:

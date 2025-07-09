@@ -34,6 +34,16 @@ https://gemini.google.com/app/9808eda4490058e3?hl=ko
 // GPU리소스 관리 패턴
 https://chatgpt.com/c/686e50b7-95b0-8010-bd62-c0e3e3d28cc1
 
+디코 메모장에 있는 그림 참조
+
+이미지 로드 라이브러리를 
+stb-image.h를 사용하는 경우
+LearnOpenGL의 리소스코드를 반드시 확인하고 AI 어시스턴트의 도움을 받아 작동방식 공부하기
+(라이브러리 사용하는 건 좀 무리수인 거 같아서 꼭 체크해두기)
+
+--> 추후에 작업할 것, Graphics API와 OS에 따른 리소스 로드 분기 혹은 인터페이스 처리 구상 -> 굳이 필요없을 것 같긴한데
+최소한 OS분기와 그래픽스API분기는 해줘야 할듯 
+
 CameraComponent
 
 IRenderImage 개념 바꾸기 -> D2DImage 수정
@@ -53,7 +63,7 @@ Animator State 보강 -> transition 정의 ( 벡터 배열 )
 AnimationController에 animation parameter 정의 ( 벡터 배열 )
 -> FSM구조 확립
 
-
+ 
 IRoutine을 이용한 코루틴 구현하기
 
 // 루틴 인터페이스
