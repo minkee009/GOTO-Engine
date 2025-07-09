@@ -12,7 +12,6 @@ namespace GOTOEngine
 	public:
     TestComponent()
     {
-        SetExecutionOrder(1);
         REGISTER_BEHAVIOUR_MESSAGE(Awake);
         REGISTER_BEHAVIOUR_MESSAGE(FixedUpdate);
         REGISTER_BEHAVIOUR_MESSAGE(OnCollisionEnter);

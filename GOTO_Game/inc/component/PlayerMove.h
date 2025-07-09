@@ -5,11 +5,11 @@ namespace GOTOEngine
 {
 	class PlayerMove : public ScriptBehaviour
 	{
-		void Awake(){}
+		void OnSceneLoad(const Scene* scene, int layer) {}
 	public:
     PlayerMove()
     {
-        REGISTER_BEHAVIOUR_MESSAGE(Awake);
+        REGISTER_BEHAVIOUR_MESSAGE(OnSceneLoad);
     }
 	};
 }

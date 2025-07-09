@@ -109,33 +109,43 @@ def extract_functions(header_text):
 
 # 생성자 항상 새로 생성
 def inject_constructor(header_text, class_name, functions_to_register):
-    register_lines = [f'        REGISTER_BEHAVIOUR_MESSAGE({func});' for func in sorted(functions_to_register)]
-    register_code = "\n".join(register_lines)
+    # 기존 생성자를 찾아 SetExecutionOrder() 호출 등 REGISTER_BEHAVIOUR_MESSAGE 이외의 내용 추출
+    existing_constructor_body_lines = []
+    # SetExecutionOrder()나 다른 커스텀 로직을 포함하는 줄을 찾습니다.
+    # REGISTER_BEHAVIOUR_MESSAGE 호출은 무시합니다.
+    pattern_ctor_body_non_register = r'^\s*(?!REGISTER_BEHAVIOUR_MESSAGE)\s*(SetExecutionOrder\(|[^;]*;)\s*$'
 
-    # 기존 생성자에서 SetExecutionOrder() 호출 찾기
-    execution_order_line = ""
     pattern_ctor = rf'\s*{class_name}\s*\(\s*\)\s*\{{([^}}]*)\}}'
     ctor_match = re.search(pattern_ctor, header_text, flags=re.DOTALL)
     
     if ctor_match:
         ctor_body = ctor_match.group(1)
-        # SetExecutionOrder() 호출 찾기
-        execution_order_match = re.search(r'SetExecutionOrder\s*\([^)]*\)\s*;', ctor_body)
-        if execution_order_match:
-            execution_order_line = execution_order_match.group(0).strip()
+        for line in ctor_body.splitlines():
+            line_stripped = line.strip()
+            # REGISTER_BEHAVIOUR_MESSAGE 라인은 건너뛰고, SetExecutionOrder 등 필요한 라인만 유지
+            if line_stripped and not line_stripped.startswith("REGISTER_BEHAVIOUR_MESSAGE"):
+                existing_constructor_body_lines.append(line_stripped)
     
-    # 기존 생성자 제거
+    # 기존 생성자 제거 (새로운 내용을 삽입하기 위함)
     header_text = re.sub(pattern_ctor, '', header_text, flags=re.DOTALL)
+
+    # REGISTER_BEHAVIOUR_MESSAGE 라인 구성
+    register_lines = [f'        REGISTER_BEHAVIOUR_MESSAGE({func});' for func in sorted(functions_to_register)]
 
     # 생성자 본문 구성
     constructor_body_lines = []
-    if execution_order_line:
-        constructor_body_lines.append(f"        {execution_order_line}")
+    # 기존의 중요한 내용 (예: SetExecutionOrder) 먼저 추가
+    for line in existing_constructor_body_lines:
+        if line: # 빈 줄 제외
+            constructor_body_lines.append(f"        {line}")
+    
+    # REGISTER_BEHAVIOUR_MESSAGE 라인 추가
     constructor_body_lines.extend(register_lines)
     
     constructor_body = "\n".join(constructor_body_lines)
 
     # public: 바로 뒤에 생성자 삽입
+    # 이전에 public: 이 없었으면 추가하는 경우도 고려 (현재 코드는 public: 이 있다고 가정)
     constructor_code = (
         f"\n    {class_name}()\n"
         f"    {{\n"
@@ -168,11 +178,8 @@ def process_header_file(header_path, signatures):
             if sig_types == ptypes:
                 functions_to_register.append(name)
 
-    if not functions_to_register:
-        print(f"[{header_path.name}] 등록할 함수 없음")
-        return
-
-    print(f"[{header_path.name}] 등록할 함수: {', '.join(functions_to_register)}")
+    # 등록할 함수가 없어도 생성자는 새로 생성하여 기존 REGISTER_BEHAVIOUR_MESSAGE 제거
+    print(f"[{header_path.name}] 등록할 함수: {', '.join(functions_to_register) if functions_to_register else '없음'}")
 
     new_header_text = inject_constructor(header_text, class_name, functions_to_register)
 
