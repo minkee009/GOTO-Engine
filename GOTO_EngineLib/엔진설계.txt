@@ -31,6 +31,8 @@
 https://gemini.google.com/app/20079e6f69d4da6d?hl=ko
 // 참고자료 (유니티의 처리방식)
 https://gemini.google.com/app/9808eda4490058e3?hl=ko
+// GPU리소스 관리 패턴
+https://chatgpt.com/c/686e50b7-95b0-8010-bd62-c0e3e3d28cc1
 
 CameraComponent
 
