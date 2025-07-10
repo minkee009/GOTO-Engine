@@ -1,5 +1,6 @@
 #pragma once
 #include "Color.h"
+#include "Rect.h"
 
 namespace GOTOEngine
 {
@@ -16,6 +17,9 @@ namespace GOTOEngine
 		virtual void DrawImage(int x, int y, float scale, bool flipX, const IRenderImage* image) = 0;
 		virtual void DrawString(int x, int y, int width, int height, const wchar_t* string, const IRenderFont* font, bool rightAlign, Color color) = 0;
 		virtual void DrawRect(int x, int y, int width, int height, bool fill, Color color) = 0;
+
+		virtual void SetViewport(Rect rect) = 0;
+		virtual void ResetViewport() = 0;
 
 		virtual void SwapBuffer() = 0;
 		virtual void ChangeBufferSize(int newWidth, int newHeight) = 0;

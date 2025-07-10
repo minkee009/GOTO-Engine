@@ -5,7 +5,7 @@
 #include <string>
 #include <Color.h>
 #include <wincodec.h>
-
+#include <typeindex>
 
 
 namespace GOTOEngine
@@ -13,8 +13,15 @@ namespace GOTOEngine
 	class IRenderImage;
 	class IRenderFont;
 	enum IRenderFontStyle;
-	struct ResourceEntry;
 	class Engine;
+
+	struct ResourceEntry {
+		std::shared_ptr<void> data;
+		std::type_index type;
+
+		ResourceEntry() : data(nullptr), type(typeid(void)) {}
+	};
+
 	class ResourceManager : public Singleton<ResourceManager>
 	{
 	public:
@@ -22,7 +29,7 @@ namespace GOTOEngine
 		IRenderFont* LoadStaticFont(const std::wstring& fontFamily,IRenderFontStyle fontStyle,int size);
 	private:
 		friend class Engine;
-		static std::unordered_map<std::wstring, ResourceEntry> m_resources;
+		std::unordered_map<std::wstring, ResourceEntry> m_resources;
 
 		void StartUp();
 		void ShutDown();

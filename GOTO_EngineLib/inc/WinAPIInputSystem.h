@@ -24,6 +24,8 @@ namespace GOTOEngine
         SHORT m_prevState[256] = { 0 };
         SHORT m_currState[256] = { 0 };
 
+        RECT m_clientRect;
+
 		std::map<KeyCode, int> m_keyCodeMap; // KeyCode와 Windows VKey 매핑
 
         void InitKeyCodeMap(); // KeyCode를 Windows VKey로 매핑

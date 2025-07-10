@@ -183,6 +183,9 @@
     <ClInclude Include="inc\Camera.h">
       <Filter>헤더 파일\코어 컴포넌트</Filter>
     </ClInclude>
+    <ClInclude Include="inc\Rect.h">
+      <Filter>헤더 파일\구조체</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\InputManager.cpp">

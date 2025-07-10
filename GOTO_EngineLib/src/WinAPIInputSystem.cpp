@@ -21,6 +21,7 @@ namespace GOTOEngine
         // 마우스 좌표
         ::GetCursorPos(&m_mouseClient);
         ::ScreenToClient(m_hWnd, &m_mouseClient);
+        ::GetClientRect(m_hWnd, &m_clientRect);
 
         memcpy_s(m_prevState, sizeof(m_prevState), m_currState, sizeof(m_currState));
         for (int i = 0; i < 256; i++) {
@@ -30,7 +31,10 @@ namespace GOTOEngine
 
     Vector2 WinAPIInputSystem::GetMousePos()
     {
-        return Vector2{ (float)m_mouseClient.x, (float)m_mouseClient.y };
+        int height = m_clientRect.bottom - m_clientRect.top;
+
+        //유니티 스크린 좌표계로 치환
+        return Vector2{ (float)m_mouseClient.x, (float)(height - m_mouseClient.y) };
     }
 
     bool WinAPIInputSystem::GetKey(KeyCode keyCode)

@@ -35,6 +35,10 @@ namespace GOTOEngine
         void DrawImage(int x, int y, float scale, bool flipX, const IRenderImage* image) override;
         void DrawString(int x, int y, int width, int height, const wchar_t* string, const IRenderFont* font, bool rightAlign, Color color) override;
         void DrawRect(int x, int y, int width, int height, bool fill, Color color) override;
+
+        void SetViewport(Rect rect) override;
+        void ResetViewport() override;
+
         void SwapBuffer() override;
 		IWindow& GetWindow() const override { return *m_window; }
         void SetVSyncInterval(int interval) override { m_vSyncInterval = interval; }

@@ -164,6 +164,7 @@
     <ClInclude Include="inc\ObjectDestructionManager.h" />
     <ClInclude Include="inc\pch.h" />
     <ClInclude Include="inc\Quaternion.h" />
+    <ClInclude Include="inc\Rect.h" />
     <ClInclude Include="inc\Renderer.h" />
     <ClInclude Include="inc\RenderManager.h" />
     <ClInclude Include="inc\ResourceManager.h" />

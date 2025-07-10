@@ -2,18 +2,9 @@
 #include "IRenderImage.h"
 #include "D2DImage.h"
 #include "D2DFont.h"
-#include <typeindex>
 
 using namespace GOTOEngine;
 
-struct GOTOEngine::ResourceEntry {
-	std::shared_ptr<void> data;
-	std::type_index type;
-
-	ResourceEntry() : data(nullptr), type(typeid(void)) {}
-};
-
-std::unordered_map<std::wstring, ResourceEntry> ResourceManager::m_resources;
 
 void ResourceManager::StartUp()
 {

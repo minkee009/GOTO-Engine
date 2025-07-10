@@ -7,7 +7,8 @@ namespace GOTOEngine
 	class SpriteRenderer : Renderer
 	{
 	private:
+		friend class RenderManager;
 		Sprite* m_sprite;
-	public: 
+		void Render(Matrix4x4& matrix) override;
 	};
 }

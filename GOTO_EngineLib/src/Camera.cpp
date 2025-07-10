@@ -6,7 +6,7 @@
 
 GOTOEngine::Camera* GOTOEngine::Camera::s_mainCam = nullptr;
 
-GOTOEngine::Camera::Camera() : m_depth(0), m_size(1.0f),m_renderLayer(static_cast<size_t>(-1))
+GOTOEngine::Camera::Camera() : m_depth(0), m_size(1.0f), m_rect({0.0f,0.0f,1.0f,1.0f}), m_renderLayer(static_cast<size_t>(-1))
 {
 	RegisterMessage("OnEnable", &Camera::OnEnable);
 	RegisterMessage("OnDisable", &Camera::OnDisable);
@@ -43,11 +43,9 @@ void GOTOEngine::Camera::SetDepth(int value)
 
 GOTOEngine::Matrix4x4 GOTOEngine::Camera::GetMatrix()
 {
-	//Screen 클래스 작성하기 꼭
-	auto mat = GetGameObject()->GetTransform()->GetLocalMatrix().Inverse();
-	mat = Matrix4x4::Translate(RenderManager::Get()->GetWindow()->GetWidth() * 0.5f, RenderManager::Get()->GetWindow()->GetHeight() * 0.5f, 0) * Matrix4x4::Scale(1.0f * m_size, -1.0f * m_size, 1.0f * m_size) * mat;
-	
-	return mat;
+	auto mat = Matrix4x4::Scale(m_size, m_size, 1) * GetGameObject()->GetTransform()->GetLocalMatrix();
+
+	return mat.Inverse();
 }
 
 GOTOEngine::Camera* GOTOEngine::Camera::GetMainCamera()

@@ -278,6 +278,33 @@ void D2DRenderAPI::DrawRect(int x, int y, int width, int height, bool fill, Colo
 	}
 }
 
+void GOTOEngine::D2DRenderAPI::SetViewport(Rect rect)
+{
+	float screenWidth = static_cast<float>(m_window->GetWidth());
+	float screenHeight = static_cast<float>(m_window->GetHeight());
+
+	float d2dY = 1.0f - rect.y - rect.height;
+
+	D2D1_RECT_F  clipRect = D2D1::RectF(
+		rect.x * screenWidth,
+		d2dY * screenHeight,
+		(rect.x + rect.width) * screenWidth,
+		(d2dY + rect.height) * screenHeight);
+
+	m_d2dContext->PushAxisAlignedClip(
+		clipRect,
+		D2D1_ANTIALIAS_MODE_PER_PRIMITIVE
+	);
+
+	//D2D1_MATRIX_3X2_F transform = D2D1::Matrix3x2F::Translation(clipRect.left, clipRect.top);
+	//m_d2dContext->SetTransform(transform);
+}
+
+void GOTOEngine::D2DRenderAPI::ResetViewport()
+{
+	m_d2dContext->PopAxisAlignedClip();
+}
+
 void D2DRenderAPI::SwapBuffer()
 {
 	m_d2dContext->EndDraw();

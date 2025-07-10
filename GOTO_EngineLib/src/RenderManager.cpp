@@ -200,13 +200,28 @@ void GOTOEngine::RenderManager::Render()
 		if (!camera->GetEnabled())
 			continue;
 
+		//카메라 행렬 구하기
+		Matrix4x4 viewMat = camera->GetMatrix();
+		//뷰포트 제한
+		//m_pRenderAPI->SetViewport(camera->GetRect());
+		Matrix4x4 unityCoordMat = 
+			Matrix4x4::Translate(
+				RenderManager::Get()->GetWindow()->GetWidth() * camera->GetRect().width * 0.5f, 
+				RenderManager::Get()->GetWindow()->GetHeight() * camera->GetRect().height * 0.5f, 0) * 
+			Matrix4x4::Scale(1.0f, -1.0f , 1.0f);
+
+		viewMat = viewMat * unityCoordMat;
+
 		for (const auto& renderer : m_renderers)
 		{
 			if (!renderer->GetEnabled()
 				|| (renderer->GetRenderLayer() & camera->GetRenderLayer()) == 0)
 				continue;
-			renderer->Render(camera);
+
+			renderer->Render(viewMat);
 		}
+
+		//m_pRenderAPI->ResetViewport();
 	}
 	m_pRenderAPI->SwapBuffer();
 }
