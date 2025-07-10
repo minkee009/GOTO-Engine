@@ -96,7 +96,7 @@
     <ClInclude Include="inc\TimeManager.h">
       <Filter>헤더 파일\매니저</Filter>
     </ClInclude>
-    <ClInclude Include="inc\D2DRenderer.h">
+    <ClInclude Include="inc\D2DRenderAPI.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="inc\D2DImage.h">
@@ -165,6 +165,24 @@
     <ClInclude Include="inc\WICHelper.h">
       <Filter>헤더 파일\헬퍼</Filter>
     </ClInclude>
+    <ClInclude Include="inc\SpriteRenderer.h">
+      <Filter>헤더 파일\코어 컴포넌트</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\TextRenderer.h">
+      <Filter>헤더 파일\코어 컴포넌트</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Sprite.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Font.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Renderer.h">
+      <Filter>헤더 파일\코어 컴포넌트</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Camera.h">
+      <Filter>헤더 파일\코어 컴포넌트</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\InputManager.cpp">
@@ -197,7 +215,7 @@
     <ClCompile Include="src\pch.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="src\D2DRenderer.cpp">
+    <ClCompile Include="src\D2DRenderAPI.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="src\D2DImage.cpp">
@@ -243,6 +261,12 @@
       <Filter>소스 파일\코어 컴포넌트</Filter>
     </ClCompile>
     <ClCompile Include="src\Behaviour.cpp">
+      <Filter>소스 파일\코어 컴포넌트</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Camera.cpp">
+      <Filter>소스 파일\코어 컴포넌트</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Renderer.cpp">
       <Filter>소스 파일\코어 컴포넌트</Filter>
     </ClCompile>
   </ItemGroup>

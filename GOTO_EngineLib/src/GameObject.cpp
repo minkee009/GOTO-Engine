@@ -88,14 +88,14 @@ void GOTOEngine::GameObject::Dispose()
 
 GOTOEngine::GameObject::GameObject(std::wstring name)
 	: Object(name)
-	, m_tag(L"")
+	, m_tag("")
 	, m_active(true)
 {
 	InitInstance();
 }
 
 GOTOEngine::GameObject::GameObject() 
-	: m_tag(L"")
+	: m_tag("")
 	, m_active(true)
 {
 	InitInstance();
@@ -172,7 +172,8 @@ GOTOEngine::GameObject* GOTOEngine::GameObject::Find(const std::wstring& name)
 	//s_allGameObjects에서 이름으로 검색
 	for (auto& go : s_allGameObjects)
 	{
-		if (!go->IsActiveInHierarchy())
+		if (!go->IsActiveInHierarchy()
+			|| go->Destroyed())
 			continue;
 
 		if (go->name == name)
@@ -184,12 +185,13 @@ GOTOEngine::GameObject* GOTOEngine::GameObject::Find(const std::wstring& name)
 	return nullptr;
 }
 
-GOTOEngine::GameObject* GOTOEngine::GameObject::FindWithTag(const std::wstring& name)
+GOTOEngine::GameObject* GOTOEngine::GameObject::FindWithTag(const std::string& name)
 {
 	//s_allGameObjects에서 태그로 검색
 	for (auto& go : s_allGameObjects)
 	{
-		if (!go->IsActiveInHierarchy())
+		if (!go->IsActiveInHierarchy()
+			|| go->Destroyed())
 			continue;
 
 		if (go->GetTag() == name)
@@ -199,6 +201,25 @@ GOTOEngine::GameObject* GOTOEngine::GameObject::FindWithTag(const std::wstring& 
 	}
 
 	return nullptr;
+}
+
+std::vector<GOTOEngine::GameObject*> GOTOEngine::GameObject::FindGameObjectsWithTag(const std::string& name)
+{
+	auto GOs = std::vector<GameObject*>();
+
+	for (auto& go : s_allGameObjects)
+	{
+		if (!go->IsActiveInHierarchy()
+			|| go->Destroyed())
+			continue;
+
+		if (go->GetTag() == name)
+		{
+			GOs.emplace_back(go);
+		}
+	}
+
+	return GOs;
 }
 
 //bool GOTOEngine::GameObject::IsActiveInHierarchy() const

@@ -24,7 +24,7 @@ using namespace Microsoft::WRL;
 
 namespace GOTOEngine
 {
-    class D2DRenderer : public IRenderAPI
+    class D2DRenderAPI : public IRenderAPI
     {
     public:
         bool Initialize(IWindow* window) override;
@@ -36,9 +36,9 @@ namespace GOTOEngine
         void DrawString(int x, int y, int width, int height, const wchar_t* string, const IRenderFont* font, bool rightAlign, Color color) override;
         void DrawRect(int x, int y, int width, int height, bool fill, Color color) override;
         void SwapBuffer() override;
-		IWindow& GetWindow() override { return *m_window; }
+		IWindow& GetWindow() const override { return *m_window; }
         void SetVSyncInterval(int interval) override { m_vSyncInterval = interval; }
-        ~D2DRenderer() override;
+        ~D2DRenderAPI() override;
 
         D2D1::Matrix3x2F ConvertToD2DMatrix(const GOTOEngine::Matrix4x4& mat)
         {

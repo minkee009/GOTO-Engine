@@ -18,7 +18,7 @@ namespace GOTOEngine
 		friend class Transform;
 
 		std::vector<Component*> m_components;
-		std::wstring m_tag;
+		std::string m_tag;
 		Transform* m_transform;
 		Scene* m_scene;
 		bool m_active;
@@ -39,12 +39,12 @@ namespace GOTOEngine
 
 
 		void SetActive(bool active);
-		void SetTag(const std::wstring& tag) { m_tag = tag; }
+		void SetTag(const std::string& tag) { m_tag = tag; }
 
 		bool IsActiveSelf() const { return m_active; }
 		bool IsActiveInHierarchy() const { return m_activeInHierarchy; }
 
-		const std::wstring& GetTag() const { return m_tag; }
+		const std::string& GetTag() const { return m_tag; }
 		const Scene* GetScene() const { return m_scene; }
 
 		template <typename T>
@@ -69,7 +69,7 @@ namespace GOTOEngine
 			// T가 Component의 파생 클래스이거나 Component 자체인지 확인
 			static_assert(std::is_base_of<Component, T>::value, "GetComponent()의 T는 Component를 상속받아야 합니다.");
 
-			for (T* comp : m_components)
+			for (auto comp : m_components)
 			{
 				if (T* typedComp = dynamic_cast<T*>(comp))
 					return typedComp;
@@ -78,12 +78,13 @@ namespace GOTOEngine
 			return nullptr;
 		}
 
-		Transform* GetTransform() { return m_transform; }
+		Transform* const GetTransform() { return m_transform; }
 
 		unsigned int layer = 1;
 
 		static GameObject* Find(const std::wstring& name);
-		static GameObject* FindWithTag(const std::wstring& name);
+		static GameObject* FindWithTag(const std::string& name);
+		static std::vector<GameObject*> FindGameObjectsWithTag(const std::string& name);
 	};
 }
 

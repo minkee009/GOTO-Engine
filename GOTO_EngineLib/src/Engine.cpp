@@ -110,7 +110,6 @@ void Engine::ProcessFrame()
 		accumulator -= fixedDelta;
 		TimeManager::Get()->FixedUpdate();
 		BehaviourManager::Get()->BroadCastBehaviourMessage("FixedUpdate");
-		//BehaviourManager::Get()->BroadCastBehaviourMessage("OnCollisionEnter");
 	}
 
 	//GetTime -> 일반시간 반환으로 변경
@@ -121,9 +120,7 @@ void Engine::ProcessFrame()
 	BehaviourManager::Get()->BroadCastBehaviourMessage("LateUpdate");
 
 	//렌더
-	RenderManager::Get()->Clear();
-	//RenderManager::Get()->Render();
-	RenderManager::Get()->SwapBuffer();
+	RenderManager::Get()->Render();
 
 	//렌더 후 후처리
 	//BehaviourManager::Get()->BroadCastBehaviourMessage("OnDisable"); 

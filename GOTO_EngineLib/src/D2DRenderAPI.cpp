@@ -1,4 +1,4 @@
-#include "D2DRenderer.h"
+#include "D2DRenderAPI.h"
 #include "D2DImage.h"
 #include "D2DFont.h"
 #include <d2d1helper.h>
@@ -11,7 +11,7 @@
 
 using namespace GOTOEngine;
 
-bool D2DRenderer::Initialize(IWindow* window)
+bool D2DRenderAPI::Initialize(IWindow* window)
 {
 	if (!window)
 		return false;
@@ -66,7 +66,7 @@ bool D2DRenderer::Initialize(IWindow* window)
 	return true;
 }
 
-void D2DRenderer::Release()
+void D2DRenderAPI::Release()
 {
 	delete m_pGpuResourcesMap;
 
@@ -79,7 +79,7 @@ void D2DRenderer::Release()
 	m_pGpuResourcesMap = nullptr;
 }
 
-void D2DRenderer::ChangeBufferSize(int newWidth, int newHeight)
+void D2DRenderAPI::ChangeBufferSize(int newWidth, int newHeight)
 {
 	if (!m_swapChain || !m_d2dContext)
 		return;
@@ -125,13 +125,13 @@ void D2DRenderer::ChangeBufferSize(int newWidth, int newHeight)
 	m_d2dContext->SetTarget(m_renderTarget.Get());
 }
 
-void D2DRenderer::Clear()
+void D2DRenderAPI::Clear()
 {
 	m_d2dContext->BeginDraw();
 	m_d2dContext->Clear(D2D1::ColorF(D2D1::ColorF::Black));
 }
 
-void D2DRenderer::DrawImage(int x, int y, float scale, bool flipX, const IRenderImage* image)
+void D2DRenderAPI::DrawImage(int x, int y, float scale, bool flipX, const IRenderImage* image)
 {
 	if (!image || !m_d2dContext)
 		return;
@@ -239,7 +239,7 @@ void D2DRenderer::DrawImage(int x, int y, float scale, bool flipX, const IRender
 	);
 }
 
-void D2DRenderer::DrawString(int x, int y, int width, int height, const wchar_t* string, const GOTOEngine::IRenderFont* font, bool rightAlign, Color color)
+void D2DRenderAPI::DrawString(int x, int y, int width, int height, const wchar_t* string, const GOTOEngine::IRenderFont* font, bool rightAlign, Color color)
 {
 	if (!font || !string || !m_d2dContext)
 		return;
@@ -260,7 +260,7 @@ void D2DRenderer::DrawString(int x, int y, int width, int height, const wchar_t*
 	m_d2dContext->DrawText(string, static_cast<UINT32>(wcslen(string)), textFormat, &layoutRect, m_solidColorBrush.Get());
 }
 
-void D2DRenderer::DrawRect(int x, int y, int width, int height, bool fill, Color color)
+void D2DRenderAPI::DrawRect(int x, int y, int width, int height, bool fill, Color color)
 {
 	if (!m_solidColorBrush) {
 		OutputDebugStringA("SolidColorBrush가 초기화되지 않았습니다.\n");
@@ -278,13 +278,13 @@ void D2DRenderer::DrawRect(int x, int y, int width, int height, bool fill, Color
 	}
 }
 
-void D2DRenderer::SwapBuffer()
+void D2DRenderAPI::SwapBuffer()
 {
 	m_d2dContext->EndDraw();
     m_swapChain->Present(m_vSyncInterval, 0); // vsync 켜고 1 프레임 기다림
 }
 
-D2DRenderer::~D2DRenderer()
+D2DRenderAPI::~D2DRenderAPI()
 {
 	Release();
 }

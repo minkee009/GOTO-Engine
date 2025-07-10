@@ -19,7 +19,7 @@ namespace GOTOEngine
 
 		virtual void SwapBuffer() = 0;
 		virtual void ChangeBufferSize(int newWidth, int newHeight) = 0;
-		virtual IWindow& GetWindow() = 0;
+		virtual IWindow& GetWindow() const = 0;
 		virtual void SetVSyncInterval(int interval) = 0;
 		virtual ~IRenderAPI() = default;
 	};
