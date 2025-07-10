@@ -11,12 +11,14 @@
 #include <Transform.h>
 #include <iostream>
 #include "TestComponent.h"
+#include "Camera.h"
 #include "PlayerMove.h"
 
 using namespace GOTOEngine;
 
 GameObject* g_test01 = nullptr;
 GameObject* g_test02 = nullptr;
+GameObject* g_test03 = nullptr;
 
 void TitleScene::Enter()
 {
@@ -70,6 +72,8 @@ void TitleScene::Enter()
     g_test02->AddComponent<PlayerMove>();
 
     Object::Destroy(g_test02, 5.0f); // 5초 후에 g_test02 파괴 예약
+
+    g_test03 = Camera::CreateMainCamera();
 }     
 
 //

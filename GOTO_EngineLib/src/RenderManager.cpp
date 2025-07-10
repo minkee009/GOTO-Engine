@@ -202,7 +202,8 @@ void GOTOEngine::RenderManager::Render()
 
 		for (const auto& renderer : m_renderers)
 		{
-			if (!renderer->GetEnabled())
+			if (!renderer->GetEnabled()
+				|| (renderer->GetRenderLayer() & camera->GetRenderLayer()) == 0)
 				continue;
 			renderer->Render(camera);
 		}

@@ -23,5 +23,6 @@ namespace GOTOEngine
 		void SetEnabled(bool enabled);
 		int GetRenderOrder();
 		void SetRenderOrder(int value);
+		size_t GetRenderLayer() { return m_renderLayer; }
 	};
 }

@@ -33,6 +33,8 @@ namespace GOTOEngine
 
 		~GameObject();
 		static std::vector<GameObject*> s_allGameObjects;
+		GameObject(Scene* scene);
+		GameObject(Scene* scene, std::wstring name);
 	public:
 		GameObject(std::wstring name);
 		GameObject();

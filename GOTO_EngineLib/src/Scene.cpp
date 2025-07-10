@@ -19,6 +19,18 @@ void Scene::UnregisterGameObject(GameObject* go)
 	}
 }
 
+GameObject* GOTOEngine::Scene::CreateGameObject(std::wstring name)
+{
+	auto go = new GameObject(this, name);
+	return go;
+}
+
+GameObject* GOTOEngine::Scene::CreateGameObject()
+{
+	auto go = new GameObject(this);
+	return go;
+}
+
 void Scene::Clear()
 {
 	//iterator 오염 방지 -> UnregisterGameObject()호출 방지

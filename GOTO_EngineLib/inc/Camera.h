@@ -28,6 +28,8 @@ namespace GOTOEngine
 		float GetSize() { return m_size; }
 		void SetSize(float value) { m_size = value; }
 
+		size_t GetRenderLayer() { return m_renderLayer; }
+
 		Matrix4x4 GetMatrix();
 
 		static Camera* GetMainCamera();

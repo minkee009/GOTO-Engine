@@ -7,9 +7,6 @@ std::vector<GOTOEngine::GameObject*> GOTOEngine::GameObject::s_allGameObjects;
 
 void GOTOEngine::GameObject::InitInstance()
 {
-	m_scene = SceneManager::Get() ? SCENE_GET_CURRENTSCENE() : nullptr;
-	m_scene->RegisterGameObject(this);
-
 	//transform은 직접 생성 후 m_components에 등록
 	m_transform = new Transform();
 	m_transform->m_gameObject = this;
@@ -91,6 +88,9 @@ GOTOEngine::GameObject::GameObject(std::wstring name)
 	, m_tag("")
 	, m_active(true)
 {
+	m_scene = SceneManager::Get() ? SCENE_GET_CURRENTSCENE() : nullptr;
+	m_scene->RegisterGameObject(this);
+
 	InitInstance();
 }
 
@@ -98,6 +98,9 @@ GOTOEngine::GameObject::GameObject()
 	: m_tag("")
 	, m_active(true)
 {
+	m_scene = SceneManager::Get() ? SCENE_GET_CURRENTSCENE() : nullptr;
+	m_scene->RegisterGameObject(this);
+
 	InitInstance();
 }
 
@@ -158,6 +161,24 @@ GOTOEngine::GameObject::~GameObject()
 		*it = std::move(s_allGameObjects.back()); // 마지막 원소를 덮어씀
 		s_allGameObjects.pop_back();
 	}
+}
+
+GOTOEngine::GameObject::GameObject(Scene* scene) 
+	: m_scene(scene)
+	, m_tag("")
+	, m_active(true)
+{
+	m_scene->RegisterGameObject(this);
+	InitInstance();
+}
+
+GOTOEngine::GameObject::GameObject(Scene* scene, std::wstring name)
+	: m_scene(scene)
+	, m_tag("")
+	, m_active(true)
+{
+	m_scene->RegisterGameObject(this);
+	InitInstance();
 }
 
 void GOTOEngine::GameObject::SetActive(bool active)
