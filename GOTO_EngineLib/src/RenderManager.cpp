@@ -180,7 +180,7 @@ void GOTOEngine::RenderManager::Render()
 	//CheckActiveCamera();
 	//CheckActiveRenderer();
 	//둘 중 하나라도 없는 경우 렌더 종료
-	//if(m_activeCamera.size() == 0 || m_activeRenderer.size() == 0) Clear(); SwapBuffer(); return;
+	//if(m_activeCamera.size() == 0 || m_activeRenderer.size() == 0) { Clear(); SwapBuffer(); return; }
 
 	if(m_needCamDepthSort)
 		SortCamera();
