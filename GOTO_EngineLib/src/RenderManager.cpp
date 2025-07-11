@@ -35,79 +35,6 @@ void RenderManager::StartUp(IWindow* window)
 	}
 }
 
-
-void RenderManager::DrawImage(int x, int y, float scale, bool flipX, const IRenderImage* image)
-{
-	if (m_pRenderAPI)
-	{
-		m_pRenderAPI->DrawImage(x, y, scale, flipX, image);
-	}
-}
-
-void RenderManager::DrawImage(int x, int y, float scale, const IRenderImage* image)
-{
-	DrawImage(x, y, scale, false, image);
-}
-
-void RenderManager::DrawImage(int x, int y, const IRenderImage* image)
-{
-	DrawImage(x, y, 1.0f, false, image);
-}
-
-void RenderManager::DrawImage(Vector2 pos, float scale, bool flipX, const IRenderImage* image)
-{
-	DrawImage(static_cast<int>(pos.x), static_cast<int>(pos.y), scale, flipX, image);
-}
-
-void RenderManager::DrawImage(Vector2 pos, float scale, const IRenderImage* image)
-{
-	DrawImage(static_cast<int>(pos.x), static_cast<int>(pos.y), scale, false, image);
-}
-
-void RenderManager::DrawImage(Vector2 pos, const IRenderImage* image)
-{
-	DrawImage(static_cast<int>(pos.x), static_cast<int>(pos.y), 1.0f, false, image);
-}
-
-void RenderManager::DrawRect(int x, int y, int width, int height, bool fill, Color color)
-{
-	if (m_pRenderAPI)
-	{
-		m_pRenderAPI->DrawRect(x, y, width, height, fill, color);
-	}
-}
-
-void RenderManager::DrawRect(int x, int y, int width, int height, Color color)
-{
-	DrawRect(x, y, width, height, false, color);
-}
-
-void GOTOEngine::RenderManager::DrawString(int x, int y, int width, int height, const wchar_t* string, const IRenderFont* font, bool rightAlign, Color color)
-{
-	if (m_pRenderAPI)
-	{
-		m_pRenderAPI->DrawString(x, y, width, height, string, font, rightAlign, color);
-	}
-}
-
-void GOTOEngine::RenderManager::DrawString(int x, int y, int width, int height, const wchar_t* string, const IRenderFont* font, Color color)
-{
-	DrawString(x, y, width, height, string, font, false, color);
-}
-
-
-void RenderManager::DrawString(int x, int y, const wchar_t* string, const IRenderFont* font, bool rightAlign, Color color)
-{
-	DrawString(x, y, m_pRenderAPI->GetWindow().GetWidth(), m_pRenderAPI->GetWindow().GetHeight(), string, font, rightAlign, color);
-}
-
-void RenderManager::DrawString(int x, int y, const wchar_t* string, const IRenderFont* font, Color color)
-{
-	DrawString(x, y, m_pRenderAPI->GetWindow().GetWidth(), m_pRenderAPI->GetWindow().GetHeight(), string, font, false, color);
-}
-
-
-
 void RenderManager::ShutDown()
 {
 	m_cameras.clear();
@@ -201,26 +128,18 @@ void GOTOEngine::RenderManager::Render()
 			continue;
 
 		//카메라 행렬 구하기
-		Matrix4x4 viewMat = camera->GetMatrix();
+		Matrix4x4 mvpMat = camera->GetMatrix();
+
 		//뷰포트 제한
 		m_pRenderAPI->SetViewport(camera->GetRect());
-		Matrix4x4 unityCoordMat = 
-			Matrix4x4::Translate(
-				RenderManager::Get()->GetWindow()->GetWidth() * camera->GetRect().width * 0.5f, 
-				RenderManager::Get()->GetWindow()->GetHeight() * camera->GetRect().height * 0.5f, 0) * 
-			Matrix4x4::Scale(1.0f, -1.0f , 1.0f);
-
-		viewMat = viewMat * unityCoordMat;
-
 		for (const auto& renderer : m_renderers)
 		{
 			if (!renderer->GetEnabled()
 				|| (renderer->GetRenderLayer() & camera->GetRenderLayer()) == 0)
 				continue;
 
-			renderer->Render(viewMat);
+			renderer->Render(mvpMat);
 		}
-
 		m_pRenderAPI->ResetViewport();
 	}
 	m_pRenderAPI->SwapBuffer();
