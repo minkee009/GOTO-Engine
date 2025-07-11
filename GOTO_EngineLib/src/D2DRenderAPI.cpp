@@ -285,14 +285,14 @@ void GOTOEngine::D2DRenderAPI::SetViewport(Rect rect)
 
 	float d2dY = 1.0f - rect.y - rect.height;
 
-	D2D1_RECT_F  clipRect = D2D1::RectF(
+	m_clipRect = D2D1::RectF(
 		rect.x * screenWidth,
 		d2dY * screenHeight,
 		(rect.x + rect.width) * screenWidth,
 		(d2dY + rect.height) * screenHeight);
 
 	m_d2dContext->PushAxisAlignedClip(
-		clipRect,
+		m_clipRect,
 		D2D1_ANTIALIAS_MODE_PER_PRIMITIVE
 	);
 

@@ -203,7 +203,7 @@ void GOTOEngine::RenderManager::Render()
 		//카메라 행렬 구하기
 		Matrix4x4 viewMat = camera->GetMatrix();
 		//뷰포트 제한
-		//m_pRenderAPI->SetViewport(camera->GetRect());
+		m_pRenderAPI->SetViewport(camera->GetRect());
 		Matrix4x4 unityCoordMat = 
 			Matrix4x4::Translate(
 				RenderManager::Get()->GetWindow()->GetWidth() * camera->GetRect().width * 0.5f, 
@@ -221,7 +221,7 @@ void GOTOEngine::RenderManager::Render()
 			renderer->Render(viewMat);
 		}
 
-		//m_pRenderAPI->ResetViewport();
+		m_pRenderAPI->ResetViewport();
 	}
 	m_pRenderAPI->SwapBuffer();
 }

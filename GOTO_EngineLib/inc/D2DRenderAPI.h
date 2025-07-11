@@ -63,6 +63,7 @@ namespace GOTOEngine
         ComPtr<ID2D1SolidColorBrush> m_solidColorBrush;
 
         IWindow* m_window;
+        D2D1_RECT_F m_clipRect;
 
 		int m_vSyncInterval = 1; // 기본 VSync 간격
 

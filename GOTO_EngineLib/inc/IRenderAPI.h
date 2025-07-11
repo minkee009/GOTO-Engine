@@ -1,6 +1,7 @@
 #pragma once
 #include "Color.h"
 #include "Rect.h"
+#include "Matrix4x4.h"
 
 namespace GOTOEngine
 {
@@ -20,6 +21,7 @@ namespace GOTOEngine
 
 		virtual void SetViewport(Rect rect) = 0;
 		virtual void ResetViewport() = 0;
+		//virtual Matrix4x4 GetViewportTranslation() = 0;
 
 		virtual void SwapBuffer() = 0;
 		virtual void ChangeBufferSize(int newWidth, int newHeight) = 0;

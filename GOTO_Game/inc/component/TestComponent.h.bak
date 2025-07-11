@@ -56,6 +56,7 @@ namespace GOTOEngine
 		void FixedUpdate()
 		{
 			std::wcout << "TestComponent FixedUpdate called for GameObject: " << GetGameObject()->name << std::endl;
+
 		}
 
 		void Update()
