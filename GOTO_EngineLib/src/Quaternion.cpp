@@ -1,6 +1,8 @@
 #include "Matrix4x4.h"
 #include "Quaternion.h"
 
+#
+
 GOTOEngine::Quaternion GOTOEngine::Quaternion::AngleAxis(float angleDeg, const Vector3& axis)
 {
     float angleRad = angleDeg * Mathf::Deg2Rad;
@@ -40,11 +42,44 @@ GOTOEngine::Quaternion GOTOEngine::Quaternion::Identity()
 
 float GOTOEngine::Quaternion::Magnitude() const
 {
+#ifdef _SIMD_OPTIMIZED
+    __m128 q = _mm_set_ps(w, z, y, x);           // 쿼터니언 4원소 로드
+    __m128 mul = _mm_mul_ps(q, q);               // 제곱 (x², y², z², w²)
+    __m128 shuf1 = _mm_shuffle_ps(mul, mul, _MM_SHUFFLE(2, 3, 0, 1)); // (y², z², w², x²)
+    __m128 sum1 = _mm_add_ps(mul, shuf1);        // (x²+y², y²+z², z²+w², w²+x²)
+    __m128 shuf2 = _mm_movehl_ps(sum1, sum1);    // (z²+w², w²+x²)
+    __m128 sum2 = _mm_add_ss(sum1, shuf2);       // 합산 최종 (x²+y²+z²+w²)
+    float result = _mm_cvtss_f32(sum2);
+    return std::sqrt(result);
+#else
     return std::sqrt(x * x + y * y + z * z + w * w);
+#endif
 }
 
 void GOTOEngine::Quaternion::Normalize()
 {
+#ifdef _SIMD_OPTIMIZED
+    __m128 q = _mm_set_ps(w, z, y, x);
+    __m128 mul = _mm_mul_ps(q, q);
+    __m128 shuf1 = _mm_shuffle_ps(mul, mul, _MM_SHUFFLE(2, 3, 0, 1));
+    __m128 sum1 = _mm_add_ps(mul, shuf1);
+    __m128 shuf2 = _mm_movehl_ps(sum1, sum1);
+    __m128 sum2 = _mm_add_ss(sum1, shuf2);
+
+    float magSq = _mm_cvtss_f32(sum2);
+
+    if (magSq > 1e-6f)
+    {
+        float invMag = 1.0f / std::sqrt(magSq);
+        __m128 invMagVec = _mm_set1_ps(invMag);
+        __m128 normalized = _mm_mul_ps(q, invMagVec);
+        _mm_storeu_ps(&x, normalized);
+    }
+    else
+    {
+        x = 0; y = 0; z = 0; w = 1;
+    }
+#else
     float mag = Magnitude();
     if (mag > 1e-6f)
     {
@@ -54,6 +89,7 @@ void GOTOEngine::Quaternion::Normalize()
     {
         *this = Identity();
     }
+#endif
 }
 
 GOTOEngine::Quaternion GOTOEngine::Quaternion::Normalized() const

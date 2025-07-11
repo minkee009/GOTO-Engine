@@ -5,7 +5,6 @@
 #include <stdexcept>   
 
 //헤더 온리 라이브러리
-
 namespace GOTOEngine
 {
     //template<typename T, typename = typename std::enable_if<

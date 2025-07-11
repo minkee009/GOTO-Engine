@@ -4,6 +4,10 @@
 #include "Mathf.h"
 #include <cmath>
 
+#ifdef _SIMD_OPTIMIZED
+#include <emmintrin.h> // SSE2
+#endif
+
 namespace GOTOEngine
 {
     class Matrix4x4;

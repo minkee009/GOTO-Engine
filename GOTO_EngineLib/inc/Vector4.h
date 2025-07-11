@@ -82,7 +82,7 @@ namespace GOTOEngine
 
         bool operator==(const Vector4& rhs) const
         {
-            float eps = std::numeric_limits<float>::epsilon() * 100;
+            constexpr float eps = std::numeric_limits<float>::epsilon() * 100;
             return std::fabs(x - rhs.x) < eps && std::fabs(y - rhs.y) < eps && std::fabs(z - rhs.z) < eps && std::fabs(w - rhs.w) < eps;
         }
 
