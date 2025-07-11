@@ -3,7 +3,7 @@
 
 void GOTOEngine::Transform::AddChild(Transform* child)
 {
-	if (child == nullptr || child == this) return; // 자기 자신이나 nullptr은 추가하지 않음
+	if (child == nullptr || child == this) return; // 자기 자신이나 nullptr는 추가하지 않음
 	// 이미 자식으로 등록되어 있는지 확인
 	for (const auto& existingChild : m_childs)
 	{
@@ -15,7 +15,7 @@ void GOTOEngine::Transform::AddChild(Transform* child)
 
 void GOTOEngine::Transform::RemoveChild(Transform* child)
 {
-	if (child == nullptr) return; // nullptr은 제거하지 않음
+	if (child == nullptr) return; // nullptr는 제거하지 않음
 	auto it = std::find(m_childs.begin(), m_childs.end(), child);
 	if (it != m_childs.end())
 	{
@@ -33,10 +33,10 @@ void GOTOEngine::Transform::MarkDirty()
 	}
 }
 
-GOTOEngine::Transform::Transform() 
-	: m_localPosition(0.0f, 0.0f, 0.0f)
-	, m_localRotation(0.0f, 0.0f, 0.0f, 1.0f)
-	, m_localScale(1.0f, 1.0f, 1.0f)
+GOTOEngine::Transform::Transform()
+	: m_localPosition(0.0f, 0.0f)
+	, m_localRotation(0.0f)
+	, m_localScale(1.0f, 1.0f)
 	, m_parent(nullptr)
 	, m_isMatrixDirty(true) // 처음에는 행렬이 더러워져 있으므로
 {
@@ -60,7 +60,7 @@ void GOTOEngine::Transform::SetSiblingIndex(size_t idx)
 		return;
 	}
 
-	//자신의 반복자 위치를 찾음
+	//자식의 배열자 위치를 찾음
 	auto& children = m_parent->m_childs;
 	auto current_it = std::find(children.begin(), children.end(), this);
 
@@ -97,12 +97,12 @@ size_t GOTOEngine::Transform::GetSiblingIndex() const
 	return 0; // 부모가 없거나 찾을 수 없는 경우 0 반환
 }
 
-const GOTOEngine::Vector3 GOTOEngine::Transform::GetPosition() const
+const GOTOEngine::Vector2 GOTOEngine::Transform::GetPosition() const
 {
 	if (m_parent)
 	{
 		// 부모 월드 행렬을 활용
-		Matrix4x4 parentWorld = m_parent->GetWorldMatrix();
+		Matrix3x3 parentWorld = m_parent->GetWorldMatrix();
 		return parentWorld.MultiplyPoint(m_localPosition);
 	}
 	else
@@ -111,58 +111,29 @@ const GOTOEngine::Vector3 GOTOEngine::Transform::GetPosition() const
 	}
 }
 
-GOTOEngine::Quaternion GOTOEngine::Transform::GetRotation() const
+float GOTOEngine::Transform::GetRotation() const
 {
 	if (m_parent)
 	{
 		// 부모가 있다면 부모의 회전을 적용
-		return m_parent->GetRotation() * m_localRotation;
+		return m_parent->GetRotation() + m_localRotation;
 	}
 	else
 		return m_localRotation;
 }
 
-void GOTOEngine::Transform::SetEulerAngle(const Vector3& angles)
-{
-	MarkDirty();
-	m_localRotation = Quaternion::Euler(angles);
-}
-
-GOTOEngine::Vector3 GOTOEngine::Transform::GetEulerAngle() const
+const GOTOEngine::Vector2 GOTOEngine::Transform::GetScale() const
 {
 	if (m_parent)
 	{
-		// 부모가 있다면 부모의 회전을 적용
-		return GetRotation().ToEulerAngles();
+		// 부모 스케일과 곱하여 월드 스케일 계산
+		Vector2 parentScale = m_parent->GetScale();
+		return Vector2(m_localScale.x * parentScale.x, m_localScale.y * parentScale.y);
 	}
 	else
-		return m_localRotation.ToEulerAngles();
-}
-
-const GOTOEngine::Vector3 GOTOEngine::Transform::GetLossyScale() const
-{
-	Matrix4x4 world = GetWorldMatrix();
-
-	Vector3 xAxis(
-		world.m[0][0],
-		world.m[1][0],
-		world.m[2][0]);
-
-	Vector3 yAxis(
-		world.m[0][1],
-		world.m[1][1],
-		world.m[2][1]);
-
-	Vector3 zAxis(
-		world.m[0][2],
-		world.m[1][2],
-		world.m[2][2]);
-
-	return Vector3(
-		xAxis.Magnitude(),
-		yAxis.Magnitude(),
-		zAxis.Magnitude()
-	);
+	{
+		return m_localScale;
+	}
 }
 
 void GOTOEngine::Transform::SetParent(Transform* parent)
@@ -176,7 +147,7 @@ void GOTOEngine::Transform::SetParent(Transform* parent, bool worldPositionStays
 	if (m_parent == parent) return;
 
 	// 현재 월드 행렬 백업
-	Matrix4x4 worldMatrixBefore = GetWorldMatrix();
+	Matrix3x3 worldMatrixBefore = GetWorldMatrix();
 
 	// 기존 부모에서 제거
 	if (m_parent)
@@ -192,21 +163,20 @@ void GOTOEngine::Transform::SetParent(Transform* parent, bool worldPositionStays
 	{
 		if (m_parent)
 		{
-			// 부모 기준 새 로컬 행렬
-			Matrix4x4 parentWorldInv = m_parent->GetWorldMatrix().Inverse();
-			Matrix4x4 newLocal = parentWorldInv * worldMatrixBefore;
+			// 부모 기준 상 로컬 행렬
+			Matrix3x3 parentWorldInv = m_parent->GetWorldMatrix().Inverse();
+			Matrix3x3 newLocal = parentWorldInv * worldMatrixBefore;
 
 			m_localPosition = newLocal.GetPosition();
 			m_localRotation = newLocal.GetRotation();
-			m_localScale = newLocal.GetLossyScale();
+			m_localScale = newLocal.GetScale();
 		}
 		else
 		{
 			// 부모가 없으면 로컬 = 월드
-			Matrix4x4 newLocal = worldMatrixBefore;
-			m_localPosition = newLocal.GetPosition();
-			m_localRotation = newLocal.GetRotation();
-			m_localScale = newLocal.GetLossyScale();
+			m_localPosition = worldMatrixBefore.GetPosition();
+			m_localRotation = worldMatrixBefore.GetRotation();
+			m_localScale = worldMatrixBefore.GetScale();
 		}
 	}
 
@@ -222,7 +192,6 @@ const GOTOEngine::Transform* GOTOEngine::Transform::GetChild(size_t idx) const
 
 	return m_childs[idx];
 }
-
 
 GOTOEngine::Transform* GOTOEngine::Transform::Find(const std::wstring& path)
 {
@@ -261,10 +230,9 @@ GOTOEngine::Transform* GOTOEngine::Transform::Find(const std::wstring& path)
 	}
 
 	return current;
-
 }
 
-const  GOTOEngine::Transform* GOTOEngine::Transform::GetRoot() const
+const GOTOEngine::Transform* GOTOEngine::Transform::GetRoot() const
 {
 	const Transform* current = this;
 
@@ -288,130 +256,103 @@ void GOTOEngine::Transform::DetachChildren()
 	m_childs.clear();
 }
 
-void GOTOEngine::Transform::LookAt(const Vector3& target, const Vector3& worldUp)
+void GOTOEngine::Transform::LookAt(const Vector2& target)
 {
-	Vector3 forward = (target - GetPosition()).Normalized();
-	Vector3 right = Vector3::Cross(worldUp, forward).Normalized();
-	Vector3 up = Vector3::Cross(forward, right);
+	Vector2 direction = target - GetPosition();
+	float angle = std::atan2(direction.y, direction.x) * Mathf::Rad2Deg;
 
-	// 회전 행렬을 쿼터니언으로 변환
-	Matrix4x4 rotMat;
-	rotMat.SetIdentity();
+	if (m_parent)
+	{
+		// 부모가 있으면 부모의 회전을 빼서 로컬 회전 계산
+		m_localRotation = angle - m_parent->GetRotation();
+	}
+	else
+	{
+		m_localRotation = angle;
+	}
 
-	// 열 우선 저장
-	rotMat.m[0][0] = right.x;
-	rotMat.m[1][0] = right.y;
-	rotMat.m[2][0] = right.z;
-
-	rotMat.m[0][1] = up.x;
-	rotMat.m[1][1] = up.y;
-	rotMat.m[2][1] = up.z;
-
-	rotMat.m[0][2] = forward.x;
-	rotMat.m[1][2] = forward.y;
-	rotMat.m[2][2] = forward.z;
-
-	m_localRotation = Quaternion::FromRotationMatrix(rotMat);
+	m_localRotation = Mathf::NormalizeAngle(m_localRotation);
 	MarkDirty();
 }
-void GOTOEngine::Transform::Rotate(const Vector3& eulerAngles, bool worldSpace)
-{
-	Quaternion delta = Quaternion::Euler(eulerAngles);
-	m_localRotation = m_localRotation * delta;
 
+void GOTOEngine::Transform::Rotate(float angle)
+{
+	m_localRotation += angle;
+
+	m_localRotation = Mathf::NormalizeAngle(m_localRotation);
 	MarkDirty();
 }
-void GOTOEngine::Transform::Translate(const Vector3& translation, bool worldSpace)
+
+void GOTOEngine::Transform::Translate(const Vector2& translation, bool worldSpace)
 {
 	if (worldSpace)
 	{
-		m_localPosition += translation;
+		// 월드 공간에서 이동
+		Vector2 worldPos = GetPosition() + translation;
+		SetPosition(worldPos);
 	}
 	else
 	{
-		m_localPosition += m_localRotation * translation;
+		// 로컬 공간에서 이동 (회전 적용)
+		float radians = m_localRotation * Mathf::Deg2Rad;
+		float cos_r = std::cos(radians);
+		float sin_r = std::sin(radians);
+
+		Vector2 rotatedTranslation(
+			translation.x * cos_r - translation.y * sin_r,
+			translation.x * sin_r + translation.y * cos_r
+		);
+
+		m_localPosition += rotatedTranslation;
 	}
 	MarkDirty();
 }
 
-void GOTOEngine::Transform::RotateAround(const Vector3& point, const Vector3& axis, float angle)
+GOTOEngine::Vector2 GOTOEngine::Transform::TransformDirection(const Vector2& direction) const
 {
-	// 현재 월드 위치
-	Vector3 currentWorldPosition = GetPosition();
+	float worldRotation = GetRotation() * Mathf::Deg2Rad;
+	float cos_r = std::cos(worldRotation);
+	float sin_r = std::sin(worldRotation);
 
-	// 회전 중심점으로부터 현재 위치까지의 벡터
-	Vector3 offset = currentWorldPosition - point;
-
-	// 회전 쿼터니언 생성
-	Quaternion rotation = Quaternion::AngleAxis(angle, axis.Normalized());
-
-	// offset 벡터를 회전
-	Vector3 rotatedOffset = rotation * offset;
-
-	// 새로운 월드 위치 계산
-	Vector3 newWorldPosition = point + rotatedOffset;
-
-	// 현재 Transform이 부모를 가지고 있다면, 새 월드 위치를 로컬 공간으로 변환해야 합니다.
-	if (m_parent)
-	{
-		// 부모의 역행렬을 사용하여 월드 위치를 로컬 위치로 변환
-		Matrix4x4 parentWorldMatrix = m_parent->GetWorldMatrix();
-		Matrix4x4 parentInverseWorldMatrix = parentWorldMatrix.Inverse(); // 부모 월드 행렬의 역행렬
-
-		m_localPosition = parentInverseWorldMatrix.MultiplyPoint(newWorldPosition);
-	}
-	else
-	{
-		m_localPosition = newWorldPosition;
-	}
-
-	// 현재 월드 회전 (normalized 된 상태)
-	Quaternion currentWorldRotation = GetRotation().Normalized();
-
-	// 적용할 회전 쿼터니언
-	Quaternion addRotation = Quaternion::AngleAxis(angle, axis.Normalized());
-
-	// 새로운 월드 회전
-	Quaternion newWorldRotation = addRotation * currentWorldRotation; // 회전 순서에 유의
-
-	if (m_parent)
-	{
-		// 부모의 월드 회전의 역변환을 사용하여 새로운 로컬 회전 계산
-		Quaternion parentWorldRotationInverse = m_parent->GetRotation().Inverse();
-		m_localRotation = parentWorldRotationInverse * newWorldRotation;
-	}
-	else
-	{
-		m_localRotation = newWorldRotation;
-	}
-
-	MarkDirty(); // 위치와 회전이 변경되었으므로 행렬을 더럽다고 표시
+	return Vector2(
+		direction.x * cos_r - direction.y * sin_r,
+		direction.x * sin_r + direction.y * cos_r
+	);
 }
 
-GOTOEngine::Vector3 GOTOEngine::Transform::TransformDirection(const Vector3& direction) const
-{
-	Quaternion worldRotation = GetRotation(); // 월드 회전 쿼터니언
-
-	return worldRotation * direction;
-}
-
-GOTOEngine::Vector3 GOTOEngine::Transform::InverseTransformDirection(const Vector3& direction) const
+GOTOEngine::Vector2 GOTOEngine::Transform::InverseTransformDirection(const Vector2& direction) const
 {
 	// TransformDirection의 역변환입니다.
-	// 월드 회전의 켤레 복소수(역변환)를 사용합니다.
-	Quaternion worldRotationInverse = GetRotation().Inverse();
+	float worldRotation = -GetRotation() * Mathf::Deg2Rad; // 역회전
+	float cos_r = std::cos(worldRotation);
+	float sin_r = std::sin(worldRotation);
 
-	return worldRotationInverse * direction;
+	return Vector2(
+		direction.x * cos_r - direction.y * sin_r,
+		direction.x * sin_r + direction.y * cos_r
+	);
 }
 
-GOTOEngine::Matrix4x4 GOTOEngine::Transform::GetLocalMatrix() const
+GOTOEngine::Vector2 GOTOEngine::Transform::TransformPoint(const Vector2& point) const
+{
+	Matrix3x3 worldMatrix = GetWorldMatrix();
+	return worldMatrix.MultiplyPoint(point);
+}
+
+GOTOEngine::Vector2 GOTOEngine::Transform::InverseTransformPoint(const Vector2& point) const
+{
+	Matrix3x3 worldMatrix = GetWorldMatrix();
+	Matrix3x3 inverseWorldMatrix = worldMatrix.Inverse();
+	return inverseWorldMatrix.MultiplyPoint(point);
+}
+
+GOTOEngine::Matrix3x3 GOTOEngine::Transform::GetLocalMatrix() const
 {
 	if (m_isMatrixDirty)
 	{
-		m_cachedMatrix.SetIdentity();
-		m_cachedMatrix = Matrix4x4::TRS(
+		m_cachedMatrix = Matrix3x3::TRS(
 			m_localPosition,
-			m_localRotation,
+			m_localRotation * Mathf::Deg2Rad, // degree를 radian으로 변환
 			m_localScale
 		);
 		m_isMatrixDirty = false;
@@ -419,7 +360,7 @@ GOTOEngine::Matrix4x4 GOTOEngine::Transform::GetLocalMatrix() const
 	return m_cachedMatrix;
 }
 
-GOTOEngine::Matrix4x4 GOTOEngine::Transform::GetWorldMatrix() const
+GOTOEngine::Matrix3x3 GOTOEngine::Transform::GetWorldMatrix() const
 {
 	if (m_parent)
 	{
@@ -429,4 +370,16 @@ GOTOEngine::Matrix4x4 GOTOEngine::Transform::GetWorldMatrix() const
 	{
 		return GetLocalMatrix();
 	}
+}
+
+GOTOEngine::Vector2 GOTOEngine::Transform::GetRight() const
+{
+	float worldRotation = GetRotation() * Mathf::Deg2Rad;
+	return Vector2(std::cos(worldRotation), std::sin(worldRotation));
+}
+
+GOTOEngine::Vector2 GOTOEngine::Transform::GetUp() const
+{
+	float worldRotation = GetRotation() * Mathf::Deg2Rad;
+	return Vector2(-std::sin(worldRotation), std::cos(worldRotation));
 }

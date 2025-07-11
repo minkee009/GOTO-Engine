@@ -1,10 +1,10 @@
 #pragma once
 #include "Behaviour.h"
-#include "Matrix4x4.h"
 #include "Rect.h"
 
 namespace GOTOEngine
 {
+	class Matrix3x3;
 	class Camera final : public Behaviour
 	{
 		//임시로 2D 카메라 계산만 적용
@@ -35,7 +35,7 @@ namespace GOTOEngine
 
 		size_t GetRenderLayer() { return m_renderLayer; }
 
-		Matrix4x4 GetMatrix();
+		Matrix3x3 GetMatrix();
 
 		static Camera* GetMainCamera();
 

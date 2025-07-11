@@ -1,7 +1,7 @@
 #pragma once
 #include "Component.h"
 #include "Renderer.h"
-#include "Matrix4x4.h"
+#include "Matrix3x3.h"
 
 namespace GOTOEngine
 {
@@ -15,7 +15,7 @@ namespace GOTOEngine
 		size_t m_renderLayer; //렌더링 레이어 -> 카메라 별로 레이어 컬링 설정가능
 
 	protected:
-		virtual void Render(Matrix4x4& matrix) = 0;
+		virtual void Render(Matrix3x3& matrix) = 0;
 		Renderer();
 		~Renderer();
 

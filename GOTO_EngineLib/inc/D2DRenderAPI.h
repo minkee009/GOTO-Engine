@@ -18,7 +18,7 @@
 #pragma comment(lib,"windowscodecs.lib")
 #include "IRenderAPI.h"
 #include "IWindow.h"
-#include "Matrix4x4.h"
+#include "Matrix3x3.h"
 
 using namespace Microsoft::WRL;
 
@@ -44,12 +44,12 @@ namespace GOTOEngine
         void SetVSyncInterval(int interval) override { m_vSyncInterval = interval; }
         ~D2DRenderAPI() override;
 
-        D2D1::Matrix3x2F ConvertToD2DMatrix(const GOTOEngine::Matrix4x4& mat)
+        D2D1::Matrix3x2F ConvertToD2DMatrix(const Matrix3x3& mat)
         {
             return D2D1::Matrix3x2F(
-                mat.m[0][0], mat.m[0][1],
-                mat.m[1][0], mat.m[1][1],
-                mat.m[3][0], mat.m[3][1]
+                mat.m[0][0], mat.m[0][1], // _11, _12
+                mat.m[1][0], mat.m[1][1], // _21, _22
+                mat.m[2][0], mat.m[2][1]  // _31, _32 (Translation)
             );
         }
     private:

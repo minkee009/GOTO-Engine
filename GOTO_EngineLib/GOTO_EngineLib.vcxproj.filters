@@ -141,9 +141,6 @@
     <ClInclude Include="inc\BBox.h">
       <Filter>헤더 파일\구조체</Filter>
     </ClInclude>
-    <ClInclude Include="inc\Matrix4x4.h">
-      <Filter>헤더 파일\구조체</Filter>
-    </ClInclude>
     <ClInclude Include="inc\Quaternion.h">
       <Filter>헤더 파일\구조체</Filter>
     </ClInclude>
@@ -184,6 +181,12 @@
       <Filter>헤더 파일\코어 컴포넌트</Filter>
     </ClInclude>
     <ClInclude Include="inc\Rect.h">
+      <Filter>헤더 파일\구조체</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Matrix3x3.h">
+      <Filter>헤더 파일\구조체</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Matrix4x4.h">
       <Filter>헤더 파일\구조체</Filter>
     </ClInclude>
   </ItemGroup>
@@ -271,6 +274,9 @@
     </ClCompile>
     <ClCompile Include="src\Renderer.cpp">
       <Filter>소스 파일\코어 컴포넌트</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Matrix3x3.cpp">
+      <Filter>소스 파일\구조체</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

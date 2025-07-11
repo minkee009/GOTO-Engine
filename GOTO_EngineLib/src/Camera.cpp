@@ -1,5 +1,5 @@
 #include "Camera.h"
-#include "Matrix4x4.h"
+#include "Matrix3x3.h"
 #include "Transform.h"
 #include "RenderManager.h"
 #include "IWindow.h"
@@ -41,9 +41,9 @@ void GOTOEngine::Camera::SetDepth(int value)
 	RenderManager::Get()->SetCamSortDirty(); m_depth = value;
 }
 
-GOTOEngine::Matrix4x4 GOTOEngine::Camera::GetMatrix()
+GOTOEngine::Matrix3x3 GOTOEngine::Camera::GetMatrix()
 {
-	auto mat = Matrix4x4::Scale(m_size, m_size, 1) * GetGameObject()->GetTransform()->GetLocalMatrix();
+	auto mat = Matrix3x3::Scale(m_size,m_size) * GetGameObject()->GetTransform()->GetLocalMatrix();
 
 	return mat.Inverse();
 }

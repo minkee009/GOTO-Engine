@@ -62,7 +62,7 @@ void TitleScene::Enter()
 
     g_test02->GetTransform()->SetParent(g_test01->GetTransform());
 
-    g_test02->GetTransform()->SetPosition(Vector3{ 2.5f,0,0 });
+    g_test02->GetTransform()->SetPosition(Vector2{ 2.5f,0.0f });
 
     auto s = g_test01->AddComponent<TestComponent>();
 

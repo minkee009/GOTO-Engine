@@ -14,20 +14,6 @@ namespace GOTOEngine
 	class RenderManager : public Singleton<RenderManager>
 	{
 	public:
-		void DrawImage(int x, int y, float scale, bool flipX, const IRenderImage* image);
-		void DrawImage(int x, int y, float scale, const IRenderImage* image);
-		void DrawImage(int x, int y, const IRenderImage* image);
-		void DrawImage(Vector2 pos, float scale, bool flipX, const IRenderImage* image);
-		void DrawImage(Vector2 pos, float scale, const IRenderImage* image);
-		void DrawImage(Vector2 pos, const IRenderImage* image);
-		void DrawRect(int x, int y, int width, int height, bool fill, Color color);
-		void DrawRect(int x, int y, int width, int height, Color color);
-
-		void DrawString(int x, int y, int width, int height, const wchar_t* string, const IRenderFont* font, bool rightAlign, Color color);
-		void DrawString(int x, int y, int width, int height, const wchar_t* string, const IRenderFont* font, Color color);
-		void DrawString(int x, int y, const wchar_t* string, const IRenderFont* font, bool rightAlign, Color color);
-		void DrawString(int x, int y, const wchar_t* string, const IRenderFont* font, Color color);
-
 		void SetVSyncInterval(int interval);
 
 		void Render();

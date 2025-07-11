@@ -7,6 +7,7 @@
 #include "D2DRenderAPI.h"
 #include "Renderer.h"
 #include "algorithm"
+#include "Matrix3x3.h"
 #ifdef _DEBUG
 #include <iostream>
 #endif
@@ -128,7 +129,7 @@ void GOTOEngine::RenderManager::Render()
 			continue;
 
 		//카메라 행렬 구하기
-		Matrix4x4 mvpMat = camera->GetMatrix();
+		Matrix3x3 mvpMat = camera->GetMatrix();
 
 		//뷰포트 제한
 		m_pRenderAPI->SetViewport(camera->GetRect());

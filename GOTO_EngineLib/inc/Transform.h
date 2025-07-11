@@ -1,26 +1,26 @@
 #pragma once
-#include "Vector3.h"
-#include "Quaternion.h"
+#include "Vector2.h"
 #include "Component.h"
-#include "Matrix4x4.h"
+#include "Matrix3x3.h"
+#include "Mathf.h"
 #include <cmath>
 
-namespace GOTOEngine 
+namespace GOTOEngine
 {
 	class Transform : public Component
 	{
 	private:
 		friend class GameObject;
 
-		Vector3 m_localPosition;
-		Quaternion m_localRotation;
-		Vector3 m_localScale;
+		Vector2 m_localPosition;
+		float m_localRotation; // degree 단위
+		Vector2 m_localScale;
 
 		Transform* m_parent;
-		std::vector<Transform*> m_childs;		
+		std::vector<Transform*> m_childs;
 
 		mutable bool m_isMatrixDirty = false;
-		mutable Matrix4x4 m_cachedMatrix; // 캐시된 월드 행렬
+		mutable Matrix3x3 m_cachedMatrix; // 캐시된 월드 행렬
 
 		void AddChild(Transform* child);
 		void RemoveChild(Transform* child);
@@ -29,22 +29,19 @@ namespace GOTOEngine
 		Transform();
 
 		// 트랜스폼 프로퍼티
-		void SetPosition(const Vector3& position) { MarkDirty(); m_localPosition = position; }
-		const Vector3& GetLocalPosition() const { return m_localPosition; }
-		const Vector3 GetPosition() const;
+		void SetPosition(const Vector2& position) { MarkDirty(); m_localPosition = position; }
+		const Vector2& GetLocalPosition() const { return m_localPosition; }
+		const Vector2 GetPosition() const;
 
-		void SetRotation(const Quaternion& rotation) { MarkDirty(); m_localRotation = rotation; }
-		const Quaternion& GetLocalRotation() const { return m_localRotation; }
-		Quaternion GetRotation() const;
-		void SetEulerAngle(const Vector3& angles);
-		const Vector3 GetLocalEulerAngle() const { return m_localRotation.ToEulerAngles(); }
-		Vector3 GetEulerAngle() const;
+		void SetRotation(float rotation) { MarkDirty(); m_localRotation = rotation; }
+		float GetLocalRotation() const { return m_localRotation; }
+		float GetRotation() const;
 
-		void SetLossyScale(const Vector3& scale) { MarkDirty(); m_localScale = scale; }
-		const Vector3& GetLocalScale() const { return m_localScale; }
-		const Vector3 GetLossyScale() const;
+		void SetScale(const Vector2& scale) { MarkDirty(); m_localScale = scale; }
+		const Vector2& GetLocalScale() const { return m_localScale; }
+		const Vector2 GetScale() const;
 
-		// 씬 그래프
+		// 자식 그래프
 		void SetParent(Transform* parent);
 		void SetParent(Transform* parent, bool worldPositionStays);
 		Transform* GetParent() const { return m_parent; }
@@ -58,16 +55,22 @@ namespace GOTOEngine
 		size_t GetSiblingIndex() const;
 
 		// 월드 공간 변환
-		void LookAt(const Vector3& target, const Vector3& worldUp);
-		void Rotate(const Vector3& eulerAngles, bool worldSpace = false);
-		void Translate(const Vector3& translation, bool worldSpace);
+		void LookAt(const Vector2& target);
+		void Rotate(float angle);
+		void Translate(const Vector2& translation, bool worldSpace = false);
 
-		void RotateAround(const Vector3& point, const Vector3& axis, float angle);
-		Vector3 TransformDirection(const Vector3& direction) const;
-		Vector3 InverseTransformDirection(const Vector3& direction) const;
+		Vector2 TransformDirection(const Vector2& direction) const;
+		Vector2 InverseTransformDirection(const Vector2& direction) const;
+		Vector2 TransformPoint(const Vector2& point) const;
+		Vector2 InverseTransformPoint(const Vector2& point) const;
 
 		// 행렬
-		Matrix4x4 GetLocalMatrix() const;
-		Matrix4x4 GetWorldMatrix() const;
+		Matrix3x3 GetLocalMatrix() const;
+		Matrix3x3 GetWorldMatrix() const;
+
+		// 2D 전용 유틸리티
+		Vector2 GetRight() const; // 로컬 X축 방향
+		Vector2 GetUp() const;    // 로컬 Y축 방향
+		Vector2 GetForward() const { return GetUp(); } // 2D에서는 Up이 Forward
 	};
 }
