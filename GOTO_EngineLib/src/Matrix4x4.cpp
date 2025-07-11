@@ -1,6 +1,22 @@
 #include "Matrix4x4.h"
 #include "Quaternion.h"
 
+void GOTOEngine::Matrix4x4::ToRowMajorArray(float out[16]) const
+{
+    for (int r = 0; r < 4; ++r)
+    {
+        for (int c = 0; c < 4; ++c)
+        {
+            out[r * 4 + c] = m[c][r];
+        }
+    }
+}
+
+void GOTOEngine::Matrix4x4::ToColumnMajorArray(float out[16]) const
+{
+    std::memcpy(out, &m[0][0], sizeof(float) * 16);
+}
+
 GOTOEngine::Quaternion GOTOEngine::Matrix4x4::GetRotation() const
 {
     Vector3 scale = GetLossyScale();

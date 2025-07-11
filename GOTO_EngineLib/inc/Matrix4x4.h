@@ -75,22 +75,11 @@ namespace GOTOEngine
         }
 
         // 행 우선 배열로 복사
-        void ToRowMajorArray(float out[16]) const
-        {
-            for (int r = 0; r < 4; ++r)
-            {
-                for (int c = 0; c < 4; ++c)
-                {
-                    out[r * 4 + c] = m[c][r];
-                }
-            }
-        }
+        void ToRowMajorArray(float out[16]) const;
 
         // 열 우선 배열로 복사 -> 사실상 변환 없음
-        void ToColumnMajorArray(float out[16]) const
-        {
-            std::memcpy(out, &m[0][0], sizeof(float) * 16);
-        }
+        void ToColumnMajorArray(float out[16]) const;
+
 
         // 행렬을 직접 설정 (행렬 요소 16개)
         void SetFromColumnMajorArray(const float arr[16])
