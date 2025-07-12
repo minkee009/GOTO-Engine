@@ -121,9 +121,9 @@ void GOTOEngine::ObjectDestructionManager::ShutDown()
 			if (!Object::IsValidObject(destroyInfo->obj) 
 				|| destroyInfo->obj->Destroyed())
 				continue; // 유효하지 않은 오브젝트는 무시
-			
+
+			destroyInfo->obj->MarkDestory();
 			destroyInfo->obj->Dispose();
-			destroyInfo->obj->m_isDestroyed = true;
 			m_pendingDeleteObjects.push_back(destroyInfo->obj);
 			delete destroyInfo; // 예약 정보도 삭제
 		}
