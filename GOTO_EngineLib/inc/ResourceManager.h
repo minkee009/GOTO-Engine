@@ -52,7 +52,7 @@ namespace GOTOEngine
 					// 캐스팅이 안전한지 확인 (dynamic_cast 사용, static_cast도 가능한지 나중에 체크하기) 
 					T* existingResource = dynamic_cast<T*>(resourceIt->second);
 					if (existingResource) {
-						existingResource->IncreaseRefCount();
+						//existingResource->IncreaseRefCount();
 						return existingResource;
 					}
 				}

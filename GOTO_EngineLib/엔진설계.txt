@@ -46,17 +46,21 @@ LearnOpenGL의 리소스코드를 반드시 확인하고 AI 어시스턴트의 �
 
 ~~CameraComponent~~
 
-IRenderImage 개념 바꾸기 -> D2DImage 수정
+~~IRenderImage 개념 바꾸기 -> D2DImage 수정~~
 
-ResourceManager와 D2DRenderer의 GPUResourceMap 수정
+~~ResourceManager와 D2DRenderer의 GPUResourceMap 수정~~
 
 ~~Renderer 컴포넌트 정의, RenderManager 등록 및 Update()실행~~
 
-SpriteRenderer 컴포넌트 작성
+~~SpriteRenderer 컴포넌트 작성~~
+
+camera 및 transform 매트릭스를 이용한 드로잉
 
 TextRenderer 컴포넌트 작성
 
 뷰포트 렉트 제한 -> 멀티카메라 렌더링 일부라도 구현해보기
+
+카메라 마다 클리어 색상 넣기
 
 >> 여기까지
 
