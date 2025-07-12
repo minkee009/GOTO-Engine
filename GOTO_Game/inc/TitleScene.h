@@ -11,8 +11,7 @@ class TitleScene : public Scene
 {
 public:
 	TitleScene(const std::wstring& sceneName) : Scene(sceneName) {}
-	void Enter() override;
-	void Exit() override;
+	void Init() override;
 
 	~TitleScene();
 };

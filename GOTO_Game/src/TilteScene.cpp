@@ -20,7 +20,7 @@ GameObject* g_test01 = nullptr;
 GameObject* g_test02 = nullptr;
 GameObject* g_test03 = nullptr;
 
-void TitleScene::Enter()
+void TitleScene::Init()
 {
     RenderManager::Get()->SetVSyncInterval(0);
 
@@ -91,11 +91,6 @@ void TitleScene::Enter()
 //
 //	RENDER_DRAW_IMAGE(0, 0, 3.0f, &m_animController.CurrentState().GetCurrentKeyFrameImage());
 //}
-
-void TitleScene::Exit()
-{
-    Scene::Exit();
-}
 
 TitleScene::~TitleScene()
 {

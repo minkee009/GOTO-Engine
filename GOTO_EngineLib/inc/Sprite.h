@@ -3,7 +3,7 @@
 
 namespace GOTOEngine
 {
-	class Sprite : Object
+	class Sprite : public Object
 	{
 
 	};

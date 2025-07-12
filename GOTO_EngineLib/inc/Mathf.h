@@ -12,5 +12,6 @@ namespace GOTOEngine
 		static float Rad2Deg;
 		static float PI;
 		static float NormalizeAngle(float angle);
+		static bool Approximately(float a, float b);
 	};
 }

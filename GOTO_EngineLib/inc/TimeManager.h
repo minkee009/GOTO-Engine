@@ -42,14 +42,14 @@ namespace GOTOEngine
 		std::chrono::high_resolution_clock::duration m_deltaDuration;
 		std::chrono::high_resolution_clock::duration m_totalDuration;
 
-		float m_deltaTime;
+		float m_deltaTime = 0;
 		float m_fixedDeltaTime = 0.03125f;
-		float m_totalTime;
-		float m_fixedTime;
+		float m_totalTime = 0;
+		float m_fixedTime = 0;
 		float m_maximumAllowedTimestep = 0.2f;
 		float m_timeScale = 1.0f;
-		float m_unscaledDeltaTime;
-		float m_unscaledTotalTime;
+		float m_unscaledDeltaTime = 0;
+		float m_unscaledTotalTime = 0;
 
 		void StartUp();
 		void Shutdown();

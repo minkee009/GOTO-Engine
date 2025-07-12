@@ -20,6 +20,17 @@ float GOTOEngine::Mathf::NormalizeAngle(float angle)
 	return angle;
 }
 
+bool GOTOEngine::Mathf::Approximately(float a, float b)
+{
+	static constexpr float epsilon = std::numeric_limits<float>::epsilon();
+	float diff = std::abs(a - b);
+
+	if (diff < epsilon)
+		return true;
+
+	return diff < std::max(std::abs(a), std::abs(b)) * epsilon * 8.0f;
+}
+
 float Mathf::PI = 3.14159265358979323846f;
 float Mathf::Deg2Rad = 3.1415926535f / 180.0f;
 float Mathf::Rad2Deg = 180.0f / 3.1415926535f;

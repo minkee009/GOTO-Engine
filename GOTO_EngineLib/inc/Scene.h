@@ -9,6 +9,7 @@ namespace GOTOEngine
 	{
 	private:
 		friend class GameObject;
+		friend class Object;
 
 		void RegisterGameObject(GameObject* go);
 		void UnregisterGameObject(GameObject* go);
@@ -22,10 +23,10 @@ namespace GOTOEngine
 		virtual ~Scene() { Clear(); }
 
 		void Clear();
-		void Reset() { Exit(); Enter(); }
+		void Reset() { Clear(); Init(); }
 
-		virtual void Enter() { }
-		virtual void Exit() { Clear(); }
+		virtual void Init() { }
+		//virtual void Exit() { Clear(); }
 		const std::wstring& GetSceneName() const { return m_sceneName; }
 	};
 }

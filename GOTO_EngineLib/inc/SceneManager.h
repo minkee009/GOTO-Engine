@@ -41,10 +41,13 @@ namespace GOTOEngine
 
 	private:
 		friend class Engine;
-		Scene* m_currentScene;
-		Scene* m_nextScene;
-		std::unordered_map<std::wstring, Scene*> m_sceneMap;
+		friend class Object;
+		Scene* m_currentScene = nullptr;
+		Scene* m_nextScene = nullptr;
 
+		Scene* m_dontDestroyOnLoadScene = nullptr;
+
+		std::unordered_map<std::wstring, Scene*> m_sceneMap;
 
 		void StartUp();
 		void ShutDown();

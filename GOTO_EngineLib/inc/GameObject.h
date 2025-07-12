@@ -14,6 +14,7 @@ namespace GOTOEngine
 	private:
 		friend class Engine;
 		friend class Scene;
+		friend class Object;
 		friend class Component;
 		friend class Transform;
 

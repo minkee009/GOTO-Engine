@@ -54,7 +54,7 @@ namespace GOTOEngine
 		static void Destroy(Object* obj, float delay = 0.0f);
 		static void DestroyImmediate(Object* obj);
 
-		//static void DontDestroyOnLoad(Object* obj);
+		static void DontDestroyOnLoad(Object* obj);
 		template <typename T>
 		static T* FindObjectByType() 
 		{
