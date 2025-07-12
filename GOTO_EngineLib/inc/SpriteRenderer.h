@@ -13,6 +13,7 @@ namespace GOTOEngine
 	public:
 		SpriteRenderer(): m_sprite(nullptr) {}
 		void SetSprite(Sprite* sprite);
+		void Dispose() override { if (m_sprite) { m_sprite->DecreaseRefCount(); m_sprite = nullptr; } }
 		const Sprite* GetSprite() const { return m_sprite; } //참조 카운트 증가 없음
 	};
  }

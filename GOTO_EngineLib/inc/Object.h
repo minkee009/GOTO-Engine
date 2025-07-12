@@ -14,12 +14,13 @@ namespace GOTOEngine
 		friend class ObjectDestructionManager;
 		long long m_instanceID;
 		bool m_isDestroyed = false; // 오브젝트가 파괴되었는지 여부
+		void MarkDestory() { m_isDestroyed = true; }
 
 		static std::atomic<long long> s_nextInstanceId;
 		static std::vector<Object*> s_registry; // 탐색용 레지스트리 (생성/파괴 주기 관리 X)
 		static std::unordered_set<Object*> s_validObjects; // 유효한 오브젝트들 (생성/파괴 주기 관리용)
 	protected:
-		virtual void Dispose() override { m_isDestroyed = true; }
+		virtual void Dispose() override { }
 
 		virtual ~Object()
 		{

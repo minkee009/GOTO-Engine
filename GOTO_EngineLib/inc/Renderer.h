@@ -18,7 +18,6 @@ namespace GOTOEngine
 		virtual void Render(Matrix3x3& matrix) = 0;
 		Renderer();
 		~Renderer();
-
 	public:
 		bool GetEnabled();
 		void SetEnabled(bool enabled);

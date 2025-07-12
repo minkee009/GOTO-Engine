@@ -52,6 +52,8 @@ void GOTOEngine::ObjectDestructionManager::ImmediateDestroy(Object* obj)
 		m_destroySchedule[obj] = nullptr;
 	}
 	
+	//지금부터 사실상 파괴되었음을 선언
+	obj->MarkDestory();
 	obj->Dispose();
 	m_pendingDeleteObjects.push_back(obj); // 즉시 파괴할 오브젝트 목록에 추가
 }
@@ -69,6 +71,9 @@ void GOTOEngine::ObjectDestructionManager::Update()
 		{
 			// 예약 파괴 시간이 지난 오브젝트를 파괴
 			Object* obj = destroyInfo->obj;
+
+			//지금부터 사실상 파괴되었음을 선언
+			obj->MarkDestory();
 			obj->Dispose();
 			m_pendingDeleteObjects.push_back(obj); // 즉시 파괴할 오브젝트 목록에 추가
 			delete destroyInfo; // 예약 정보도 삭제

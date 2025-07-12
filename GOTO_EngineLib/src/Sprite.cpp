@@ -10,13 +10,18 @@ GOTOEngine::Sprite::Sprite()
 
 GOTOEngine::Sprite::~Sprite()
 {
+
+}
+
+void GOTOEngine::Sprite::Dispose()
+{
+    Object::Dispose();
     if (m_texture)
     {
         m_texture->DecreaseRefCount();
         m_texture = nullptr;
     }
 }
-
 void GOTOEngine::Sprite::LoadFromFilePath(const std::wstring& filePath)
 {
     auto lastTexture = m_texture;

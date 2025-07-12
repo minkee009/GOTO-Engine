@@ -29,7 +29,8 @@ namespace GOTOEngine
 					resourceTypeTable.erase(resource);
 				}
 			}
-			ResourceManager::Get()->UnRegisterResource(this);
+			ResourceManager::Get()->UnRegisterResource(this); 
+			std::cout << "resource unloaded" << this << std::endl;
 		}
 	public:
 		std::wstring GetFilePath() { return m_filePath; }
