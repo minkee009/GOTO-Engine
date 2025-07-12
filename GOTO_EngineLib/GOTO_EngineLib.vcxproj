@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="inc\Resource.h" />
     <ClInclude Include="inc\BBox.h" />
     <ClInclude Include="inc\Behaviour.h" />
     <ClInclude Include="inc\BehaviourManager.h" />

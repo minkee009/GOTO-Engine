@@ -139,12 +139,12 @@ void Engine::Shutdown()
 {
 	InputManager::Get()->Shutdown();
 	TimeManager::Get()->Shutdown();
-	ResourceManager::Get()->ShutDown();
 	SceneManager::Get()->ShutDown();
 	ObjectDestructionManager::Get()->Update();
 	BehaviourManager::Get()->DisableBehaviours();
 	ObjectDestructionManager::Get()->Clear();
 	BehaviourManager::Get()->ShutDown();
+	ResourceManager::Get()->ShutDown();
 	ObjectDestructionManager::Get()->ShutDown();
 
 	RenderManager::Get()->ShutDown();
