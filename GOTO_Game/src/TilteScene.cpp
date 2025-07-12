@@ -72,7 +72,9 @@ void TitleScene::Init()
     g_test02->AddComponent<TestComponent>();
     g_test02->AddComponent<PlayerMove>();
     
-    Sprite* sed = Resource::Load<Sprite>(L"../Resources/s.png");
+    g_test02->AddComponent<SpriteRenderer>()->SetSprite(Resource::Load<Sprite>(L"../Resources/Mushroom.png"));
+
+    auto sed = g_test02->GetComponent<SpriteRenderer>()->GetSprite();
 
     if (sed)
         std::cout << "sprite loaded" << std::endl;

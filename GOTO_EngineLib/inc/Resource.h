@@ -16,7 +16,7 @@ namespace GOTOEngine
 		size_t m_refCount;
 		std::wstring m_filePath;
 		Resource() : m_refCount(0), m_filePath(L"") { ResourceManager::Get()->RegisterResource(this); }
-		virtual ~Resource() 
+	    ~Resource() 
 		{ 
 			auto& resourceTable = ResourceManager::Get()->m_resourceTable;
 			auto resourceTypeInfo = resourceTable.find(typeid(*this));
@@ -29,7 +29,7 @@ namespace GOTOEngine
 					resourceTypeTable.erase(resource);
 				}
 			}
-			ResourceManager::Get()->UnRegisterResource(this); 
+			ResourceManager::Get()->UnRegisterResource(this);
 		}
 	public:
 		std::wstring GetFilePath() { return m_filePath; }
