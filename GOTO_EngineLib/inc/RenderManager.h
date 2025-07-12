@@ -8,6 +8,7 @@ namespace GOTOEngine
 {
 	class IRenderTarget;
 	class IRenderImage;
+	class IRenderBitmap;
 	class IRenderFont;
 	class IRenderAPI;
 	class IWindow;
@@ -23,6 +24,7 @@ namespace GOTOEngine
 		friend class Engine;
 		friend class Camera;
 		friend class Renderer;
+		friend class Texture2D;
 		void StartUp(IWindow* window);
 		void ShutDown();
 		IRenderAPI* m_pRenderAPI = nullptr;
@@ -37,6 +39,8 @@ namespace GOTOEngine
 		void SortRenderer();
 		void SetCamSortDirty() { m_needCamDepthSort = true; }
 		void SetRendererSortDirty() { m_needRenderOrderSort = true; }
+
+		IRenderBitmap* CreateBitmap(std::wstring filePath);
 
 		bool m_needCamDepthSort = false;
 		bool m_needRenderOrderSort = false;

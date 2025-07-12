@@ -81,6 +81,7 @@ void Engine::ProcessFrame()
 	{
 		ObjectDestructionManager::Get()->Update();
 		BehaviourManager::Get()->DisableBehaviours();
+		ResourceManager::Get()->DestroyUnusedResource();
 		ObjectDestructionManager::Get()->Clear();
 	}
 
@@ -140,9 +141,12 @@ void Engine::Shutdown()
 	InputManager::Get()->Shutdown();
 	TimeManager::Get()->Shutdown();
 	SceneManager::Get()->ShutDown();
+
 	ObjectDestructionManager::Get()->Update();
 	BehaviourManager::Get()->DisableBehaviours();
+	ResourceManager::Get()->Clear();
 	ObjectDestructionManager::Get()->Clear();
+
 	BehaviourManager::Get()->ShutDown();
 	ResourceManager::Get()->ShutDown();
 	ObjectDestructionManager::Get()->ShutDown();

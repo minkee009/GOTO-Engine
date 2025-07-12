@@ -9,10 +9,9 @@ namespace GOTOEngine
 	{
 	private:
 		friend class ResourceManager;
-		void IncreaseRefCount() { m_refCount++; }
-		void DecreaseRefCount() { m_refCount--; if (m_refCount == 0) DestroyImmediate(this); }
+		friend class Sprite;
 	protected:
-		virtual void CreateRawDataFromFilePath(const std::wstring& filePath) = 0;
+		virtual void LoadFromFilePath(const std::wstring& filePath) = 0;
 		virtual bool IsValidRawData() = 0;
 		size_t m_refCount;
 		std::wstring m_filePath;
@@ -35,10 +34,14 @@ namespace GOTOEngine
 	public:
 		std::wstring GetFilePath() { return m_filePath; }
 
+	public:
+		void IncreaseRefCount() { m_refCount++; }
+		void DecreaseRefCount() { if(m_refCount != 0) m_refCount--; if (m_refCount == 0) DestroyImmediate(this); }
+
 		template <typename T>
 		static T* Load(std::wstring filePath)
 		{
-			ResourceManager::Get()->Load<T>(filePath);
+			return ResourceManager::Get()->Load<T>(filePath);
 		}
 	};
 }

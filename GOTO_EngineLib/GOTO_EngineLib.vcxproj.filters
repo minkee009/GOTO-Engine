@@ -192,6 +192,15 @@
     <ClInclude Include="inc\Resource.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="inc\Texture2D.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\D2DBitmap.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\IRenderBitmap.h">
+      <Filter>헤더 파일\인터페이스</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\InputManager.cpp">
@@ -280,6 +289,15 @@
     </ClCompile>
     <ClCompile Include="src\Matrix3x3.cpp">
       <Filter>소스 파일\구조체</Filter>
+    </ClCompile>
+    <ClCompile Include="inc\Texture2D.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sprite.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SpriteRenderer.cpp">
+      <Filter>소스 파일\코어 컴포넌트</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

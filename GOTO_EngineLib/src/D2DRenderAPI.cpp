@@ -1,7 +1,10 @@
+#include <d2d1helper.h>
+#include <WICHelper.h>
 #include "D2DRenderAPI.h"
 #include "D2DImage.h"
 #include "D2DFont.h"
-#include <d2d1helper.h>
+#include "D2DBitmap.h"
+
 #ifdef _DEBUG
 #include <iostream>
 #include "InputManager.h"
@@ -133,64 +136,64 @@ void D2DRenderAPI::Clear()
 
 void D2DRenderAPI::DrawImage(int x, int y, float scale, bool flipX, const IRenderImage* image)
 {
-	if (!image || !m_d2dContext)
-		return;
+	//if (!image || !m_d2dContext)
+	//	return;
 
-	auto d2dImage = dynamic_cast<const D2DImage*>(image);
-	if (!d2dImage)
-		return;
+	//auto d2dImage = dynamic_cast<const D2DImage*>(image);
+	//if (!d2dImage)
+	//	return;
 
-	ComPtr<ID2D1Bitmap1> d2dBitmap;
-	const std::wstring& filePath = d2dImage->GetFilePath();
+	//ComPtr<ID2D1Bitmap1> d2dBitmap;
+	//const std::wstring& filePath = d2dImage->GetFilePath();
 
-	//이미지 가져오기
-	auto it = m_pGpuResourcesMap->find(filePath);
-	if (it == m_pGpuResourcesMap->end())
-	{
-		const std::vector<BYTE>* imageData = static_cast<const std::vector<BYTE>*>(d2dImage->GetNativeHandle());
-		if (!imageData) return;
+	////이미지 가져오기
+	//auto it = m_pGpuResourcesMap->find(filePath);
+	//if (it == m_pGpuResourcesMap->end())
+	//{
+	//	const std::vector<BYTE>* imageData = static_cast<const std::vector<BYTE>*>(d2dImage->GetNativeHandle());
+	//	if (!imageData) return;
 
-		D2D1_BITMAP_PROPERTIES1 props = D2D1::BitmapProperties1(
-			D2D1_BITMAP_OPTIONS_NONE,
-			D2D1::PixelFormat(DXGI_FORMAT_B8G8R8A8_UNORM, D2D1_ALPHA_MODE_PREMULTIPLIED)
-		);
+	//	D2D1_BITMAP_PROPERTIES1 props = D2D1::BitmapProperties1(
+	//		D2D1_BITMAP_OPTIONS_NONE,
+	//		D2D1::PixelFormat(DXGI_FORMAT_B8G8R8A8_UNORM, D2D1_ALPHA_MODE_PREMULTIPLIED)
+	//	);
 
-		HRESULT hr = m_d2dContext->CreateBitmap(
-			D2D1::SizeU(d2dImage->GetSrcWidth(), d2dImage->GetSrcHeight()),
-			imageData->data(),
-			d2dImage->GetSrcWidth() * 4,
-			&props,
-			d2dBitmap.GetAddressOf()
-		);
+	//	HRESULT hr = m_d2dContext->CreateBitmap(
+	//		D2D1::SizeU(d2dImage->GetSrcWidth(), d2dImage->GetSrcHeight()),
+	//		imageData->data(),
+	//		d2dImage->GetSrcWidth() * 4,
+	//		&props,
+	//		d2dBitmap.GetAddressOf()
+	//	);
 
-		if (FAILED(hr))
-		{
-			OutputDebugStringW(L"이미지 GPU로드 실패\n");
-			return;
-		}
-		(*m_pGpuResourcesMap)[filePath] = d2dBitmap;
-	}
-	else
-	{
-		d2dBitmap = it->second;
-	}
+	//	if (FAILED(hr))
+	//	{
+	//		OutputDebugStringW(L"이미지 GPU로드 실패\n");
+	//		return;
+	//	}
+	//	(*m_pGpuResourcesMap)[filePath] = d2dBitmap;
+	//}
+	//else
+	//{
+	//	d2dBitmap = it->second;
+	//}
 
-	auto size = d2dBitmap->GetSize();
+	//auto size = d2dBitmap->GetSize();
 
-	//이미지 그리기
-	D2D1_RECT_F destinationRect = D2D1::RectF(
-		static_cast<FLOAT>(x),
-		static_cast<FLOAT>(y),
-		static_cast<FLOAT>(x + d2dImage->GetWidth()),// * scale,
-		static_cast<FLOAT>(y + d2dImage->GetHeight())// * scale
-	);
+	////이미지 그리기
+	//D2D1_RECT_F destinationRect = D2D1::RectF(
+	//	static_cast<FLOAT>(x),
+	//	static_cast<FLOAT>(y),
+	//	static_cast<FLOAT>(x + d2dImage->GetWidth()),// * scale,
+	//	static_cast<FLOAT>(y + d2dImage->GetHeight())// * scale
+	//);
 
-	D2D1_RECT_F sourceRect = D2D1::RectF(
-		static_cast<FLOAT>(d2dImage->GetPartialX()),
-		static_cast<FLOAT>(d2dImage->GetPartialY()),
-		static_cast<FLOAT>(d2dImage->GetPartialX() + d2dImage->GetWidth()),
-		static_cast<FLOAT>(d2dImage->GetPartialY() + d2dImage->GetHeight())
-	);
+	//D2D1_RECT_F sourceRect = D2D1::RectF(
+	//	static_cast<FLOAT>(d2dImage->GetPartialX()),
+	//	static_cast<FLOAT>(d2dImage->GetPartialY()),
+	//	static_cast<FLOAT>(d2dImage->GetPartialX() + d2dImage->GetWidth()),
+	//	static_cast<FLOAT>(d2dImage->GetPartialY() + d2dImage->GetHeight())
+	//);
 
 
 #ifdef _DEBUG
@@ -230,13 +233,13 @@ void D2DRenderAPI::DrawImage(int x, int y, float scale, bool flipX, const IRende
 	m_d2dContext->SetTransform(Mat);
 #endif // DEBUG
 
-	m_d2dContext->DrawBitmap(
-		d2dBitmap.Get(),
-		&destinationRect, 
-		1.0f, // 불투명도
-		D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR,
-		&sourceRect
-	);
+	//m_d2dContext->DrawBitmap(
+	//	d2dBitmap.Get(),
+	//	&destinationRect, 
+	//	1.0f, // 불투명도
+	//	D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR,
+	//	&sourceRect
+	//);
 }
 
 void D2DRenderAPI::DrawString(int x, int y, int width, int height, const wchar_t* string, const GOTOEngine::IRenderFont* font, bool rightAlign, Color color)
@@ -303,6 +306,47 @@ void GOTOEngine::D2DRenderAPI::SetViewport(Rect rect)
 void GOTOEngine::D2DRenderAPI::ResetViewport()
 {
 	m_d2dContext->PopAxisAlignedClip();
+}
+
+IRenderBitmap* GOTOEngine::D2DRenderAPI::CreateBitmap(std::wstring filePath)
+{
+	ComPtr<IWICBitmapDecoder>     decoder;
+	ComPtr<IWICBitmapFrameDecode> frame;
+	ComPtr<IWICFormatConverter>   converter;
+
+	HRESULT hr = WICHelper::GetFactory()->CreateDecoderFromFilename(
+		filePath.c_str(), nullptr, GENERIC_READ, WICDecodeMetadataCacheOnLoad, &decoder);
+	if (FAILED(hr)) return nullptr;
+
+	hr = decoder->GetFrame(0, &frame);
+	if (FAILED(hr)) return nullptr;
+
+	hr = WICHelper::GetFactory()->CreateFormatConverter(&converter);
+	if (FAILED(hr)) return nullptr;
+
+	hr = converter->Initialize(
+		frame.Get(),
+		GUID_WICPixelFormat32bppPBGRA,
+		WICBitmapDitherTypeNone,
+		nullptr,
+		0.0f,
+		WICBitmapPaletteTypeCustom
+	);
+	if (FAILED(hr)) return nullptr;
+
+	// ⑤ Direct2D 비트맵 속성 (premultiplied alpha, B8G8R8A8_UNORM)
+	D2D1_BITMAP_PROPERTIES1 bmpProps = D2D1::BitmapProperties1(
+		D2D1_BITMAP_OPTIONS_NONE,
+		D2D1::PixelFormat(DXGI_FORMAT_B8G8R8A8_UNORM, D2D1_ALPHA_MODE_PREMULTIPLIED)
+	);
+
+	ComPtr<ID2D1Bitmap1> bitmap;
+
+	hr = m_d2dContext->CreateBitmapFromWicBitmap(converter.Get(), &bmpProps, bitmap.GetAddressOf());
+
+	if (FAILED(hr)) return nullptr;
+
+	return new D2DBitmap(bitmap);
 }
 
 void D2DRenderAPI::SwapBuffer()

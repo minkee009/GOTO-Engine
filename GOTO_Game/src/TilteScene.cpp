@@ -13,6 +13,7 @@
 #include "TestComponent.h"
 #include "Camera.h"
 #include "PlayerMove.h"
+#include <SpriteRenderer.h>
 
 using namespace GOTOEngine;
 
@@ -70,6 +71,11 @@ void TitleScene::Init()
 
     g_test02->AddComponent<TestComponent>();
     g_test02->AddComponent<PlayerMove>();
+    
+    Sprite* sed = Resource::Load<Sprite>(L"../Resources/s.png");
+
+    if (sed)
+        std::cout << "sprite loaded" << std::endl;
 
     Object::Destroy(g_test02, 5.0f); // 5초 후에 g_test02 파괴 예약
 

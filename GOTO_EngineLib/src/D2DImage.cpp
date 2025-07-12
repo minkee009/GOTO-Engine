@@ -7,7 +7,7 @@
 using Microsoft::WRL::ComPtr;
 using namespace GOTOEngine;
 
-D2DImage::D2DImage(const std::wstring& filePath, int pivotX, int pivotY) 
+D2DImage::D2DImage(const std::wstring& filePath) 
     : m_filePath(filePath)
 {
     // 1. Factory 재사용
@@ -45,8 +45,6 @@ D2DImage::D2DImage(const std::wstring& filePath, int pivotX, int pivotY)
 
     m_width = width;
     m_height = height;
-    m_srcWidth = width;
-    m_srcHeight = height;
     m_image->resize(width * height * 4); // 4바이트 per 픽셀 (RGBA)
 
     // 6. 픽셀 복사
@@ -58,24 +56,8 @@ D2DImage::D2DImage(const std::wstring& filePath, int pivotX, int pivotY)
         throw std::runtime_error("픽셀 복사 실패");
 }
 
-D2DImage::D2DImage(IRenderImage* imageAtlas, int partialX, int partialY, int width, int height, int pivotX, int pivotY)
-    : m_filePath(imageAtlas->GetFilePath())
-    , m_partialX(partialX)
-    , m_partialY(partialY)
-    , m_width(width)
-    , m_height(height)
-    , m_srcWidth(imageAtlas->GetWidth())
-    , m_srcHeight(imageAtlas->GetHeight())
-{
-    m_image = static_cast<std::vector<BYTE>*>(imageAtlas->GetNativeHandle());
-    m_isPartial = true;
-}
-
 D2DImage::~D2DImage()
 {
-	if (!m_isPartial)
-	{
-		delete m_image;
-		m_image = nullptr;
-	}
+    delete m_image;
+    m_image = nullptr;
 }

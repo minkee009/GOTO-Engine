@@ -8,6 +8,7 @@ namespace GOTOEngine
 	class IWindow;
 	class IRenderImage;
 	class IRenderFont;
+	class IRenderBitmap;
 	class IRenderAPI
 	{
 	public:
@@ -19,9 +20,10 @@ namespace GOTOEngine
 		virtual void DrawString(int x, int y, int width, int height, const wchar_t* string, const IRenderFont* font, bool rightAlign, Color color) = 0;
 		virtual void DrawRect(int x, int y, int width, int height, bool fill, Color color) = 0;
 
+		virtual IRenderBitmap* CreateBitmap(std::wstring filePath) = 0;
+
 		virtual void SetViewport(Rect rect) = 0;
 		virtual void ResetViewport() = 0;
-		//virtual Matrix4x4 GetCenter() = 0;
 
 		virtual void SwapBuffer() = 0;
 		virtual void ChangeBufferSize(int newWidth, int newHeight) = 0;

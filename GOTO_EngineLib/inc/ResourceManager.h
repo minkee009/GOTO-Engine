@@ -6,31 +6,28 @@
 #include <Color.h>
 #include <wincodec.h>
 #include <typeindex>
+#include "Object.h"
 
 
 namespace GOTOEngine
 {
 	class ResourceManager : public Singleton<ResourceManager>
 	{
-	//public:
-		//IRenderImage* LoadStaticImage(const std::wstring& filePath);
-		//IRenderFont* LoadStaticFont(const std::wstring& fontFamily,IRenderFontStyle fontStyle,int size);
-
 	private:
 		friend class Engine;
 		friend class Resource;
-		//std::unordered_map<std::wstring, ResourceEntry> m_resources;
 
 		std::vector<Resource*> m_resources;
 		std::unordered_map < std::type_index, std::unordered_map <std::wstring, Resource*> > m_resourceTable; // map < typename, map < filePath, Resource* > >
 
 		void StartUp();
 		void ShutDown();
+		void Clear();
 
 		void RegisterResource(Resource* resource);
 		void UnRegisterResource(Resource* resource);
 
-		void UnloadUnusedResource();
+		void DestroyUnusedResource();
 
 		template <typename T>
 		T* Load(std::wstring filePath)
@@ -64,11 +61,11 @@ namespace GOTOEngine
 			//없는 경우
 			T* newResource = new T();
 			newResource->m_filePath = filePath; // 파일 경로 갱신
-			newResource->CreateRawDataFromFilePath(filePath); // 파일에서 데이터 로드
+			newResource->LoadFromFilePath(filePath); // 파일에서 데이터 로드
 
 			if (!newResource->IsValidRawData())
 			{
-				DestroyImmediate(newResource);
+				Object::DestroyImmediate(newResource);
 				return nullptr;
 			}
 

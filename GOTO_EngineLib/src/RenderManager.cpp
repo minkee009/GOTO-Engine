@@ -94,6 +94,11 @@ void GOTOEngine::RenderManager::SortRenderer()
 		});
 }
 
+IRenderBitmap* GOTOEngine::RenderManager::CreateBitmap(std::wstring filePath)
+{
+	return m_pRenderAPI->CreateBitmap(filePath);
+}
+
 void RenderManager::SetVSyncInterval(int interval)
 {
 	if (m_pRenderAPI)
