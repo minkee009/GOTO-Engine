@@ -11,6 +11,11 @@ GOTOEngine::Renderer::~Renderer()
 	RenderManager::Get()->UnRegisterRenderer(this);
 }
 
+GOTOEngine::IRenderAPI* GOTOEngine::Renderer::GetRenderAPIFromManager()
+{
+	return RenderManager::Get()->GetRenderAPI();
+}
+
 bool GOTOEngine::Renderer::GetEnabled()
 {
 	return m_enabled

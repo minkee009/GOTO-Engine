@@ -45,8 +45,8 @@ void TitleScene::Init()
     mushroom02_GO->AddComponent<SpriteRenderer>()->SetSprite(Resource::Load<Sprite>(L"../Resources/Mushroom.png"));
     mushroom02_GO->AddComponent<PlayerRotate>();
     
-    camera_GO->AddComponent<PlayerMove>();
-    camera2_GO->AddComponent<CameraMove>();
+    camera_GO->AddComponent<CameraMove>();
+    camera2_GO->AddComponent<PlayerMove>();
 
     auto testComp01 = mushroom01_GO->AddComponent<TestComponent>();
 

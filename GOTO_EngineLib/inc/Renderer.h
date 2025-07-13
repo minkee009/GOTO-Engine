@@ -5,6 +5,7 @@
 
 namespace GOTOEngine
 {
+	class IRenderAPI;
 	class Renderer : public Component
 	{
 	private:
@@ -18,11 +19,14 @@ namespace GOTOEngine
 		virtual void Render(Matrix3x3& matrix) = 0;
 		Renderer();
 		~Renderer();
+
+		IRenderAPI* GetRenderAPIFromManager();
 	public:
 		bool GetEnabled();
 		void SetEnabled(bool enabled);
 		int GetRenderOrder();
 		void SetRenderOrder(int value);
 		size_t GetRenderLayer() { return m_renderLayer; }
+
 	};
 }

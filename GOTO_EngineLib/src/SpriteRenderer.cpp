@@ -9,13 +9,12 @@
 
 void GOTOEngine::SpriteRenderer::Render(Matrix3x3& matrix)
 {
-    auto renderAPI = dynamic_cast<D2DRenderAPI*>(RenderManager::Get()->GetRenderAPI());
-    auto renderContext = renderAPI->GetContext();
+    auto renderAPI = GetRenderAPIFromManager();
 
     if (m_sprite && m_sprite->m_texture)
     {
-        auto bitmap = dynamic_cast<D2DBitmap*>(m_sprite->m_texture->GetBitmap())->GetRaw();
-        
+        auto bitmap = m_sprite->m_texture->GetBitmap();
+
         auto transform = Matrix3x3::Translate(m_sprite->GetWidth() * -m_sprite->GetPivotX(), m_sprite->GetHeight() * -m_sprite->GetPivotY());
         //유니티 좌표계 이미지 플립
         transform = Matrix3x3::Scale(1.0f, -1.0f) * transform;
@@ -26,11 +25,7 @@ void GOTOEngine::SpriteRenderer::Render(Matrix3x3& matrix)
         ////유니티 좌표계 매트릭스 적용
         transform = matrix * transform;
 
-        auto d2dtransform = renderAPI->ConvertToD2DMatrix(transform);
-
-        //transform = transform * D2D1::Matrix3x2F::Translation(renderAPI->GetClipRect().left, renderAPI->GetClipRect().top) ;
-        renderContext->SetTransform(d2dtransform);
-        renderContext->DrawBitmap(bitmap);
+        renderAPI->DrawBitmap(transform, bitmap);
     }
 }
 

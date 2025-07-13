@@ -16,7 +16,6 @@ namespace GOTOEngine
 		void SetVSyncInterval(int interval);
 
 		void Render();
-		IRenderAPI* GetRenderAPI() { return m_pRenderAPI; }
 		const IWindow* GetWindow() const;
 	private:
 		friend class Engine;
@@ -29,6 +28,9 @@ namespace GOTOEngine
 
 		std::vector<Camera*> m_cameras;
 		std::vector<Renderer*> m_renderers;
+
+		IRenderAPI* GetRenderAPI() { return m_pRenderAPI; }
+
 		void RegisterCamera(Camera* cam);
 		void UnRegisterCamera(Camera* cam);
 		void RegisterRenderer(Renderer* renderer);

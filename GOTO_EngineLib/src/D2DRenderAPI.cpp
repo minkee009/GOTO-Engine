@@ -238,6 +238,15 @@ void D2DRenderAPI::Clear()
 	//);
 //}
 
+void GOTOEngine::D2DRenderAPI::DrawBitmap(const Matrix3x3& mat, IRenderBitmap* bitmap)
+{
+	auto d2dTransform = ConvertToD2DMatrix(mat);
+	auto d2dBitmap = dynamic_cast<D2DBitmap*>(bitmap)->GetRaw();
+
+	m_d2dContext->SetTransform(d2dTransform);
+	m_d2dContext->DrawBitmap(d2dBitmap);
+}
+
 void D2DRenderAPI::DrawString(int x, int y, int width, int height, const wchar_t* string, const GOTOEngine::IRenderFont* font, bool rightAlign, Color color)
 {
 	if (!font || !string || !m_d2dContext)
