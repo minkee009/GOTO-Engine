@@ -41,16 +41,19 @@ namespace GOTOEngine
         IRenderBitmap* CreateBitmap(std::wstring filePath);
 
         void SwapBuffer() override;
-		IWindow& GetWindow() const override { return *m_window; }
+        IWindow& GetWindow() const override { return *m_window; }
         void SetVSyncInterval(int interval) override { m_vSyncInterval = interval; }
         ~D2DRenderAPI() override;
+
+        ID2D1DeviceContext7* GetContext() { return m_d2dContext.Get(); }
+        ID2D1Bitmap1* GetRenderTarget() { return m_renderTarget.Get(); }
 
         D2D1::Matrix3x2F ConvertToD2DMatrix(const Matrix3x3& mat)
         {
             return D2D1::Matrix3x2F(
-                mat.m[0][0], mat.m[0][1], // _11, _12
-                mat.m[1][0], mat.m[1][1], // _21, _22
-                mat.m[2][0], mat.m[2][1]  // _31, _32 (Translation)
+                mat.m[0][0], mat.m[0][1], // m11, m12 (첫 번째 행)
+                mat.m[1][0], mat.m[1][1], // m21, m22 (두 번째 행)  
+                mat.m[2][0], mat.m[2][1]  // dx, dy (변환 벡터)
             );
         }
     private:

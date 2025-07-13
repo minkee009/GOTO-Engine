@@ -80,7 +80,7 @@ namespace GOTOEngine
         float GetRotation() const;
 
         // 2D 스케일 추출
-        Vector2 GetScale() const;
+        Vector2 GetLossyScale() const;
 
         // 2D 점 변환
         Vector2 MultiplyPoint(const Vector2& point) const;

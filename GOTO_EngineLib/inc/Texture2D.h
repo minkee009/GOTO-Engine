@@ -14,7 +14,7 @@ namespace GOTOEngine
 	public:
 		Texture2D();
 		~Texture2D();
-		const IRenderBitmap* GetBitmap() const { return m_bitmapHandle; }
+		IRenderBitmap* GetBitmap() { return m_bitmapHandle; }
 		float GetWidth() { return m_bitmapHandle ? m_bitmapHandle->GetWidth() : 0; }
 		float GetHeight() { return  m_bitmapHandle ? m_bitmapHandle->GetHeight() : 0; }
 		bool IsValidRawData() override;

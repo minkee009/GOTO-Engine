@@ -137,7 +137,7 @@ void GOTOEngine::RenderManager::Render()
 		Matrix3x3 mvpMat = camera->GetMatrix();
 
 		//ºäÆ÷Æ® Á¦ÇÑ
-		m_pRenderAPI->SetViewport(camera->GetRect());
+		//m_pRenderAPI->SetViewport(camera->GetRect());
 		for (const auto& renderer : m_renderers)
 		{
 			if (!renderer->GetEnabled()
@@ -146,12 +146,12 @@ void GOTOEngine::RenderManager::Render()
 
 			renderer->Render(mvpMat);
 		}
-		m_pRenderAPI->ResetViewport();
+		//m_pRenderAPI->ResetViewport();
 	}
 	m_pRenderAPI->SwapBuffer();
 }
 
-const GOTOEngine::IWindow* GOTOEngine::RenderManager::GetWindow()
+const GOTOEngine::IWindow* GOTOEngine::RenderManager::GetWindow() const
 {
 	return &m_pRenderAPI->GetWindow();
 }

@@ -64,6 +64,7 @@ TextRenderer 컴포넌트 작성
 
 >> 여기까지
 
+-----> 추가작업, (비추천이지만) 화면 비율 고정 비고정 만들기(찌그러짐)
 
 Animator State 보강 -> transition 정의 ( 벡터 배열 )
 AnimationController에 animation parameter 정의 ( 벡터 배열 )

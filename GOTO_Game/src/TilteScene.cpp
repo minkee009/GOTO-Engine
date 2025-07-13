@@ -13,6 +13,7 @@
 #include "TestComponent.h"
 #include "Camera.h"
 #include "PlayerMove.h"
+#include "PlayerRotate.h"
 #include <SpriteRenderer.h>
 
 using namespace GOTOEngine;
@@ -61,27 +62,40 @@ void TitleScene::Init()
     g_test01 = new GameObject(L"Player");
     g_test02 = new GameObject(L"Child");
 
+    g_test01->GetTransform()->SetPosition({ 80.0f,80.0f });
+    //g_test01->GetTransform()->SetLossyScale({ 5.0f,5.0f });
+
     g_test02->GetTransform()->SetParent(g_test01->GetTransform());
 
-    g_test02->GetTransform()->SetPosition(Vector2{ 2.5f,0.0f });
+    g_test02->GetTransform()->SetLocalPosition(Vector2{ 0.0f,0.0f });
 
-    auto s = g_test01->AddComponent<TestComponent>();
+    //auto s = g_test01->AddComponent<TestComponent>();
+    //g_test01->AddComponent<PlayerMove>();
+    g_test02->AddComponent<PlayerRotate>();
 
-    s->otherGameObject = g_test02;
+    //s->otherGameObject = g_test02;
 
-    g_test02->AddComponent<TestComponent>();
-    g_test02->AddComponent<PlayerMove>();
+    //g_test02->AddComponent<TestComponent>();
+    //g_test02->AddComponent<PlayerMove>();
     
     g_test02->AddComponent<SpriteRenderer>()->SetSprite(Resource::Load<Sprite>(L"../Resources/Mushroom.png"));
+    
+    g_test01->AddComponent<SpriteRenderer>()->SetSprite(Resource::Load<Sprite>(L"../Resources/Mushroom.png"));
 
-    auto sed = g_test02->GetComponent<SpriteRenderer>()->GetSprite();
+    auto sed = g_test01->GetComponent<SpriteRenderer>()->GetSprite();
 
     if (sed)
         std::cout << "sprite loaded" << std::endl;
 
-    Object::Destroy(g_test02, 5.0f); // 5초 후에 g_test02 파괴 예약
+    //Object::Destroy(g_test02, 5.0f); // 5초 후에 g_test02 파괴 예약
 
     g_test03 = Camera::CreateMainCamera();
+
+    for(size_t i = 0; i < 3; i++)
+        for (size_t j = 0; j < 3; j++)
+        {
+            std::cout << g_test02->GetTransform()->GetWorldMatrix().At(i, j) << std::endl;
+        }
 }     
 
 //

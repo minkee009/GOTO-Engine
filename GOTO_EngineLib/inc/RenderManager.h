@@ -18,8 +18,8 @@ namespace GOTOEngine
 		void SetVSyncInterval(int interval);
 
 		void Render();
-		
-		const IWindow* GetWindow();
+		IRenderAPI* GetRenderAPI() { return m_pRenderAPI; }
+		const IWindow* GetWindow() const;
 	private:
 		friend class Engine;
 		friend class Camera;

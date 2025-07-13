@@ -97,6 +97,22 @@ size_t GOTOEngine::Transform::GetSiblingIndex() const
 	return 0; // 부모가 없거나 찾을 수 없는 경우 0 반환
 }
 
+void GOTOEngine::Transform::SetPosition(const Vector2& position)
+{
+	if (m_parent)
+	{
+		// 부모가 있으면 부모의 월드 매트릭스를 사용해서 로컬 좌표로 변환
+		Matrix3x3 parentWorldInv = m_parent->GetWorldMatrix().Inverse();
+		m_localPosition = parentWorldInv.MultiplyPoint(position);
+	}
+	else
+	{
+		// 부모가 없으면 월드 = 로컬
+		m_localPosition = position;
+	}
+	MarkDirty();
+}
+
 const GOTOEngine::Vector2 GOTOEngine::Transform::GetPosition() const
 {
 	if (m_parent)
@@ -111,6 +127,22 @@ const GOTOEngine::Vector2 GOTOEngine::Transform::GetPosition() const
 	}
 }
 
+void GOTOEngine::Transform::SetRotation(float rotation)
+{
+	if (m_parent)
+	{
+		// 부모의 월드 회전을 빼서 로컬 회전 계산
+		m_localRotation = rotation - m_parent->GetRotation();
+	}
+	else
+	{
+		// 부모가 없으면 월드 = 로컬
+		m_localRotation = rotation;
+	}
+	m_localRotation = Mathf::NormalizeAngle(m_localRotation);
+	MarkDirty();
+}
+
 float GOTOEngine::Transform::GetRotation() const
 {
 	if (m_parent)
@@ -122,12 +154,39 @@ float GOTOEngine::Transform::GetRotation() const
 		return m_localRotation;
 }
 
-const GOTOEngine::Vector2 GOTOEngine::Transform::GetScale() const
+void GOTOEngine::Transform::SetLossyScale(const Vector2& scale)
+{
+	if (m_parent)
+	{
+		// 더 정확한 방법: 전체 변환 매트릭스를 역계산
+		// 1. 원하는 월드 TRS 매트릭스 생성
+		Matrix3x3 desiredWorld = Matrix3x3::TRS(
+			GetPosition(),  // 현재 위치 유지
+			GetRotation() * Mathf::Deg2Rad,  // 현재 회전 유지
+			scale  // 원하는 스케일
+		);
+
+		// 2. 부모의 역행렬과 곱해서 로컬 매트릭스 계산
+		Matrix3x3 parentWorldInv = m_parent->GetWorldMatrix().Inverse();
+		Matrix3x3 newLocal = parentWorldInv * desiredWorld;
+
+		// 3. 로컬 매트릭스에서 스케일 추출
+		m_localScale = newLocal.GetLossyScale();
+	}
+	else
+	{
+		// 부모가 없으면 월드 = 로컬
+		m_localScale = scale;
+	}
+	MarkDirty();
+}
+
+const GOTOEngine::Vector2 GOTOEngine::Transform::GetLossyScale() const
 {
 	if (m_parent)
 	{
 		// 부모 스케일과 곱하여 월드 스케일 계산
-		Vector2 parentScale = m_parent->GetScale();
+		Vector2 parentScale = m_parent->GetLossyScale();
 		return Vector2(m_localScale.x * parentScale.x, m_localScale.y * parentScale.y);
 	}
 	else
@@ -169,14 +228,14 @@ void GOTOEngine::Transform::SetParent(Transform* parent, bool worldPositionStays
 
 			m_localPosition = newLocal.GetPosition();
 			m_localRotation = newLocal.GetRotation();
-			m_localScale = newLocal.GetScale();
+			m_localScale = newLocal.GetLossyScale();
 		}
 		else
 		{
 			// 부모가 없으면 로컬 = 월드
 			m_localPosition = worldMatrixBefore.GetPosition();
 			m_localRotation = worldMatrixBefore.GetRotation();
-			m_localScale = worldMatrixBefore.GetScale();
+			m_localScale = worldMatrixBefore.GetLossyScale();
 		}
 	}
 

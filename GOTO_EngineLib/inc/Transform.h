@@ -29,17 +29,23 @@ namespace GOTOEngine
 		Transform();
 
 		// 트랜스폼 프로퍼티
-		void SetPosition(const Vector2& position) { MarkDirty(); m_localPosition = position; }
-		const Vector2& GetLocalPosition() const { return m_localPosition; }
+		void SetPosition(const Vector2& position);
 		const Vector2 GetPosition() const;
 
-		void SetRotation(float rotation) { MarkDirty(); m_localRotation = rotation; }
-		float GetLocalRotation() const { return m_localRotation; }
+		void SetRotation(float rotation);
 		float GetRotation() const;
 
-		void SetScale(const Vector2& scale) { MarkDirty(); m_localScale = scale; }
+		void SetLossyScale(const Vector2& scale);
+		const Vector2 GetLossyScale() const;
+
+		void SetLocalPosition(const Vector2& position) { MarkDirty(); m_localPosition = position; }
+		const Vector2& GetLocalPosition() const { return m_localPosition; }
+
+		void SetLocalRotation(float rotation) { MarkDirty(); m_localRotation = rotation; }
+		float GetLocalRotation() const { return m_localRotation; }
+
+		void SetLocalScale(const Vector2& scale) { MarkDirty(); m_localScale = scale; }
 		const Vector2& GetLocalScale() const { return m_localScale; }
-		const Vector2 GetScale() const;
 
 		// 자식 그래프
 		void SetParent(Transform* parent);

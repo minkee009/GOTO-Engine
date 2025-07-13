@@ -1,7 +1,7 @@
 #include "Renderer.h"
 #include "RenderManager.h"
 
-GOTOEngine::Renderer::Renderer()
+GOTOEngine::Renderer::Renderer() : m_enabled(true), m_renderOrder(0), m_renderLayer(static_cast<size_t>(-1))
 {
 	RenderManager::Get()->RegisterRenderer(this);
 }
