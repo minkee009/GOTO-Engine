@@ -6,8 +6,6 @@
 
 namespace GOTOEngine
 {
-	class IRenderTarget;
-	class IRenderImage;
 	class IRenderBitmap;
 	class IRenderFont;
 	class IRenderAPI;

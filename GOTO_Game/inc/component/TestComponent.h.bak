@@ -22,9 +22,10 @@ namespace GOTOEngine
 		void Awake()
 		{
 			// 초기화 코드 작성
-			if (Object::IsValidObject(otherGameObject))
+			if (IsValidObject(otherGameObject))
 			{
 				otherGameObject->SetActive(false);
+				Destroy(otherGameObject, 15.0f);
 			}
 			std::wcout << "TestComponent Awake called for GameObject: " << GetGameObject()->name << std::endl;
 		}

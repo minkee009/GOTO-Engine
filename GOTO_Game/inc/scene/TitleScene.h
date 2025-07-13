@@ -2,9 +2,6 @@
 #include <Scene.h>
 #include <string>
 #include <memory>
-#include <IRenderFont.h>
-#include <IRenderImage.h>
-#include "AnimationController.h"
 
 using namespace GOTOEngine;
 class TitleScene : public Scene

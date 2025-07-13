@@ -69,9 +69,6 @@
     <ClInclude Include="inc\WinAPIWindow.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="inc\IRenderImage.h">
-      <Filter>헤더 파일\인터페이스</Filter>
-    </ClInclude>
     <ClInclude Include="inc\IRenderAPI.h">
       <Filter>헤더 파일\인터페이스</Filter>
     </ClInclude>
@@ -97,9 +94,6 @@
       <Filter>헤더 파일\매니저</Filter>
     </ClInclude>
     <ClInclude Include="inc\D2DRenderAPI.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\D2DImage.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="inc\D2DFont.h">
@@ -234,9 +228,6 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="src\D2DRenderAPI.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="src\D2DImage.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="src\D2DFont.cpp">

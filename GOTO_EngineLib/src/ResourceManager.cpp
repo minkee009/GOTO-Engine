@@ -1,6 +1,4 @@
 #include "ResourceManager.h"
-#include "IRenderImage.h"
-#include "D2DImage.h"
 #include "D2DFont.h"
 #include "Resource.h"
 

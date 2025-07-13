@@ -1,5 +1,4 @@
 #include "RenderManager.h"
-#include "IRenderImage.h"
 #include "IRenderAPI.h"
 #include "IWindow.h"
 #include "Camera.h"
@@ -140,7 +139,7 @@ void GOTOEngine::RenderManager::Render()
 			* camera->GetMatrix();
 
 		//ºäÆ÷Æ® Á¦ÇÑ
-		//m_pRenderAPI->SetViewport(camera->GetRect());
+		m_pRenderAPI->SetViewport(Rect{0,0,0.5f,1.0f});
 		for (const auto& renderer : m_renderers)
 		{
 			if (!renderer->GetEnabled()
@@ -149,7 +148,7 @@ void GOTOEngine::RenderManager::Render()
 
 			renderer->Render(unityCoordMat);
 		}
-		//m_pRenderAPI->ResetViewport();
+		m_pRenderAPI->ResetViewport();
 	}
 	m_pRenderAPI->SwapBuffer();
 }

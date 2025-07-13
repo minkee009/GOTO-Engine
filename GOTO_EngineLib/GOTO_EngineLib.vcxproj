@@ -160,7 +160,6 @@
     <ClInclude Include="inc\Mathf.h" />
     <ClInclude Include="inc\GameObject.h" />
     <ClInclude Include="inc\IRenderFont.h" />
-    <ClInclude Include="inc\IRenderImage.h" />
     <ClInclude Include="inc\InputManager.h" />
     <ClInclude Include="inc\IRenderAPI.h" />
     <ClInclude Include="inc\IWindow.h" />
@@ -188,7 +187,6 @@
     <ClInclude Include="inc\Vector3.h" />
     <ClInclude Include="inc\Vector4.h" />
     <ClInclude Include="inc\WICHelper.h" />
-    <ClInclude Include="inc\D2DImage.h" />
     <ClInclude Include="inc\WinAPIInputSystem.h" />
     <ClInclude Include="inc\WinAPIWindow.h" />
     <ClInclude Include="inc\WStringHelper.h" />
@@ -222,7 +220,6 @@
     <ClCompile Include="src\TimeManager.cpp" />
     <ClCompile Include="src\Transform.cpp" />
     <ClCompile Include="src\WICHelper.cpp" />
-    <ClCompile Include="src\D2DImage.cpp" />
     <ClCompile Include="src\WinAPIInputSystem.cpp" />
     <ClCompile Include="src\WinAPIWindow.cpp" />
     <ClCompile Include="src\WStringHelper.cpp" />

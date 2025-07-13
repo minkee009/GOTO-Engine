@@ -4,13 +4,6 @@ GOTOEngine::Matrix3x3 GOTOEngine::Matrix3x3::operator*(const Matrix3x3& rhs) con
 {
     Matrix3x3 result;
 
-#ifdef _SIMD_OPTIMIZED
-    // SIMD 최적화 코드는 3x3 행렬 곱셈에 맞게 수정되어야 합니다.
-    // 현재 코드는 SSE 레지스터 사용 방식이 3x3 행렬 곱셈에 직접적으로 적합하지 않을 수 있습니다.
-    // 일반적인 3x3 행렬 곱셈을 위한 SSE 최적화는 4x4 행렬에 비해 복잡하며,
-    // 대부분의 경우 수동 루프가 더 빠르거나 유사한 성능을 보입니다.
-    // 여기서는 SIMD 최적화 부분을 제거하고 일반적인 행렬 곱셈으로 대체합니다.
-    // 필요하다면 3x3 행렬에 특화된 SSE 곱셈 루틴을 따로 구현해야 합니다.
     for (int c = 0; c < 3; ++c) // result의 열
     {
         for (int r = 0; r < 3; ++r) // result의 행
@@ -21,18 +14,6 @@ GOTOEngine::Matrix3x3 GOTOEngine::Matrix3x3::operator*(const Matrix3x3& rhs) con
                 m[2][r] * rhs.m[c][2];
         }
     }
-#else
-    for (int c = 0; c < 3; ++c) // result의 열
-    {
-        for (int r = 0; r < 3; ++r) // result의 행
-        {
-            result.m[c][r] =
-                m[0][r] * rhs.m[c][0] +
-                m[1][r] * rhs.m[c][1] +
-                m[2][r] * rhs.m[c][2];
-        }
-    }
-#endif
     return result;
 }
 

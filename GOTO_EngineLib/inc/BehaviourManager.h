@@ -18,23 +18,23 @@ namespace GOTOEngine
 		std::vector<Behaviour*> m_activeBehaviours; // 활성화된 Behaviour를 저장하는 벡터
 		std::vector<Behaviour*> m_inactiveBehaviours; // 비활성화된 Behaviour를 저장하는 벡터
 		std::unordered_set<Behaviour*> m_firstCallBehaviours;
-
+	
 		// Behaviour를 등록하는 함수
 		void RegisterBehaviour(Behaviour* behaviour);
-
+	
 		// Behaviour를 제거하는 함수
 		void UnregisterBehaviour(Behaviour* behaviour);
-
+	
 		// ExcutionOrder에 따라 Behaviour를 정렬하는 함수
 		void SortBehaviours();
-
+	
 		void InitializeBehaviours();
 		
 		// 비활성화된 Behaviour를 감지하는 함수
 		void DisableBehaviours();
-
+	
 		void BroadCastBehaviourMessage(const std::string& messageName);
-
+	
 		// 매개변수 있는 브로드캐스트
 		template<typename... Args>
 		void BroadCastBehaviourMessage(const std::string& messageName, Args&&... args)
@@ -44,7 +44,7 @@ namespace GOTOEngine
 				behaviour->CallMessage(messageName, std::forward<Args>(args)...);
 			}
 		}
-
+	
 		void CheckAndSortBehaviours();
 		void StartUp();
 		void ShutDown();

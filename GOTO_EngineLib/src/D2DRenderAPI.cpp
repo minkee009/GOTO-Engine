@@ -1,16 +1,12 @@
 #include <d2d1helper.h>
 #include <WICHelper.h>
 #include "D2DRenderAPI.h"
-#include "D2DImage.h"
 #include "D2DFont.h"
 #include "D2DBitmap.h"
 
-#ifdef _DEBUG
-#include <iostream>
-#include "InputManager.h"
-#include "TimeManager.h"
-#include "Mathf.h"
-#endif
+//#ifdef _DEBUG
+//#include <iostream>
+//#endif
 
 using namespace GOTOEngine;
 
@@ -134,8 +130,8 @@ void D2DRenderAPI::Clear()
 	m_d2dContext->Clear(D2D1::ColorF(D2D1::ColorF::Black));
 }
 
-void D2DRenderAPI::DrawImage(int x, int y, float scale, bool flipX, const IRenderImage* image)
-{
+//void D2DRenderAPI::DrawImage(int x, int y, float scale, bool flipX, const IRenderImage* image)
+//{
 	//if (!image || !m_d2dContext)
 	//	return;
 
@@ -196,42 +192,42 @@ void D2DRenderAPI::DrawImage(int x, int y, float scale, bool flipX, const IRende
 	//);
 
 
-#ifdef _DEBUG
-	D2D_MATRIX_3X2_F Mat = D2D1::IdentityMatrix(); //D2D1::Matrix3x2F::Translate(-d2dImage->GetPivotX(), -d2dImage->GetPivotY());
+//#ifdef _DEBUG
+	//D2D_MATRIX_3X2_F Mat = D2D1::IdentityMatrix(); //D2D1::Matrix3x2F::Translate(-d2dImage->GetPivotX(), -d2dImage->GetPivotY());
 
 
 	//이미지 피벗 적용
 	//Mat = Mat * D2D1::Matrix3x2F::Translation(-d2dImage->GetPivotX(), -d2dImage->GetPivotY());
-	if (INPUT_GET_KEY(KeyCode::F))
-	{
-		//디버그용 코드
-	}
+	//if (INPUT_GET_KEY(KeyCode::F))
+	//{
+	//	//디버그용 코드
+	//}
 
-	static float sinT = 0.0f;
-	sinT = (sinf(2.0f * Mathf::PI * TIME_GET_TOTALTIME()) + 1.0f) * 0.5f;
+	//static float sinT = 0.0f;
+	//sinT = (sinf(2.0f * Mathf::PI * TIME_GET_TOTALTIME()) + 1.0f) * 0.5f;
 
-	static auto trans = 0.0f;
-	static auto rot = FLOAT{ 0.0f };
-	
-	trans = sinT * 25.0f;
-	rot += 12.5f * TIME_GET_DELTATIME();
+	//static auto trans = 0.0f;
+	//static auto rot = FLOAT{ 0.0f };
+	//
+	//trans = sinT * 25.0f;
+	//rot += 12.5f * TIME_GET_DELTATIME();
 
-	//유니티 좌표계 이미지 플립
-	Mat = Mat * D2D1::Matrix3x2F::Scale(1.0f, -1.0f);
+	////유니티 좌표계 이미지 플립
+	//Mat = Mat * D2D1::Matrix3x2F::Scale(1.0f, -1.0f);
 
-	//TRS 세팅
-	Mat = Mat * D2D1::Matrix3x2F::Scale(scale ,scale) * D2D1::Matrix3x2F::Rotation({ rot }) * D2D1::Matrix3x2F::Translation(0.0f, trans * scale);
+	////TRS 세팅
+	//Mat = Mat * D2D1::Matrix3x2F::Scale(scale ,scale) * D2D1::Matrix3x2F::Rotation({ rot }) * D2D1::Matrix3x2F::Translation(0.0f, trans * scale);
 
-	//유니티 좌표계 매트릭스 적용
-	Mat = Mat * D2D1::Matrix3x2F::Scale(1.0f, -1.0f) * D2D1::Matrix3x2F::Translation(m_window->GetWidth() * 0.5f, m_window->GetHeight() * 0.5f);
+	////유니티 좌표계 매트릭스 적용
+	//Mat = Mat * D2D1::Matrix3x2F::Scale(1.0f, -1.0f) * D2D1::Matrix3x2F::Translation(m_window->GetWidth() * 0.5f, m_window->GetHeight() * 0.5f);
 
-	if (INPUT_GET_KEY(KeyCode::Space))
-	{
-		//디버그용 코드
-	}
+	//if (INPUT_GET_KEY(KeyCode::Space))
+	//{
+	//	//디버그용 코드
+	//}
 
-	m_d2dContext->SetTransform(Mat);
-#endif // DEBUG
+	//m_d2dContext->SetTransform(Mat);
+//#endif // DEBUG
 
 	//m_d2dContext->DrawBitmap(
 	//	d2dBitmap.Get(),
@@ -240,7 +236,7 @@ void D2DRenderAPI::DrawImage(int x, int y, float scale, bool flipX, const IRende
 	//	D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR,
 	//	&sourceRect
 	//);
-}
+//}
 
 void D2DRenderAPI::DrawString(int x, int y, int width, int height, const wchar_t* string, const GOTOEngine::IRenderFont* font, bool rightAlign, Color color)
 {
@@ -286,13 +282,13 @@ void GOTOEngine::D2DRenderAPI::SetViewport(Rect rect)
 	float screenWidth = static_cast<float>(m_window->GetWidth());
 	float screenHeight = static_cast<float>(m_window->GetHeight());
 
-	float d2dY = 1.0f - rect.y - rect.height;
+	float d2dY = 1.0f - rect.y;
 
 	m_clipRect = D2D1::RectF(
 		rect.x * screenWidth,
-		d2dY * screenHeight,
+		rect.y * screenHeight,
 		(rect.x + rect.width) * screenWidth,
-		(d2dY + rect.height) * screenHeight);
+		(rect.y + rect.height) * screenHeight);
 
 	m_d2dContext->PushAxisAlignedClip(
 		m_clipRect,
