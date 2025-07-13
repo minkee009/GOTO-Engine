@@ -59,25 +59,37 @@ def parse_parameters(params_str):
 # 시그니처 목록 로드
 def load_signatures(signatures_path):
     signatures = {}
-    with open(signatures_path, encoding="utf-8") as f:
-        for line in f:
-            line = line.strip()
-            if not line:
-                continue
-            match = re.match(r'void\s+(\w+)\s*\((.*)\)', line)
-            if match:
-                name = match.group(1)
-                params_str = match.group(2).strip()
-                param_list = parse_parameters(params_str)
-                signatures[name] = param_list
-    return signatures
+    # 여러 인코딩 시도
+    encodings = ['utf-8', 'utf-8-sig', 'euc-kr']
+    for encoding in encodings:
+        try:
+            with open(signatures_path, encoding=encoding) as f:
+                for line in f:
+                    line = line.strip()
+                    if not line:
+                        continue
+                    match = re.match(r'void\s+(\w+)\s*\((.*)\)', line)
+                    if match:
+                        name = match.group(1)
+                        params_str = match.group(2).strip()
+                        param_list = parse_parameters(params_str)
+                        signatures[name] = param_list
+            print(f"시그니처 파일 로드 성공: {signatures_path} (인코딩: {encoding})")
+            return signatures
+        except UnicodeDecodeError:
+            print(f"시그니처 파일 로드 실패: {signatures_path} (인코딩: {encoding}) - 디코딩 오류")
+        except Exception as e:
+            print(f"시그니처 파일 로드 중 오류 발생: {signatures_path} (인코딩: {encoding}) - {e}")
+    
+    raise Exception(f"시그니처 파일을 읽을 수 없습니다: {signatures_path} (지원되는 인코딩 없음)")
 
-# 클래스 이름 추출
+# 클래스 이름 추출 및 ScriptBehaviour 상속 확인
 def extract_class_name(header_text):
-    match = re.search(r'class\s+(\w+)\s*:\s*public\s+\w+', header_text)
+    # ScriptBehaviour를 상속받는 클래스만 매칭
+    match = re.search(r'class\s+(\w+)\s*:\s*public\s+ScriptBehaviour', header_text)
     if match:
         return match.group(1)
-    raise Exception("클래스 이름을 찾을 수 없습니다.")
+    raise Exception("ScriptBehaviour를 상속받는 클래스 이름을 찾을 수 없습니다.")
 
 # 헤더에서 함수 목록 추출 (빈 구현체도 포함)
 def extract_functions(header_text):
@@ -161,8 +173,23 @@ def inject_constructor(header_text, class_name, functions_to_register):
 
 # 헤더파일 처리
 def process_header_file(header_path, signatures):
-    with open(header_path, encoding="utf-8") as f:
-        header_text = f.read()
+    # 여러 인코딩 시도
+    header_text = None
+    encodings = ['utf-8', 'utf-8-sig', 'euc-kr']
+    for encoding in encodings:
+        try:
+            with open(header_path, encoding=encoding) as f:
+                header_text = f.read()
+            print(f"헤더 파일 로드 성공: {header_path.name} (인코딩: {encoding})")
+            break
+        except UnicodeDecodeError:
+            print(f"헤더 파일 로드 실패: {header_path.name} (인코딩: {encoding}) - 디코딩 오류")
+        except Exception as e:
+            print(f"헤더 파일 로드 중 오류 발생: {header_path.name} (인코딩: {encoding}) - {e}")
+    
+    if header_text is None:
+        print(f"[{header_path.name}] 건너뜀: 헤더 파일을 읽을 수 없습니다 (지원되는 인코딩 없음).")
+        return
 
     try:
         class_name = extract_class_name(header_text)
@@ -200,10 +227,11 @@ def process_header_file(header_path, signatures):
         os.remove(backup_path)
     os.rename(header_path, backup_path)
 
-    with open(header_path, "w", encoding="utf-8") as f:
+    with open(header_path, "w", encoding="utf-8") as f: # 백업 후 utf-8로 저장
         f.write(new_header_text)
 
     print(f"[{header_path.name}] 완료 (백업: {backup_path})")
+
 # 메인
 def main():
     if len(sys.argv) != 3:
@@ -217,7 +245,11 @@ def main():
         print("헤더폴더 경로가 유효하지 않습니다.")
         return
 
-    signatures = load_signatures(signatures_path)
+    try:
+        signatures = load_signatures(signatures_path)
+    except Exception as e:
+        print(f"오류: {e}")
+        return
     
     # 디버깅용: 로드된 시그니처 출력
     # print("로드된 시그니처:")
