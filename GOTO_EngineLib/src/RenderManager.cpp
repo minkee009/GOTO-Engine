@@ -124,7 +124,7 @@ void GOTOEngine::RenderManager::Render()
 
 	//렌더링
 	//멀티 카메라를 구현하려면 렌더타겟(백 버퍼)이 카메라마다 존재해야함
-	//활성화된 카메라를 돌면서 Clear -> 렌더링해주고 최종 백버퍼를 하나에 모아서 Composite(합치기)
+	//활성화된 카메라를 돌면서 Clear -> 렌더링해주고 최종 렌더타겟을 하나에 모아서 Composite(합치기)
 	//그리고 그 렌더타겟을 스왑체인이나 메인버퍼로 올려주고 플립핑
 
 	for (const auto& camera : m_cameras)
@@ -140,6 +140,11 @@ void GOTOEngine::RenderManager::Render()
 			* Matrix3x3::Scale(1.0f, -1.0f) 
 			* camera->GetMatrix();
 
+		//Todo : 그리기 전에 카메라 영역 박스색칠 (렌더타겟이 없기 때문에 클리어 대신 씀)
+		// -> 카메라 배경색 (solid color) 구현하기
+		// -> 추가로 카메라 영역이 이미 다른 카메라영역에 의해 완벽히 가려지면 다음 카메라 렌더링으로 넘어가기
+		// ---->> 앞서 그린 카메라 영역의 최대크기를 렌더링이 끝날 때 마다 갱신하고 다음 카메라 렌더링에서 비교하기
+		//---코드
 		
 		for (const auto& renderer : m_renderers)
 		{
