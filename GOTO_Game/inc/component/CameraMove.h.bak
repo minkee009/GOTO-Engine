@@ -18,7 +18,7 @@ namespace GOTOEngine
 
 		void Update()
 		{
-			float hInput = (INPUT_GET_KEY(KeyCode::A) ? 1.0f : 0.0f) + (INPUT_GET_KEY(KeyCode::D) ? -1.0f : 0.0f);
+			float hInput = (INPUT_GET_KEY(KeyCode::D) ? 1.0f : 0.0f) + (INPUT_GET_KEY(KeyCode::A) ? -1.0f : 0.0f);
 			float vInput = (INPUT_GET_KEY(KeyCode::W) ? 1.0f : 0.0f) + (INPUT_GET_KEY(KeyCode::S) ? -1.0f : 0.0f);
 
 			GetTransform()->SetPosition(GetTransform()->GetPosition() + (Vector2{ hInput, vInput }.Normalized() * moveSpeed * TIME_GET_DELTATIME()));
