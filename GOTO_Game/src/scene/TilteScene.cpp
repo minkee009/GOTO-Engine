@@ -1,4 +1,4 @@
-#include "TitleScene.h"
+#include "scene/TitleScene.h"
 #include <RenderManager.h>
 #include <InputManager.h>
 #include <TimeManager.h>
@@ -18,13 +18,9 @@
 
 using namespace GOTOEngine;
 
-GameObject* g_test01 = nullptr;
-GameObject* g_test02 = nullptr;
-GameObject* g_test03 = nullptr;
-
 void TitleScene::Init()
 {
-    RenderManager::Get()->SetVSyncInterval(0);
+    RenderManager::Get()->SetVSyncInterval(1);
 
     //if (!m_font)
     //{
@@ -59,43 +55,36 @@ void TitleScene::Init()
     //m_animController.AddAnimationState(L"Attack", *m_animationClip.get());
     //m_animController.Play(L"Attack");
 
-    g_test01 = new GameObject(L"Player");
-    g_test02 = new GameObject(L"Child");
+    //---오브젝트 초기화
+    auto mushroom01_GO = new GameObject(L"Player");
+    auto mushroom02_GO = new GameObject(L"Child");
+    auto camera_GO = Camera::CreateMainCamera();
 
-    g_test01->GetTransform()->SetPosition({ 80.0f,80.0f });
-    //g_test01->GetTransform()->SetLossyScale({ 5.0f,5.0f });
 
-    g_test02->GetTransform()->SetParent(g_test01->GetTransform());
+    //---트랜스 폼 설정
+    mushroom01_GO->GetTransform()->SetPosition({ 0,0 });
+    //mushroom01_GO->GetTransform()->SetLossyScale({ 5.0f,5.0f });
+ 
+    mushroom02_GO->GetTransform()->SetParent(mushroom01_GO->GetTransform());
+    mushroom02_GO->GetTransform()->SetLocalPosition(Vector2{ 50.0f,50.0f });
 
-    g_test02->GetTransform()->SetLocalPosition(Vector2{ 0.0f,0.0f });
 
-    //auto s = g_test01->AddComponent<TestComponent>();
-    //g_test01->AddComponent<PlayerMove>();
-    g_test02->AddComponent<PlayerRotate>();
+    //---오브젝트 컴포넌트 추가
+    mushroom01_GO->AddComponent<SpriteRenderer>()->SetSprite(Resource::Load<Sprite>(L"../Resources/Mushroom.png"));
 
-    //s->otherGameObject = g_test02;
-
-    //g_test02->AddComponent<TestComponent>();
-    //g_test02->AddComponent<PlayerMove>();
+    mushroom02_GO->AddComponent<SpriteRenderer>()->SetSprite(Resource::Load<Sprite>(L"../Resources/Mushroom.png"));
+    mushroom02_GO->AddComponent<PlayerRotate>();
     
-    g_test02->AddComponent<SpriteRenderer>()->SetSprite(Resource::Load<Sprite>(L"../Resources/Mushroom.png"));
-    
-    g_test01->AddComponent<SpriteRenderer>()->SetSprite(Resource::Load<Sprite>(L"../Resources/Mushroom.png"));
+    camera_GO->AddComponent<PlayerMove>();
 
-    auto sed = g_test01->GetComponent<SpriteRenderer>()->GetSprite();
+    auto testComp01 = mushroom01_GO->AddComponent<TestComponent>();
 
-    if (sed)
-        std::cout << "sprite loaded" << std::endl;
+    //---컴포넌트 어사인
+    testComp01->otherGameObject = mushroom02_GO;
 
-    //Object::Destroy(g_test02, 5.0f); // 5초 후에 g_test02 파괴 예약
 
-    g_test03 = Camera::CreateMainCamera();
-
-    for(size_t i = 0; i < 3; i++)
-        for (size_t j = 0; j < 3; j++)
-        {
-            std::cout << g_test02->GetTransform()->GetWorldMatrix().At(i, j) << std::endl;
-        }
+    //---추가 코드
+    Object::Destroy(mushroom02_GO, 15.0f);
 }     
 
 //

@@ -101,7 +101,7 @@ void GOTOEngine::BehaviourManager::DisableBehaviours()
 	while (it != m_activeBehaviours.end())
 	{
 		Behaviour* currentBehaviour = *it;
-		if (!currentBehaviour->IsActiveAndEnabled() || currentBehaviour->Destroyed())
+		if (!currentBehaviour->IsActiveAndEnabled() || currentBehaviour->IsDestroyed())
 		{
 			(*it)->CallMessage("OnDisable");
 			m_needSort = true;
@@ -117,7 +117,7 @@ void GOTOEngine::BehaviourManager::DisableBehaviours()
 	
 	for (auto inactive : m_inactiveBehaviours)
 	{
-		if (inactive->Destroyed())
+		if (inactive->IsDestroyed())
 		{
 			inactive->CallMessage("OnDestroy");
 		}

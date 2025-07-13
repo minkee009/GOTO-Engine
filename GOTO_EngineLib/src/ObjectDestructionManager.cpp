@@ -4,7 +4,7 @@ void GOTOEngine::ObjectDestructionManager::ScheduleDestroy(Object* obj, float de
 {
 	//유효한 오브젝트인지 확인
 	if (!Object::IsValidObject(obj)
-		|| obj->Destroyed())
+		|| obj->IsDestroyed())
 		return;
 
 	//Transform의 경우엔 Destroy불가능
@@ -34,7 +34,7 @@ void GOTOEngine::ObjectDestructionManager::ImmediateDestroy(Object* obj)
 {
 	//유효한 오브젝트인지 확인
 	if (!Object::IsValidObject(obj)
-		|| obj->Destroyed())
+		|| obj->IsDestroyed())
 		return;
 
 	//Transform의 경우엔 Destroy불가능
@@ -119,7 +119,7 @@ void GOTOEngine::ObjectDestructionManager::ShutDown()
 		if (destroyInfo)
 		{
 			if (!Object::IsValidObject(destroyInfo->obj) 
-				|| destroyInfo->obj->Destroyed())
+				|| destroyInfo->obj->IsDestroyed())
 				continue; // 유효하지 않은 오브젝트는 무시
 
 			destroyInfo->obj->MarkDestory();

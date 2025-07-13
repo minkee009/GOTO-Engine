@@ -49,7 +49,7 @@ namespace GOTOEngine
 		std::wstring name;
 
 		long long GetInstanceID() { return m_instanceID; }
-		bool Destroyed() const { return m_isDestroyed; }
+		bool IsDestroyed() const { return m_isDestroyed; }
 
 		//static Object* Instantiate(const Object& src);
 		static void Destroy(Object* obj, float delay = 0.0f);

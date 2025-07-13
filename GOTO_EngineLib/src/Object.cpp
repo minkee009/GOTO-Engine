@@ -32,7 +32,7 @@ void GOTOEngine::Object::DontDestroyOnLoad(Object* obj)
 	//GameObject인 경우 그 자체를 씬에게 넘기기
 	if (auto go = dynamic_cast<GameObject*>(obj))
 	{
-		if (go->Destroyed() || go->m_scene == SceneManager::Get()->m_dontDestroyOnLoadScene)
+		if (go->IsDestroyed() || go->m_scene == SceneManager::Get()->m_dontDestroyOnLoadScene)
 			return;
 
 		go->m_scene->UnregisterGameObject(go);
@@ -44,8 +44,8 @@ void GOTOEngine::Object::DontDestroyOnLoad(Object* obj)
 	else if (auto comp = dynamic_cast<Component*>(obj))
 	{
 		auto go = comp->GetGameObject();
-		if (comp->Destroyed()
-			|| go->Destroyed()
+		if (comp->IsDestroyed()
+			|| go->IsDestroyed()
 			|| go->m_scene == SceneManager::Get()->m_dontDestroyOnLoadScene)
 			return;
 

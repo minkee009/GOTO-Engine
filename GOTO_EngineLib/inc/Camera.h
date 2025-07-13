@@ -1,10 +1,10 @@
 #pragma once
 #include "Behaviour.h"
 #include "Rect.h"
+#include "Matrix3x3.h"
 
 namespace GOTOEngine
 {
-	class Matrix3x3;
 	class Camera final : public Behaviour
 	{
 		//임시로 2D 카메라 계산만 적용
@@ -15,7 +15,13 @@ namespace GOTOEngine
 		Rect m_rect;
 		size_t m_renderLayer; //렌더 레이어 -> 컬링용
 		//뷰포트 렉트 개념 추가하기 -> 0.0~1.0 노멀라이즈 사이즈, Window Height및 Width에 곱해서 최종 렉트 크기와 위치 계산
-	
+		
+		mutable Matrix3x3 m_cachedMatrix;
+		mutable bool m_isMatrixDirty = true;
+		mutable Vector2 m_lastPosition;
+		mutable float m_lastRotation;
+		mutable float m_lastSize;
+
 	public:
 		Camera();
 		~Camera();

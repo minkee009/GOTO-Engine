@@ -48,6 +48,8 @@ namespace GOTOEngine
         ID2D1DeviceContext7* GetContext() { return m_d2dContext.Get(); }
         ID2D1Bitmap1* GetRenderTarget() { return m_renderTarget.Get(); }
 
+        const D2D1_RECT_F& GetClipRect() const { return m_clipRect; }
+
         D2D1::Matrix3x2F ConvertToD2DMatrix(const Matrix3x3& mat)
         {
             return D2D1::Matrix3x2F(

@@ -5,6 +5,8 @@ GOTOEngine::Sprite::Sprite()
     : m_texture(nullptr)
     , m_width(0)
     , m_height(0)
+    , m_pivotX(0.5f)
+    , m_pivotY(0.5f)
 {
 }
 

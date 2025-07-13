@@ -1,17 +1,20 @@
 #include "Camera.h"
-#include "Matrix3x3.h"
 #include "Transform.h"
 #include "RenderManager.h"
 #include "IWindow.h"
+#include "TimeManager.h"
 
 GOTOEngine::Camera* GOTOEngine::Camera::s_mainCam = nullptr;
 
-GOTOEngine::Camera::Camera() : m_depth(0), m_size(1.0f), m_rect({0.0f,0.0f,1.0f,1.0f}), m_renderLayer(static_cast<size_t>(-1))
+
+GOTOEngine::Camera::Camera() : m_depth(0), m_size(1.0f), m_rect(Rect{ 0.0f,0.0f,1.0f,1.0f }), m_renderLayer(static_cast<size_t>(-1))
+, m_isMatrixDirty(true), m_lastPosition(0.0f, 0.0f), m_lastRotation(0.0f), m_lastSize(1.0f)
 {
 	RegisterMessage("OnEnable", &Camera::OnEnable);
 	RegisterMessage("OnDisable", &Camera::OnDisable);
 	RegisterMessage("OnDestroy", &Camera::OnDestroy);
 
+	m_cachedMatrix.SetIdentity();
 	RenderManager::Get()->RegisterCamera(this);
 }
 
@@ -22,7 +25,7 @@ GOTOEngine::Camera::~Camera()
 
 void GOTOEngine::Camera::OnEnable()
 {
-
+	m_isMatrixDirty = true;
 }
 
 void GOTOEngine::Camera::OnDisable()
@@ -43,9 +46,33 @@ void GOTOEngine::Camera::SetDepth(int value)
 
 GOTOEngine::Matrix3x3 GOTOEngine::Camera::GetMatrix()
 {
-	auto mat = Matrix3x3::Scale(m_size,m_size) * GetGameObject()->GetTransform()->GetLocalMatrix();
+	Transform* transform = GetGameObject()->GetTransform();
 
-	return mat.Inverse();
+	// Transform의 WorldMatrix가 dirty한지 확인 (더 효율적)
+	// 또는 단순히 값 비교로 변경 감지
+	Vector2 currentPosition = transform->GetPosition();
+	float currentRotation = transform->GetRotation();
+
+	// Transform이 변경되었거나 사이즈가 변경된 경우에만 재계산
+	if (m_isMatrixDirty ||
+		currentPosition != m_lastPosition ||
+		currentRotation != m_lastRotation ||
+		m_size != m_lastSize)
+	{
+		m_cachedMatrix = Matrix3x3::TRS(
+			{ -currentPosition.x, -currentPosition.y },
+			-currentRotation * Mathf::Deg2Rad,
+			{ m_size, m_size }
+		);
+
+		// 캐시 상태 업데이트
+		m_lastPosition = currentPosition;
+		m_lastRotation = currentRotation;
+		m_lastSize = m_size;
+		m_isMatrixDirty = false;
+	}
+
+	return m_cachedMatrix;
 }
 
 GOTOEngine::Camera* GOTOEngine::Camera::GetMainCamera()

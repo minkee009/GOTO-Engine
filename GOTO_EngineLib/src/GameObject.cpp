@@ -194,7 +194,7 @@ GOTOEngine::GameObject* GOTOEngine::GameObject::Find(const std::wstring& name)
 	for (auto& go : s_allGameObjects)
 	{
 		if (!go->IsActiveInHierarchy()
-			|| go->Destroyed())
+			|| go->IsDestroyed())
 			continue;
 
 		if (go->name == name)
@@ -212,7 +212,7 @@ GOTOEngine::GameObject* GOTOEngine::GameObject::FindWithTag(const std::string& n
 	for (auto& go : s_allGameObjects)
 	{
 		if (!go->IsActiveInHierarchy()
-			|| go->Destroyed())
+			|| go->IsDestroyed())
 			continue;
 
 		if (go->GetTag() == name)
@@ -231,7 +231,7 @@ std::vector<GOTOEngine::GameObject*> GOTOEngine::GameObject::FindGameObjectsWith
 	for (auto& go : s_allGameObjects)
 	{
 		if (!go->IsActiveInHierarchy()
-			|| go->Destroyed())
+			|| go->IsDestroyed())
 			continue;
 
 		if (go->GetTag() == name)

@@ -143,16 +143,16 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\component\AnimationController.cpp" />
+    <ClCompile Include="src\AnimationController.cpp" />
     <ClCompile Include="src\GameApp.cpp" />
-    <ClCompile Include="src\TilteScene.cpp" />
+    <ClCompile Include="src\scene\TilteScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\AnimationController.h" />
     <ClInclude Include="inc\component\PlayerMove.h" />
     <ClInclude Include="inc\component\PlayerRotate.h" />
     <ClInclude Include="inc\component\TestComponent.h" />
-    <ClInclude Include="inc\TitleScene.h" />
+    <ClInclude Include="inc\scene\TitleScene.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -11,9 +11,9 @@ namespace GOTOEngine
 	public:
     PlayerRotate()
     {
-        REGISTER_BEHAVIOUR_MESSAGE(Update);
+        REGISTER_BEHAVIOUR_MESSAGE(FixedUpdate);
     }
-		void Update()
+		void FixedUpdate()
 		{
 			m_rot += 45.0f * TIME_GET_DELTATIME();
 			GetTransform()->SetLocalRotation(m_rot);

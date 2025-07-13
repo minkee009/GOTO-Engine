@@ -129,6 +129,8 @@ void Engine::ProcessFrame()
 	ObjectDestructionManager::Get()->Update();
 	BehaviourManager::Get()->DisableBehaviours();
 	ObjectDestructionManager::Get()->Clear();
+
+	BehaviourManager::Get()->BroadCastBehaviourMessage("ShowFPS");
 }
 
 void Engine::Quit()
