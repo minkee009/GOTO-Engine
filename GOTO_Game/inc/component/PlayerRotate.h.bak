@@ -15,7 +15,7 @@ namespace GOTOEngine
     }
 		void FixedUpdate()
 		{
-			m_rot += 45.0f * TIME_GET_DELTATIME();
+		    m_rot += 45.0f * TIME_GET_DELTATIME();
 			GetTransform()->SetLocalRotation(m_rot);
 		}
 	};

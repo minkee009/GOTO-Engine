@@ -277,26 +277,25 @@ void D2DRenderAPI::DrawRect(int x, int y, int width, int height, bool fill, Colo
 	}
 }
 
-void GOTOEngine::D2DRenderAPI::SetViewport(Rect rect)
+void D2DRenderAPI::SetViewport(Rect rect)
 {
+	m_d2dContext->SetTransform(D2D1::IdentityMatrix());
 	float screenWidth = static_cast<float>(m_window->GetWidth());
 	float screenHeight = static_cast<float>(m_window->GetHeight());
 
-	float d2dY = 1.0f - rect.y;
-
 	m_clipRect = D2D1::RectF(
-		rect.x * screenWidth,
-		rect.y * screenHeight,
-		(rect.x + rect.width) * screenWidth,
-		(rect.y + rect.height) * screenHeight);
+		rect.x * screenWidth,                           // ÁÂÃø x ÁÂÇ¥ (ÇÈ¼¿)
+		(1.0f - (rect.y + rect.height)) * screenHeight, // »ó´Ü y ÁÂÇ¥ (ÇÈ¼¿)
+		(rect.x + rect.width) * screenWidth,            // ¿ìÃø x ÁÂÇ¥ (ÇÈ¼¿)
+		(1.0f - rect.y) * screenHeight                  // ÇÏ´Ü y ÁÂÇ¥ (ÇÈ¼¿)
+	);
 
 	m_d2dContext->PushAxisAlignedClip(
 		m_clipRect,
-		D2D1_ANTIALIAS_MODE_PER_PRIMITIVE
+		D2D1_ANTIALIAS_MODE_ALIASED
+		// D2D1_ANTIALIAS_MODE_PER_PRIMITIVE // Å¬¸³ °æ°è¿¡ ¾ÈÆ¼¾Ù¸®¾î½Ì Àû¿ë
+		// D2D1_ANTIALIAS_MODE_ALIASED // ÇÈ¼¿ ¿Ïº®ÇÑ Å¬¸®ÇÎÀÌ ÇÊ¿äÇÑ °æ¿ì (¼º´É»ó ÀÌÁ¡ ÀÖÀ» ¼ö ÀÖÀ½)
 	);
-
-	//D2D1_MATRIX_3X2_F transform = D2D1::Matrix3x2F::Translation(clipRect.left, clipRect.top);
-	//m_d2dContext->SetTransform(transform);
 }
 
 void GOTOEngine::D2DRenderAPI::ResetViewport()

@@ -133,22 +133,25 @@ void GOTOEngine::RenderManager::Render()
 			continue;
 
 		//카메라 행렬 구하기
+		auto camRect = camera->GetRect();
 		Matrix3x3 unityCoordMat = 
-		    Matrix3x3::Translate(m_pRenderAPI->GetWindow().GetWidth() * 0.5f , m_pRenderAPI->GetWindow().GetHeight() * 0.5f)
+		    Matrix3x3::Translate(m_pRenderAPI->GetWindow().GetWidth() * (camRect.x + (camRect.width * 0.5f)) , 
+				m_pRenderAPI->GetWindow().GetHeight() * (camRect.y + (camRect.height * 0.5f)))
 			* Matrix3x3::Scale(1.0f, -1.0f) 
 			* camera->GetMatrix();
 
-		//뷰포트 제한
-		m_pRenderAPI->SetViewport(Rect{0,0,0.5f,1.0f});
+		
 		for (const auto& renderer : m_renderers)
 		{
 			if (!renderer->GetEnabled()
 				|| (renderer->GetRenderLayer() & camera->GetRenderLayer()) == 0)
 				continue;
 
+			//뷰포트 제한
+			m_pRenderAPI->SetViewport(camRect);
 			renderer->Render(unityCoordMat);
+			m_pRenderAPI->ResetViewport();
 		}
-		m_pRenderAPI->ResetViewport();
 	}
 	m_pRenderAPI->SwapBuffer();
 }

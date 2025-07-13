@@ -149,6 +149,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\AnimationController.h" />
+    <ClInclude Include="inc\component\CameraMove.h" />
     <ClInclude Include="inc\component\PlayerMove.h" />
     <ClInclude Include="inc\component\PlayerRotate.h" />
     <ClInclude Include="inc\component\TestComponent.h" />
