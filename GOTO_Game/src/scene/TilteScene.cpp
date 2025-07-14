@@ -53,8 +53,9 @@ void TitleScene::Init()
     //---컴포넌트 어사인
     testComp01->otherGameObject = mushroom02_GO;
 
-    camera_GO->GetComponent<Camera>()->SetRect({ 0,0,0.5f,1.0f });
-    camera2_GO->GetComponent<Camera>()->SetRect({ 0.5f,0,0.5f,1.0f });
+    camera_GO->GetComponent<Camera>()->SetRect({ 0,0,1.0f,1.0f });
+    camera2_GO->GetComponent<Camera>()->SetRect({ 0.75f,0.25f,0.25f,0.25f });
+    camera2_GO->GetComponent<Camera>()->SetDepth(1000);
 }     
 
 TitleScene::~TitleScene()

@@ -7,8 +7,8 @@
 GOTOEngine::Camera* GOTOEngine::Camera::s_mainCam = nullptr;
 
 
-GOTOEngine::Camera::Camera() : m_depth(0), m_size(1.0f), m_rect(Rect{ 0.0f,0.0f,1.0f,1.0f }), m_renderLayer(static_cast<size_t>(-1))
-, m_isMatrixDirty(true), m_lastPosition(0.0f, 0.0f), m_lastRotation(0.0f), m_lastSize(1.0f)
+GOTOEngine::Camera::Camera() : m_depth(0), m_size(1.0f), m_rect(Rect{ 0.0f,0.0f,1.0f,1.0f }), m_backGroundColor(Color{ 0,0,0,1 })
+, m_renderLayer(static_cast<size_t>(-1)) , m_isMatrixDirty(true), m_lastPosition(0.0f, 0.0f), m_lastRotation(0.0f), m_lastSize(1.0f)
 {
 	REGISTER_BEHAVIOUR_MESSAGE(OnEnable);
 	REGISTER_BEHAVIOUR_MESSAGE(OnDisable);

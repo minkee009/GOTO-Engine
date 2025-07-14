@@ -1,6 +1,7 @@
 #pragma once
 #include "Behaviour.h"
 #include "Rect.h"
+#include "Color.h"
 #include "Matrix3x3.h"
 
 namespace GOTOEngine
@@ -13,6 +14,7 @@ namespace GOTOEngine
 		float m_size; //직교행렬 줌인, 줌아웃
 		int m_depth; //카메라 렌더오더
 		Rect m_rect;
+		Color m_backGroundColor;
 		size_t m_renderLayer; //렌더 레이어 -> 컬링용
 		//뷰포트 렉트 개념 추가하기 -> 0.0~1.0 노멀라이즈 사이즈, Window Height및 Width에 곱해서 최종 렉트 크기와 위치 계산
 		
@@ -38,6 +40,9 @@ namespace GOTOEngine
 
 		Rect GetRect() { return m_rect; }
 		void SetRect(Rect rect) { m_rect = rect; }
+
+		Color GetBackGroundColor() { return m_backGroundColor; }
+		void SetBackGroundColor(const Color& value) { m_backGroundColor = value; }
 
 		size_t GetRenderLayer() { return m_renderLayer; }
 

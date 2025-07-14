@@ -141,8 +141,13 @@ void GOTOEngine::RenderManager::Render()
 			* camera->GetMatrix();
 
 		//Todo : 그리기 전에 카메라 영역 박스색칠 (렌더타겟이 없기 때문에 클리어 대신 씀)
-		// -> 카메라 배경색 (solid color) 구현하기
-		//---코드
+		m_pRenderAPI->DrawRect(
+			m_pRenderAPI->GetWindow().GetWidth() * camRect.x,
+			m_pRenderAPI->GetWindow().GetHeight() * camRect.y,
+			m_pRenderAPI->GetWindow().GetWidth() * camRect.width,
+			m_pRenderAPI->GetWindow().GetHeight() * camRect.height,
+			true,
+			camera->GetBackGroundColor());
 		
 		for (const auto& renderer : m_renderers)
 		{

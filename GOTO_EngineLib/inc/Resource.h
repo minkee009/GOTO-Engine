@@ -30,7 +30,7 @@ namespace GOTOEngine
 				}
 			}
 			ResourceManager::Get()->UnRegisterResource(this); 
-			std::cout << "resource unloaded" << this << std::endl;
+			std::wcout << "resource unloaded - " << this << " : " << m_filePath.c_str() << std::endl;
 		}
 	public:
 		std::wstring GetFilePath() { return m_filePath; }

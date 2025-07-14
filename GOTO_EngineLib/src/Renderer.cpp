@@ -19,7 +19,7 @@ GOTOEngine::IRenderAPI* GOTOEngine::Renderer::GetRenderAPIFromManager()
 bool GOTOEngine::Renderer::GetEnabled()
 {
 	return m_enabled
-		&& Object::IsValidObject(GetGameObject())
+		&& IsValidObject(GetGameObject())
 		&& GetGameObject()->IsActiveInHierarchy();
 }
 
