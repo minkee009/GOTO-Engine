@@ -24,8 +24,8 @@ namespace GOTOEngine
 
 		//virtual void DrawImage(int x, int y, float scale, bool flipX, const IRenderImage* image) = 0;
 		virtual void DrawBitmap(const Matrix3x3& mat, IRenderBitmap* bitmap) = 0;
-		virtual void DrawString(int x, int y, int width, int height, const wchar_t* string, const IRenderFont* font, bool rightAlign, Color color) = 0;
-		virtual void DrawRect(int x, int y, int width, int height, bool fill, Color color) = 0;
+		virtual void DrawString(float x, float y, float width, float height, const wchar_t* string, const IRenderFont* font, bool rightAlign, Color color) = 0;
+		virtual void DrawRect(float x, float y, float width, float height, bool fill, Color color) = 0;
 
 		virtual IRenderBitmap* CreateBitmap(std::wstring filePath) = 0;
 		virtual RenderAPIMemoryStatus CollectMemoryUsage() = 0;

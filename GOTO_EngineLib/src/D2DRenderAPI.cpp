@@ -261,7 +261,7 @@ void GOTOEngine::D2DRenderAPI::DrawBitmap(const Matrix3x3& mat, IRenderBitmap* b
 	m_d2dContext->DrawBitmap(d2dBitmap);
 }
 
-void D2DRenderAPI::DrawString(int x, int y, int width, int height, const wchar_t* string, const GOTOEngine::IRenderFont* font, bool rightAlign, Color color)
+void D2DRenderAPI::DrawString(float x, float y, float width, float height, const wchar_t* string, const GOTOEngine::IRenderFont* font, bool rightAlign, Color color)
 {
 	if (!string || !m_d2dContext)
 		return;
@@ -287,13 +287,13 @@ void D2DRenderAPI::DrawString(int x, int y, int width, int height, const wchar_t
 
 	float screenHeight = static_cast<float>(m_window->GetHeight());
 
-	D2D1_RECT_F layoutRect = D2D1::RectF(static_cast<FLOAT>(x), static_cast<FLOAT>(screenHeight - y - height), static_cast<FLOAT>(x + width), static_cast<FLOAT>(screenHeight - y));
+	D2D1_RECT_F layoutRect = D2D1::RectF(x, (screenHeight - y - height), (x + width), (screenHeight - y));
 
 	m_d2dContext->SetTransform(D2D1::IdentityMatrix());
 	m_d2dContext->DrawText(string, static_cast<UINT32>(wcslen(string)), textFormat, &layoutRect, m_solidColorBrush.Get());
 }
 
-void D2DRenderAPI::DrawRect(int x, int y, int width, int height, bool fill, Color color)
+void D2DRenderAPI::DrawRect(float x, float y, float width, float height, bool fill, Color color)
 {
 	if (!m_solidColorBrush) {
 		OutputDebugStringA("SolidColorBrush가 초기화되지 않았습니다.\n");
@@ -303,12 +303,12 @@ void D2DRenderAPI::DrawRect(int x, int y, int width, int height, bool fill, Colo
 	m_d2dContext->SetTransform(D2D1::IdentityMatrix());
 	m_solidColorBrush->SetColor(D2D1::ColorF(color.R, color.G, color.B, color.A));
 	if (fill) {
-		m_d2dContext->FillRectangle(D2D1::RectF(static_cast<FLOAT>(x), static_cast<FLOAT>(screenHeight - y - height),
-			static_cast<FLOAT>(x + width), static_cast<FLOAT>(screenHeight - y)), m_solidColorBrush.Get());
+		m_d2dContext->FillRectangle(D2D1::RectF(x, (screenHeight - y - height),
+			(x + width), (screenHeight - y)), m_solidColorBrush.Get());
 	}
 	else {
-		m_d2dContext->DrawRectangle(D2D1::RectF(static_cast<FLOAT>(x), static_cast<FLOAT>(screenHeight - y - height),
-			static_cast<FLOAT>(x + width), static_cast<FLOAT>(screenHeight - y)), m_solidColorBrush.Get());
+		m_d2dContext->DrawRectangle(D2D1::RectF(x, (screenHeight - y - height),
+			(x + width), (screenHeight - y)), m_solidColorBrush.Get());
 	}
 }
 
