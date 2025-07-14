@@ -17,6 +17,9 @@ namespace GOTOEngine
 
 		void Render();
 		const IWindow* GetWindow() const;
+
+		void DrawString(int x, int y, int width, int height, const wchar_t* text, const IRenderFont* font, bool rightAlign, Color color);
+
 	private:
 		friend class Engine;
 		friend class Camera;

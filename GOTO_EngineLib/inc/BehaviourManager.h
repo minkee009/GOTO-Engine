@@ -13,6 +13,7 @@ namespace GOTOEngine
 	private:
 		friend class Engine;
 		friend class Behaviour;
+		friend class RenderManager;
 
 		bool m_needSort = false; // Behaviour 정렬이 필요한지 여부
 		std::vector<Behaviour*> m_activeBehaviours; // 활성화된 Behaviour를 저장하는 벡터

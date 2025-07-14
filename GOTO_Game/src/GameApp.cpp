@@ -10,6 +10,7 @@
 
 // ¾À
 #include "TitleScene.h"
+#include "SampleScene.h"
 
 void StartEngineLoop()
 {
@@ -17,9 +18,10 @@ void StartEngineLoop()
 
 	//¾À ÇÒ´ç ¹× Ãß°¡
 	SCENE_ADD_SCENE<TitleScene>(L"Title");
+	SCENE_ADD_SCENE<SampleScene>(L"SampleScene");
 
 	//Ã¹ ¾ÀÀ¸·Î º¯È¯
-	SCENE_CHANGE_SCENE(L"Title");
+	SCENE_CHANGE_SCENE(L"SampleScene");
 
 	ENGINE_RUN();
 	ENGINE_SHUTDOWN();

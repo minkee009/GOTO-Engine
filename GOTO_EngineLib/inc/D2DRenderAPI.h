@@ -72,6 +72,8 @@ namespace GOTOEngine
         IWindow* m_window;
         D2D1_RECT_F m_clipRect;
 
+        IRenderFont* m_defaultFont;
+
 		int m_vSyncInterval = 1; // 기본 VSync 간격
 
         std::unordered_map<std::wstring, ComPtr<ID2D1Bitmap1>>* m_pGpuResourcesMap; // <filepath, converted_image>

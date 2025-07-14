@@ -173,24 +173,24 @@ def inject_constructor(header_text, class_name, functions_to_register):
 
 # 헤더파일 처리
 def process_header_file(header_path, signatures):
-    # 여러 인코딩 시도
-    header_text = None
-    encodings = ['utf-8', 'utf-8-sig', 'euc-kr']
+    header_bytes = None
+    encodings = ['utf-8', 'utf-8-sig', 'euc-kr', 'utf-16']
     for encoding in encodings:
         try:
-            with open(header_path, encoding=encoding) as f:
-                header_text = f.read()
+            with open(header_path, 'rb') as f:
+                raw_bytes = f.read()
+            header_text = raw_bytes.decode(encoding)
             print(f"헤더 파일 로드 성공: {header_path.name} (인코딩: {encoding})")
             break
         except UnicodeDecodeError:
             print(f"헤더 파일 로드 실패: {header_path.name} (인코딩: {encoding}) - 디코딩 오류")
         except Exception as e:
             print(f"헤더 파일 로드 중 오류 발생: {header_path.name} (인코딩: {encoding}) - {e}")
-    
-    if header_text is None:
+    else:
         print(f"[{header_path.name}] 건너뜀: 헤더 파일을 읽을 수 없습니다 (지원되는 인코딩 없음).")
         return
 
+    # 여기서부터는 header_text 사용
     try:
         class_name = extract_class_name(header_text)
     except Exception as e:
@@ -203,32 +203,27 @@ def process_header_file(header_path, signatures):
     for name, header_params in declared_functions:
         if name in signatures:
             sig_params = signatures[name]
-            
-            # 디버깅 정보 출력
-            # print(f"[DEBUG] {name}:")
-            # print(f"  시그니처: {sig_params}")
-            # print(f"  헤더:     {header_params}")
-            
-            # 정확한 시그니처 비교
             if compare_signatures(sig_params, header_params):
                 functions_to_register.append(name)
-                # print(f"  -> 매칭 성공!")
-            # else:
-            #     print(f"  -> 매칭 실패")
 
-    # 등록할 함수가 없어도 생성자는 새로 생성하여 기존 REGISTER_BEHAVIOUR_MESSAGE 제거
     print(f"[{header_path.name}] 등록할 함수: {', '.join(functions_to_register) if functions_to_register else '없음'}")
 
     new_header_text = inject_constructor(header_text, class_name, functions_to_register)
 
-    # 백업 생성
+     # 백업
     backup_path = str(header_path) + ".bak"
     if os.path.exists(backup_path):
         os.remove(backup_path)
     os.rename(header_path, backup_path)
 
-    with open(header_path, "w", encoding="utf-8") as f: # 백업 후 utf-8로 저장
-        f.write(new_header_text)
+    # 줄 끝을 CRLF로 정규화
+    new_header_text = new_header_text.replace('\r\n', '\n')  # 기존 CRLF 제거
+    new_header_text = new_header_text.replace('\r', '\n')    # 혹시 있을 CR 제거
+    new_header_text = new_header_text.replace('\n', '\r\n')  # 최종적으로 CRLF로 변환
+
+    # 원래 인코딩으로 다시 저장
+    with open(header_path, 'wb') as f:
+        f.write(new_header_text.encode(encoding))
 
     print(f"[{header_path.name}] 완료 (백업: {backup_path})")
 

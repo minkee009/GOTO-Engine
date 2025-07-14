@@ -113,7 +113,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>$(ProjectDir)tools\generate_registers.exe $(ProjectDir)inc\component $(ProjectDir)tools\signatures.txt</Command>
+      <Command>"$(ProjectDir)\tools\generate_registers.exe" "$(ProjectDir)\inc\component" "$(ProjectDir)\tools\signatures.txt"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -143,17 +143,25 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\component\MonsterAttack.cpp" />
+    <ClCompile Include="src\component\PlayerHealth.cpp" />
     <ClCompile Include="src\AnimationController.cpp" />
     <ClCompile Include="src\GameApp.cpp" />
-    <ClCompile Include="src\scene\TilteScene.cpp" />
+    <ClCompile Include="src\scene\SampleScene.cpp" />
+    <ClCompile Include="src\scene\TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\AnimationController.h" />
     <ClInclude Include="inc\component\CameraMove.h" />
+    <ClInclude Include="inc\component\MonsterAttack.h" />
+    <ClInclude Include="inc\component\PlayerHealth.h" />
     <ClInclude Include="inc\component\PlayerMove.h" />
     <ClInclude Include="inc\component\PlayerRotate.h" />
+    <ClInclude Include="inc\component\RenderInfoDraw.h" />
     <ClInclude Include="inc\component\TestComponent.h" />
+    <ClInclude Include="inc\component\PlayerGUI.h" />
     <ClInclude Include="inc\scene\TitleScene.h" />
+    <ClInclude Include="inc\scene\SampleScene.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -33,8 +33,17 @@
     <ClCompile Include="src\AnimationController.cpp">
       <Filter>소스 파일\컴포넌트</Filter>
     </ClCompile>
-    <ClCompile Include="src\scene\TilteScene.cpp">
+    <ClCompile Include="src\scene\TitleScene.cpp">
       <Filter>소스 파일\씬</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scene\SampleScene.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="src\component\PlayerHealth.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="src\component\MonsterAttack.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -47,13 +56,28 @@
     <ClInclude Include="inc\scene\TitleScene.h">
       <Filter>헤더 파일\씬</Filter>
     </ClInclude>
+    <ClInclude Include="inc\component\CameraMove.h">
+      <Filter>헤더 파일\컴포넌트</Filter>
+    </ClInclude>
     <ClInclude Include="inc\component\PlayerMove.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>헤더 파일\컴포넌트</Filter>
     </ClInclude>
     <ClInclude Include="inc\component\PlayerRotate.h">
+      <Filter>헤더 파일\컴포넌트</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\component\RenderInfoDraw.h">
+      <Filter>헤더 파일\컴포넌트</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\scene\SampleScene.h">
+      <Filter>헤더 파일\씬</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\component\PlayerHealth.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="inc\component\CameraMove.h">
+    <ClInclude Include="inc\component\MonsterAttack.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\component\PlayerGUI.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

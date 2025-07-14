@@ -11,7 +11,14 @@
 #include <iostream>
 #endif
 
+#include "BehaviourManager.h"
+
 using namespace GOTOEngine;
+
+void RenderManager::DrawString(int x, int y, int width, int height, const wchar_t* text, const IRenderFont* font, bool rightAlign, Color color) 
+{
+	m_pRenderAPI->DrawString(x, y, width, height, text, font, rightAlign, color);
+}
 
 void RenderManager::StartUp(IWindow* window)
 {
@@ -161,6 +168,10 @@ void GOTOEngine::RenderManager::Render()
 			m_pRenderAPI->ResetViewport();
 		}
 	}
+
+	//OnGUI
+	BehaviourManager::Get()->BroadCastBehaviourMessage("OnGUI");
+
 	m_pRenderAPI->SwapBuffer();
 }
 
