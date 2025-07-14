@@ -153,6 +153,7 @@
   <ItemGroup>
     <ClInclude Include="inc\AnimationController.h" />
     <ClInclude Include="inc\component\CameraMove.h" />
+    <ClInclude Include="inc\component\MemoryUsageGUI.h" />
     <ClInclude Include="inc\component\MonsterAttack.h" />
     <ClInclude Include="inc\component\PlayerHealth.h" />
     <ClInclude Include="inc\component\PlayerMove.h" />

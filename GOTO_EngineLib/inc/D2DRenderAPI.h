@@ -24,6 +24,13 @@ using namespace Microsoft::WRL;
 
 namespace GOTOEngine
 {
+    struct D2DMemoryStatus
+    {
+        std::string vramUsage;
+        std::string dramUsage;
+        std::string pageFileUsage;
+    };
+
     class D2DRenderAPI : public IRenderAPI
     {
     public:
@@ -59,6 +66,9 @@ namespace GOTOEngine
                 mat.m[2][0], mat.m[2][1]  // dx, dy (∫Ø»Ø ∫§≈Õ)
             );
         }
+
+        std::string FormatBytes(UINT64 bytes);
+        D2DMemoryStatus CollectMemoryUsage();
     private:
 
         ComPtr<ID3D11Device> m_d3dDevice;
@@ -66,6 +76,9 @@ namespace GOTOEngine
         ComPtr<ID2D1DeviceContext7> m_d2dContext;
         ComPtr<ID2D1Bitmap1> m_renderTarget;
         ComPtr<ID2D1Factory8> m_d2dFactory;
+
+        ComPtr<IDXGIAdapter3> m_dxgiAdapter;
+        ComPtr<IDXGIDevice3> m_dxgiDevice;
 
         ComPtr<ID2D1SolidColorBrush> m_solidColorBrush;
 

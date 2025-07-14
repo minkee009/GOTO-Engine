@@ -3,7 +3,11 @@
 #include "D2DRenderAPI.h"
 #include "D2DFont.h"
 #include "D2DBitmap.h"
-
+#include <iostream>
+#include <sstream>
+#include <iomanip>
+#include <psapi.h>                // GetProcessMemoryInfo, PROCESS_MEMORY_COUNTERS_EX
+#pragma comment(lib, "psapi.lib")
 //#ifdef _DEBUG
 //#include <iostream>
 //#endif
@@ -30,6 +34,11 @@ bool D2DRenderAPI::Initialize(IWindow* window)
 
 	ComPtr<IDXGIDevice> dxgiDevice;
 	m_d3dDevice.As(&dxgiDevice);
+	ComPtr<IDXGIAdapter> dxgiAdapter;
+	m_d3dDevice.As(&m_dxgiDevice);
+	m_dxgiDevice->GetAdapter(dxgiAdapter.GetAddressOf());
+	dxgiAdapter.As(&m_dxgiAdapter);
+
 	ComPtr<ID2D1Device7> d2dDevice;
 	m_d2dFactory->CreateDevice((dxgiDevice.Get()), d2dDevice.GetAddressOf());
 	d2dDevice->CreateDeviceContext(D2D1_DEVICE_CONTEXT_OPTIONS_NONE, m_d2dContext.GetAddressOf());
@@ -73,6 +82,8 @@ void D2DRenderAPI::Release()
 		delete m_defaultFont;
 
 	m_d3dDevice = nullptr;
+	m_dxgiAdapter = nullptr;
+	m_dxgiDevice = nullptr;
 	m_swapChain = nullptr;
 	m_d2dContext = nullptr;
 	m_renderTarget = nullptr;
@@ -377,4 +388,45 @@ void D2DRenderAPI::SwapBuffer()
 D2DRenderAPI::~D2DRenderAPI()
 {
 	Release();
+}
+
+std::string GOTOEngine::D2DRenderAPI::FormatBytes(UINT64 bytes)
+{
+	constexpr double KB = 1024.0;
+	constexpr double MB = KB * 1024.0;
+	constexpr double GB = MB * 1024.0;
+
+	std::ostringstream oss;
+	oss << std::fixed << std::setprecision(2);
+
+	if (bytes >= static_cast<UINT64>(GB))
+		oss << (bytes / GB) << " GB";
+	else if (bytes >= static_cast<UINT64>(MB))
+		oss << (bytes / MB) << " MB";
+	else if (bytes >= static_cast<UINT64>(KB))
+		oss << (bytes / KB) << " KB";
+	else
+		oss << bytes << " B";
+
+	return oss.str();
+}
+
+D2DMemoryStatus GOTOEngine::D2DRenderAPI::CollectMemoryUsage()
+{
+	D2DMemoryStatus status;
+
+	DXGI_QUERY_VIDEO_MEMORY_INFO memInfo = {};
+	m_dxgiAdapter->QueryVideoMemoryInfo(0, DXGI_MEMORY_SEGMENT_GROUP_LOCAL, &memInfo);
+	status.vramUsage = FormatBytes(memInfo.CurrentUsage);
+
+	HANDLE hProcess = GetCurrentProcess();
+	PROCESS_MEMORY_COUNTERS_EX pmc;
+	pmc.cb = sizeof(PROCESS_MEMORY_COUNTERS_EX);
+
+	// 현재 프로세스의 메모리 사용 정보 조회
+	GetProcessMemoryInfo(hProcess, (PROCESS_MEMORY_COUNTERS*)&pmc, sizeof(pmc));
+	status.dramUsage = FormatBytes(pmc.WorkingSetSize);
+	status.pageFileUsage = FormatBytes(pmc.PagefileUsage - pmc.WorkingSetSize);
+
+	return status;
 }

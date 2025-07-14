@@ -23,7 +23,7 @@ namespace GOTOEngine
 				hpText = std::to_wstring(hp);
 			}
 
-			std::wstring outText = L" 현재 주황버섯의 체력 : " + hpText;
+			std::wstring outText = L" 현재 플레이어의 체력 : " + hpText;
 			
 			RenderManager::Get()->DrawString(0, winHeight - 540, 680, 540, outText.c_str(), nullptr, false, {255,127,0,255});
 
