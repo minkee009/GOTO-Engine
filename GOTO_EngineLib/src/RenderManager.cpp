@@ -42,6 +42,11 @@ void RenderManager::StartUp(IWindow* window)
 	}
 }
 
+RenderAPIMemoryStatus RenderManager::CollectMemoryUsage()
+{
+	return m_pRenderAPI->CollectMemoryUsage();
+}
+
 void RenderManager::ShutDown()
 {
 	m_cameras.clear();

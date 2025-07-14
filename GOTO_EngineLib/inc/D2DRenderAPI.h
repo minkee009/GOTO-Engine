@@ -24,13 +24,6 @@ using namespace Microsoft::WRL;
 
 namespace GOTOEngine
 {
-    struct D2DMemoryStatus
-    {
-        std::string vramUsage;
-        std::string dramUsage;
-        std::string pageFileUsage;
-    };
-
     class D2DRenderAPI : public IRenderAPI
     {
     public:
@@ -68,7 +61,7 @@ namespace GOTOEngine
         }
 
         std::string FormatBytes(UINT64 bytes);
-        D2DMemoryStatus CollectMemoryUsage();
+        RenderAPIMemoryStatus CollectMemoryUsage() override;
     private:
 
         ComPtr<ID3D11Device> m_d3dDevice;

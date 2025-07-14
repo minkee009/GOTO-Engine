@@ -411,9 +411,9 @@ std::string GOTOEngine::D2DRenderAPI::FormatBytes(UINT64 bytes)
 	return oss.str();
 }
 
-D2DMemoryStatus GOTOEngine::D2DRenderAPI::CollectMemoryUsage()
+RenderAPIMemoryStatus GOTOEngine::D2DRenderAPI::CollectMemoryUsage()
 {
-	D2DMemoryStatus status;
+	RenderAPIMemoryStatus status;
 
 	DXGI_QUERY_VIDEO_MEMORY_INFO memInfo = {};
 	m_dxgiAdapter->QueryVideoMemoryInfo(0, DXGI_MEMORY_SEGMENT_GROUP_LOCAL, &memInfo);

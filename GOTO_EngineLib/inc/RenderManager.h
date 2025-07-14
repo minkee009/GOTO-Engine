@@ -10,6 +10,7 @@ namespace GOTOEngine
 	class IRenderFont;
 	class IRenderAPI;
 	class IWindow;
+	struct RenderAPIMemoryStatus;
 	class RenderManager : public Singleton<RenderManager>
 	{
 	public:
@@ -19,9 +20,7 @@ namespace GOTOEngine
 		const IWindow* GetWindow() const;
 
 		void DrawString(int x, int y, int width, int height, const wchar_t* text, const IRenderFont* font, bool rightAlign, Color color);
-
-
-		IRenderAPI* GetRenderAPI() { return m_pRenderAPI; } //°úÁ¦¿ë
+		RenderAPIMemoryStatus CollectMemoryUsage();
 	private:
 		friend class Engine;
 		friend class Camera;
@@ -33,6 +32,8 @@ namespace GOTOEngine
 
 		std::vector<Camera*> m_cameras;
 		std::vector<Renderer*> m_renderers;
+
+		IRenderAPI* GetRenderAPI() { return m_pRenderAPI; }
 
 		void RegisterCamera(Camera* cam);
 		void UnRegisterCamera(Camera* cam);

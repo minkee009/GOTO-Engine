@@ -5,6 +5,13 @@
 
 namespace GOTOEngine
 {
+	struct RenderAPIMemoryStatus
+	{
+		std::string vramUsage;
+		std::string dramUsage;
+		std::string pageFileUsage;
+	};
+
 	class IWindow;
 	class IRenderFont;
 	class IRenderBitmap;
@@ -21,6 +28,7 @@ namespace GOTOEngine
 		virtual void DrawRect(int x, int y, int width, int height, bool fill, Color color) = 0;
 
 		virtual IRenderBitmap* CreateBitmap(std::wstring filePath) = 0;
+		virtual RenderAPIMemoryStatus CollectMemoryUsage() = 0;
 
 		virtual void SetViewport(Rect rect) = 0;
 		virtual void ResetViewport() = 0;

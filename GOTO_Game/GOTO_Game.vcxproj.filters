@@ -83,5 +83,8 @@
     <ClInclude Include="inc\component\MemoryUsageGUI.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="inc\component\MushroomCreator.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
