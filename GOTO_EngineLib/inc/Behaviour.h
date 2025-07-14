@@ -7,6 +7,7 @@
 #include <stdexcept>
 #include <any>
 
+#define REGISTER_BEHAVIOUR_MESSAGE(func) RegisterMessage(#func, &std::remove_reference_t<decltype(*this)>::func);
 
 namespace GOTOEngine
 {

@@ -74,7 +74,7 @@ void GOTOEngine::GameObject::Dispose()
 	//
 	for (auto& comp : m_components)
 	{
-		if (!Object::IsValidObject(comp))
+		if (!IsValidObject(comp))
 			continue; // 이미 파괴된 컴포넌트는 무시
 		DestroyImmediate(comp);
 	}
@@ -112,14 +112,14 @@ GOTOEngine::GameObject::~GameObject()
 	//트랜스폼의 차일드들도 일괄 파괴해야함...
 	for (auto& child : m_transform->m_childs)
 	{
-		if (!Object::IsValidObject(child))
+		if (!IsValidObject(child))
 			continue; // 이미 파괴된 차일드는 무시
 		//iterator 오염 방지 -> RemoveChild()방지;
 		child->m_parent = nullptr;
 	}
 	m_transform->m_childs.clear(); // 자식 트랜스폼 목록 초기화
 
-	if (Object::IsValidObject(m_transform->m_parent))
+	if (IsValidObject(m_transform->m_parent))
 		m_transform->m_parent->RemoveChild(m_transform);
 
 	delete m_transform; // Transform 컴포넌트 파괴
@@ -135,7 +135,7 @@ GOTOEngine::GameObject::~GameObject()
 	//
 	for (auto& comp : m_components)
 	{
-		if (!Object::IsValidObject(comp))
+		if (!IsValidObject(comp))
 			continue; // 이미 파괴된 컴포넌트는 무시
 
 		//iterator 오염 방지 -> UnregisterComponent()호출 방지

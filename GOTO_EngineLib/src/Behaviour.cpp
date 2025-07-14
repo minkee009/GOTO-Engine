@@ -24,5 +24,5 @@ void GOTOEngine::Behaviour::SetEnabled(bool value)
 
 bool GOTOEngine::Behaviour::IsActiveAndEnabled()
 {
-	return m_enabled && Object::IsValidObject(GetGameObject()) && GetGameObject()->IsActiveInHierarchy();
+	return m_enabled && IsValidObject(GetGameObject()) && GetGameObject()->IsActiveInHierarchy();
 }
