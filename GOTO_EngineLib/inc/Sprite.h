@@ -26,7 +26,7 @@ namespace GOTOEngine
 		bool IsValidRawData() override;
 
 		const Rect& GetRect() const { return m_rect; }
-		Rect SetRect(const Rect& rect) { m_rect = rect; }
+		void SetRect(const Rect& rect) { m_rect = rect; }
 
 		float GetPivotX() const { return m_pivotX; }
 		float GetPivotY() const { return m_pivotY; }

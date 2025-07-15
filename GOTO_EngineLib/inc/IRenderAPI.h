@@ -23,7 +23,7 @@ namespace GOTOEngine
 		virtual void Clear() = 0;
 
 		//virtual void DrawImage(int x, int y, float scale, bool flipX, const IRenderImage* image) = 0;
-		virtual void DrawBitmap(const Matrix3x3& mat, IRenderBitmap* bitmap) = 0;
+		virtual void DrawBitmap(const Matrix3x3& mat, const IRenderBitmap* bitmap, const Rect& sourceRect) = 0;
 		virtual void DrawString(float x, float y, float width, float height, const wchar_t* string, const IRenderFont* font, bool rightAlign, Color color) = 0;
 		virtual void DrawRect(float x, float y, float width, float height, bool fill, Color color) = 0;
 

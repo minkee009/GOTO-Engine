@@ -2,6 +2,7 @@
 #include "Resource.h"
 #include "RenderManager.h"
 #include "IRenderBitmap.h"
+#include "Rect.h"
 
 namespace GOTOEngine
 {
@@ -10,13 +11,14 @@ namespace GOTOEngine
 	private:
 		friend class ResourceManager;
 		IRenderBitmap* m_bitmapHandle;
+		Rect m_rect;
 		void LoadFromFilePath(const std::wstring& filePath) override;
 	public:
 		Texture2D();
 		~Texture2D();
-		IRenderBitmap* GetBitmap() { return m_bitmapHandle; }
-		float GetWidth() { return m_bitmapHandle ? m_bitmapHandle->GetWidth() : 0; }
-		float GetHeight() { return  m_bitmapHandle ? m_bitmapHandle->GetHeight() : 0; }
+		
+		const IRenderBitmap* GetBitmap() const { return m_bitmapHandle; }
+		const Rect& GetRect() const { return m_rect; }
 		bool IsValidRawData() override;
 	};
 }

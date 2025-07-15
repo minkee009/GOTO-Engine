@@ -4,9 +4,14 @@
 void GOTOEngine::Texture2D::LoadFromFilePath(const std::wstring& filePath)
 {
 	m_bitmapHandle = RenderManager::Get()->CreateBitmap(filePath);
+	if (m_bitmapHandle)
+	{
+		m_rect.width = m_bitmapHandle->GetWidth();
+		m_rect.height = m_bitmapHandle->GetHeight();
+	}
 }
 
-GOTOEngine::Texture2D::Texture2D() : m_bitmapHandle(nullptr)
+GOTOEngine::Texture2D::Texture2D() : m_bitmapHandle(nullptr), m_rect(Rect{0,0,0,0})
 {
 }
 

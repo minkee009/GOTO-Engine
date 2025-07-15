@@ -39,8 +39,10 @@ void GOTOEngine::Sprite::LoadFromFilePath(const std::wstring& filePath)
 
     if (m_texture && m_rect.width == 0 && m_rect.height == 0)
     {
-        m_rect.width = m_texture->GetWidth();
-        m_rect.height = m_texture->GetHeight();
+        m_rect.x = 0;
+        m_rect.y = 0;
+        m_rect.width = m_texture->GetRect().width;
+        m_rect.height = m_texture->GetRect().height;
     }
 
 }

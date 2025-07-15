@@ -252,13 +252,36 @@ void D2DRenderAPI::Clear()
 	//);
 //}
 
-void GOTOEngine::D2DRenderAPI::DrawBitmap(const Matrix3x3& mat, IRenderBitmap* bitmap)
+void GOTOEngine::D2DRenderAPI::DrawBitmap(const Matrix3x3& mat, const IRenderBitmap* bitmap, const Rect& sourceRect)
 {
 	auto d2dTransform = ConvertToD2DMatrix(mat);
-	auto d2dBitmap = dynamic_cast<D2DBitmap*>(bitmap)->GetRaw();
+	auto d2dBitmap = static_cast<D2DBitmap*>(const_cast<IRenderBitmap*>(bitmap))->GetRaw();
+
+	D2D1_RECT_F destRect = D2D1::RectF(
+		0.0f,
+		0.0f,
+		sourceRect.width,
+		sourceRect.height
+	);
+
+	auto d2dDestY = bitmap->GetHeight() - sourceRect.y - sourceRect.height;
+
+	D2D1_RECT_F srcRect = D2D1::RectF(
+		sourceRect.x,
+		d2dDestY,
+		sourceRect.x + sourceRect.width,
+		d2dDestY + sourceRect.height
+	);
 
 	m_d2dContext->SetTransform(d2dTransform);
-	m_d2dContext->DrawBitmap(d2dBitmap);
+	m_d2dContext->DrawBitmap(
+		d2dBitmap,
+		&destRect,
+		1.0f, // 불투명도
+		D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, 
+		// D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR
+		&srcRect
+	);
 }
 
 void D2DRenderAPI::DrawString(float x, float y, float width, float height, const wchar_t* string, const GOTOEngine::IRenderFont* font, bool rightAlign, Color color)

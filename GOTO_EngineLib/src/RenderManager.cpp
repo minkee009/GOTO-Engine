@@ -33,7 +33,7 @@ void RenderManager::StartUp(IWindow* window)
 	}
 	else
 	{
-		dynamic_cast<IWindow*>(window)->SetOnChangedWindowSize([this](int width, int height) {
+		static_cast<IWindow*>(window)->SetOnChangedWindowSize([this](int width, int height) {
 			m_pRenderAPI->ChangeBufferSize(width, height);
 #ifdef _DEBUG
 			std::cout << width << "," << height << std::endl;
