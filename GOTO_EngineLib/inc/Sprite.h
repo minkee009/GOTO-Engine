@@ -1,5 +1,6 @@
 #pragma once
 #include "Resource.h"
+#include "Rect.h"
 
 namespace GOTOEngine
 {
@@ -14,20 +15,19 @@ namespace GOTOEngine
 		Sprite();
 		~Sprite();
 		
-		float m_width = 0;
-		float m_height = 0;
 		float m_pivotX = 0.5f;
 		float m_pivotY = 0.5f;
+		Rect m_rect;
 
 		void Dispose() override;
 
 		void LoadFromFilePath(const std::wstring& filePath) override;
 	public:
 		bool IsValidRawData() override;
-		float GetWidth() const { return m_width; }
-		float GetHeight() const { return m_height; }
-		void SetWidth(float value) { m_width = value; }
-		void SetHeight(float value) { m_height = value; }
+
+		const Rect& GetRect() const { return m_rect; }
+		Rect SetRect(const Rect& rect) { m_rect = rect; }
+
 		float GetPivotX() const { return m_pivotX; }
 		float GetPivotY() const { return m_pivotY; }
 		void SetPivotX(float value) { m_pivotX = value; }

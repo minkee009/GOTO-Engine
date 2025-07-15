@@ -121,7 +121,10 @@ void Engine::ProcessFrame()
 	BehaviourManager::Get()->BroadCastBehaviourMessage("LateUpdate");
 
 	//·»´õ
+	RenderManager::Get()->StartRender();
 	RenderManager::Get()->Render();
+	BehaviourManager::Get()->BroadCastBehaviourMessage("OnGUI");
+	RenderManager::Get()->EndRender();
 
 	//·»´õ ÈÄ ÈÄÃ³¸®
 	//BehaviourManager::Get()->BroadCastBehaviourMessage("OnDisable"); 

@@ -15,7 +15,7 @@
 
 using namespace GOTOEngine;
 
-void RenderManager::DrawString(int x, int y, int width, int height, const wchar_t* text, const IRenderFont* font, bool rightAlign, Color color) 
+void RenderManager::DrawString(float x, float y, float width, float height, const wchar_t* text, const IRenderFont* font, bool rightAlign, Color color)
 {
 	m_pRenderAPI->DrawString(x, y, width, height, text, font, rightAlign, color);
 }
@@ -105,6 +105,16 @@ void GOTOEngine::RenderManager::SortRenderer()
 		});
 }
 
+void GOTOEngine::RenderManager::StartRender()
+{
+	m_pRenderAPI->Clear();
+}
+
+void GOTOEngine::RenderManager::EndRender()
+{
+	m_pRenderAPI->SwapBuffer();
+}
+
 IRenderBitmap* GOTOEngine::RenderManager::CreateBitmap(std::wstring filePath)
 {
 	return m_pRenderAPI->CreateBitmap(filePath);
@@ -131,8 +141,6 @@ void GOTOEngine::RenderManager::Render()
 
 	if (m_needRenderOrderSort)
 		SortRenderer();
-
-	m_pRenderAPI->Clear();
 
 	//렌더링
 	//멀티 카메라를 구현하려면 렌더타겟(백 버퍼)이 카메라마다 존재해야함
@@ -173,11 +181,6 @@ void GOTOEngine::RenderManager::Render()
 			m_pRenderAPI->ResetViewport();
 		}
 	}
-
-	//OnGUI
-	BehaviourManager::Get()->BroadCastBehaviourMessage("OnGUI");
-
-	m_pRenderAPI->SwapBuffer();
 }
 
 const GOTOEngine::IWindow* GOTOEngine::RenderManager::GetWindow() const

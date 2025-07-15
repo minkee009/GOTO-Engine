@@ -3,8 +3,7 @@
 
 GOTOEngine::Sprite::Sprite() 
     : m_texture(nullptr)
-    , m_width(0)
-    , m_height(0)
+    , m_rect(Rect{0,0,0,0})
     , m_pivotX(0.5f)
     , m_pivotY(0.5f)
 {
@@ -38,10 +37,10 @@ void GOTOEngine::Sprite::LoadFromFilePath(const std::wstring& filePath)
     }
 
 
-    if (m_texture && m_width == 0 && m_height == 0)
+    if (m_texture && m_rect.width == 0 && m_rect.height == 0)
     {
-        m_width = m_texture->GetWidth();
-        m_height = m_texture->GetHeight();
+        m_rect.width = m_texture->GetWidth();
+        m_rect.height = m_texture->GetHeight();
     }
 
 }
