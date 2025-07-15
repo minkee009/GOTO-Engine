@@ -59,11 +59,9 @@ GOTOEngine::Matrix3x3 GOTOEngine::Camera::GetMatrix()
 		currentRotation != m_lastRotation ||
 		m_size != m_lastSize)
 	{
-		m_cachedMatrix = Matrix3x3::TRS(
-			{ -currentPosition.x, -currentPosition.y },
-			-currentRotation * Mathf::Deg2Rad,
-			{ m_size, m_size }
-		);
+		m_cachedMatrix = transform->GetWorldMatrix().Inverse();
+		auto currentLossyScale = transform->GetLossyScale();
+		m_cachedMatrix = Matrix3x3::Scale(currentLossyScale.x * m_size, currentLossyScale.y * m_size) * m_cachedMatrix;
 
 		// 캐시 상태 업데이트
 		m_lastPosition = currentPosition;

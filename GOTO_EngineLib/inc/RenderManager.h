@@ -15,8 +15,6 @@ namespace GOTOEngine
 	{
 	public:
 		void SetVSyncInterval(int interval);
-
-		void Render();
 		const IWindow* GetWindow() const;
 
 		void DrawString(float x, float y, float width, float height, const wchar_t* text, const IRenderFont* font, bool rightAlign, Color color);
@@ -50,6 +48,8 @@ namespace GOTOEngine
 		/// 2. Clear
 		/// </summary>
 		void StartRender();
+
+		void Render();
 
 		/// <summary>
 		/// 렌더링을 종료하고 렌더타겟을 화면에 송출합니다.

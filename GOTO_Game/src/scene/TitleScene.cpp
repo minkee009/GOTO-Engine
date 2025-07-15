@@ -45,8 +45,7 @@ void TitleScene::Init()
     swallow_GO->GetTransform()->SetLocalPosition(Vector2{ 70.0f, 0.0f });
 
     backGround_GO->GetTransform()->SetLossyScale({ 3.0f,3.0f });
-
-    camera2_GO->GetTransform()->SetPosition({ 0.0f,480.0f });
+    camera2_GO->GetTransform()->SetParent(swallow_GO->GetTransform(), false);
 
     //---오브젝트 컴포넌트 추가
     auto spriteRendererBG = backGround_GO->AddComponent<SpriteRenderer>();

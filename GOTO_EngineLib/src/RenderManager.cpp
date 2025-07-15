@@ -156,11 +156,12 @@ void GOTOEngine::RenderManager::Render()
 		auto camRect = camera->GetRect();
 		Matrix3x3 unityCoordMat = 
 		    Matrix3x3::Translate(m_pRenderAPI->GetWindow().GetWidth() * (camRect.x + (camRect.width * 0.5f)) , 
-				m_pRenderAPI->GetWindow().GetHeight() * (camRect.y + (camRect.height * 0.5f)))
+				m_pRenderAPI->GetWindow().GetHeight() * (1.0f - camRect.y - (camRect.height * 0.5f)))
 			* Matrix3x3::Scale(1.0f, -1.0f) 
 			* camera->GetMatrix();
 
 		//Todo : 그리기 전에 카메라 영역 박스색칠 (렌더타겟이 없기 때문에 클리어 대신 씀)
+		m_pRenderAPI->SetViewport(camRect);
 		m_pRenderAPI->DrawRect(
 			m_pRenderAPI->GetWindow().GetWidth() * camRect.x,
 			m_pRenderAPI->GetWindow().GetHeight() * camRect.y,
@@ -168,6 +169,7 @@ void GOTOEngine::RenderManager::Render()
 			m_pRenderAPI->GetWindow().GetHeight() * camRect.height,
 			true,
 			camera->GetBackGroundColor());
+	
 		
 		for (const auto& renderer : m_renderers)
 		{
@@ -176,10 +178,9 @@ void GOTOEngine::RenderManager::Render()
 				continue;
 
 			//뷰포트 제한
-			m_pRenderAPI->SetViewport(camRect);
 			renderer->Render(unityCoordMat);
-			m_pRenderAPI->ResetViewport();
 		}
+		m_pRenderAPI->ResetViewport();
 	}
 }
 

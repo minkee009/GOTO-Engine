@@ -48,7 +48,7 @@ namespace GOTOEngine
 			}
 
 
-			GetTransform()->SetPosition(GetTransform()->GetPosition() + (Vector2{ hInput, vInput }.Normalized() * moveSpeed * m_sizefactor * TIME_GET_DELTATIME()));
+			GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition() + (Vector2{ hInput, vInput }.Normalized() * moveSpeed * m_sizefactor * TIME_GET_DELTATIME()));
 		}
 	};
 }
