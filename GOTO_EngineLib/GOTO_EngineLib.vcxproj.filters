@@ -281,7 +281,7 @@
     <ClCompile Include="src\Matrix3x3.cpp">
       <Filter>소스 파일\구조체</Filter>
     </ClCompile>
-    <ClCompile Include="inc\Texture2D.cpp">
+    <ClCompile Include="src\Texture2D.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="src\Sprite.cpp">
@@ -289,6 +289,9 @@
     </ClCompile>
     <ClCompile Include="src\SpriteRenderer.cpp">
       <Filter>소스 파일\코어 컴포넌트</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Font.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -192,7 +192,8 @@
     <ClInclude Include="inc\WStringHelper.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="inc\Texture2D.cpp" />
+    <ClCompile Include="src\Font.cpp" />
+    <ClCompile Include="src\Texture2D.cpp" />
     <ClCompile Include="src\BBox.cpp" />
     <ClCompile Include="src\Behaviour.cpp" />
     <ClCompile Include="src\BehaviourManager.cpp" />

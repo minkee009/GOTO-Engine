@@ -22,7 +22,6 @@ using namespace GOTOEngine;
 void TitleScene::Init()
 {
     //---엔진 옵션 변경
-    RenderManager::Get()->SetVSyncInterval(0);
     TimeManager::Get()->SetFixedDeltaTime(0.05f);
 
     //---오브젝트 초기화
