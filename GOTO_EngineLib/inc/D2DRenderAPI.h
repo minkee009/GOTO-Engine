@@ -34,7 +34,7 @@ namespace GOTOEngine
         void Clear() override;
         //void DrawImage(int x, int y, float scale, bool flipX, const IRenderImage* image) override;
         void DrawBitmap(const Matrix3x3& mat, const IRenderBitmap* bitmap, const Rect& sourceRect) override;
-        void DrawString(float x, float y, float width, float height, const wchar_t* string, const IRenderFontGlyph* font, bool rightAlign, Color color) override;
+        void DrawString(float x, float y, float width, float height, const wchar_t* string, const IRenderFont* font, bool rightAlign, Color color) override;
         void DrawRect(float x, float y, float width, float height, bool fill, Color color) override;
 
         void SetViewport(Rect rect) override;
@@ -78,7 +78,7 @@ namespace GOTOEngine
         IWindow* m_window;
         D2D1_RECT_F m_clipRect;
 
-        IRenderFontGlyph* m_defaultFont;
+        IRenderFont* m_defaultFont;
 
 		int m_vSyncInterval = 1; // 기본 VSync 간격
 

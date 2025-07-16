@@ -59,13 +59,9 @@ GOTOEngine::Matrix3x3 GOTOEngine::Camera::GetMatrix()
 		currentPosition != m_lastPosition ||
 		currentRotation != m_lastRotation )
 	{
-		auto renderAPI = RenderManager::Get()->GetRenderAPI();
 		m_cachedMatrix = transform->GetWorldMatrix().Inverse();
 		auto currentLossyScale = transform->GetLossyScale();
 		m_cachedMatrix = Matrix3x3::Scale(currentLossyScale.x * m_size, currentLossyScale.y * m_size) * m_cachedMatrix;
-		m_cachedMatrix = Matrix3x3::Translate(renderAPI->GetWindow().GetWidth() * (m_rect.x + (m_rect.width * 0.5f)),
-			renderAPI->GetWindow().GetHeight() * (1.0f - m_rect.y - (m_rect.height * 0.5f)))
-			* Matrix3x3::Scale(1.0f, -1.0f) * m_cachedMatrix;
 
 		// 캐시 상태 업데이트
 		m_lastPosition = currentPosition;
@@ -73,7 +69,10 @@ GOTOEngine::Matrix3x3 GOTOEngine::Camera::GetMatrix()
 		m_isMatrixDirty = false;
 	}
 
-	return m_cachedMatrix;
+	auto renderAPI = RenderManager::Get()->GetRenderAPI();
+	return Matrix3x3::Translate(renderAPI->GetWindow().GetWidth() * (m_rect.x + (m_rect.width * 0.5f)),
+		renderAPI->GetWindow().GetHeight() * (1.0f - m_rect.y - (m_rect.height * 0.5f)))
+		* Matrix3x3::Scale(1.0f, -1.0f) * m_cachedMatrix;
 }
 
 GOTOEngine::Camera* GOTOEngine::Camera::GetMainCamera()

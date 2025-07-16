@@ -74,7 +74,7 @@ void GOTOEngine::ResourceManager::DestroyUnusedResource()
 //	return image.get();
 //}
 //
-//IRenderFontGlyph* GOTOEngine::ResourceManager::LoadStaticFont(const std::wstring& fontFamily,IRenderFontStyle fontStyle, int size)
+//IRenderFont* GOTOEngine::ResourceManager::LoadStaticFont(const std::wstring& fontFamily,IRenderFontStyle fontStyle, int size)
 //{
 //	int styleValue = static_cast<int>(fontStyle);
 //
@@ -84,20 +84,20 @@ void GOTOEngine::ResourceManager::DestroyUnusedResource()
 //	auto it = m_resources.find(hashString);
 //	if (it != m_resources.end())
 //	{
-//		if (it->second.type == typeid(IRenderFontGlyph)) {
-//			return static_cast<IRenderFontGlyph*>(it->second.data.get());
+//		if (it->second.type == typeid(IRenderFont)) {
+//			return static_cast<IRenderFont*>(it->second.data.get());
 //		}
 //		return nullptr; // 타입 불일치 - 다른 타입으로 이미 로드된 경우
 //	}
 //
-//	std::shared_ptr<IRenderFontGlyph> font = std::make_shared<D2DFont>(fontFamily.c_str(),fontStyle,size);
+//	std::shared_ptr<IRenderFont> font = std::make_shared<D2DFont>(fontFamily.c_str(),fontStyle,size);
 //	if (!font) // 생성 실패 시
 //		return nullptr;
 //
 //	// 캐시에 저장
 //	ResourceEntry entry;
 //	entry.data = font;
-//	entry.type = typeid(IRenderFontGlyph);
+//	entry.type = typeid(IRenderFont);
 //	m_resources[hashString] = entry;
 //
 //	return font.get();

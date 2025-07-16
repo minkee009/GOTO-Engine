@@ -284,7 +284,7 @@ void GOTOEngine::D2DRenderAPI::DrawBitmap(const Matrix3x3& mat, const IRenderBit
 	);
 }
 
-void D2DRenderAPI::DrawString(float x, float y, float width, float height, const wchar_t* string, const GOTOEngine::IRenderFontGlyph* font, bool rightAlign, Color color)
+void D2DRenderAPI::DrawString(float x, float y, float width, float height, const wchar_t* string, const GOTOEngine::IRenderFont* font, bool rightAlign, Color color)
 {
 	if (!string || !m_d2dContext)
 		return;

@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClInclude Include="inc\D2DBitmap.h" />
     <ClInclude Include="inc\IRenderBitmap.h" />
+    <ClInclude Include="inc\IRenderFont.h" />
     <ClInclude Include="inc\json.hpp" />
     <ClInclude Include="inc\Resource.h" />
     <ClInclude Include="inc\BBox.h" />

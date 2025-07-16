@@ -1,11 +1,11 @@
 #pragma once
-#include "IRenderFontGlyph.h"
+#include "IRenderFont.h"
 #include <dwrite.h>
 #pragma comment(lib, "dwrite.lib")
 
 namespace GOTOEngine
 {
-    class D2DFont : public IRenderFontGlyph
+    class D2DFont : public IRenderFont
     {
     public:
         D2DFont(const wchar_t* fontFamily, IRenderFontStyle style, int size);

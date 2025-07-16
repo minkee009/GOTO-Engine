@@ -7,7 +7,7 @@
 namespace GOTOEngine
 {
 	class IRenderBitmap;
-	class IRenderFontGlyph;
+	class IRenderFont;
 	class IRenderAPI;
 	class IWindow;
 	struct RenderAPIMemoryStatus;
@@ -17,7 +17,7 @@ namespace GOTOEngine
 		void SetVSyncInterval(int interval);
 		const IWindow* GetWindow() const;
 
-		void DrawString(float x, float y, float width, float height, const wchar_t* text, const IRenderFontGlyph* font, bool rightAlign, Color color);
+		void DrawString(float x, float y, float width, float height, const wchar_t* text, const IRenderFont* font, bool rightAlign, Color color);
 		RenderAPIMemoryStatus CollectMemoryUsage();
 	private:
 		friend class Engine;
@@ -69,7 +69,7 @@ namespace GOTOEngine
 		void EndRender();
 
 		IRenderBitmap* CreateBitmap(std::wstring filePath);
-		IRenderFontGlyph* CreateFontGlyph();
+		IRenderFont* CreateFont(std::wstring filePath);
 
 		bool m_needCamDepthSort = false;
 		bool m_needRenderOrderSort = false;

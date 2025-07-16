@@ -2,7 +2,7 @@
 #include "DWriteHelper.h"
 
 using namespace GOTOEngine;
-using GOTOEngine::IRenderFontGlyph;
+using GOTOEngine::IRenderFont;
 
 D2DFont::D2DFont(const wchar_t* fontFamily, IRenderFontStyle style, int size)
     : m_style(style), m_size(size)
