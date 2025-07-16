@@ -10,10 +10,10 @@ namespace GOTOEngine
 		BoldItalic = 3
 	};
 
-	class IRenderFont
+	class IRenderFontGlyph
 	{
 	public:
-		virtual ~IRenderFont() = default;
+		virtual ~IRenderFontGlyph() = default;
 		virtual void* GetNativeHandle() const = 0;
 		virtual IRenderFontStyle GetStyle() const = 0;
 		virtual int GetSize() const = 0;

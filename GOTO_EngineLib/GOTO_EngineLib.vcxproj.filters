@@ -75,7 +75,7 @@
     <ClInclude Include="inc\IWindow.h">
       <Filter>헤더 파일\인터페이스</Filter>
     </ClInclude>
-    <ClInclude Include="inc\IRenderFont.h">
+    <ClInclude Include="inc\IRenderFontGlyph.h">
       <Filter>헤더 파일\인터페이스</Filter>
     </ClInclude>
     <ClInclude Include="inc\InputManager.h">

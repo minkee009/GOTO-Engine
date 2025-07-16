@@ -160,7 +160,7 @@
     <ClInclude Include="inc\IInputSystem.h" />
     <ClInclude Include="inc\Mathf.h" />
     <ClInclude Include="inc\GameObject.h" />
-    <ClInclude Include="inc\IRenderFont.h" />
+    <ClInclude Include="inc\IRenderFontGlyph.h" />
     <ClInclude Include="inc\InputManager.h" />
     <ClInclude Include="inc\IRenderAPI.h" />
     <ClInclude Include="inc\IWindow.h" />
