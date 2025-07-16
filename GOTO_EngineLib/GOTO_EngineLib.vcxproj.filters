@@ -195,6 +195,9 @@
     <ClInclude Include="inc\IRenderBitmap.h">
       <Filter>헤더 파일\인터페이스</Filter>
     </ClInclude>
+    <ClInclude Include="inc\json.hpp">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\InputManager.cpp">

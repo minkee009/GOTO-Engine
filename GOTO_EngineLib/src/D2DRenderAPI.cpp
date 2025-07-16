@@ -324,7 +324,7 @@ void D2DRenderAPI::DrawRect(float x, float y, float width, float height, bool fi
 	}
 	float screenHeight = static_cast<float>(m_window->GetHeight());
 	m_d2dContext->SetTransform(D2D1::IdentityMatrix());
-	m_solidColorBrush->SetColor(D2D1::ColorF(color.R, color.G, color.B, color.A));
+	m_solidColorBrush->SetColor(D2D1::ColorF(color.R / 255.0f, color.G / 255.0f, color.B / 255.0f, color.A / 255.0f));
 	if (fill) {
 		m_d2dContext->FillRectangle(D2D1::RectF(x, (screenHeight - y - height),
 			(x + width), (screenHeight - y)), m_solidColorBrush.Get());

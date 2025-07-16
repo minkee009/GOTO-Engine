@@ -22,7 +22,6 @@ namespace GOTOEngine
 		mutable bool m_isMatrixDirty = true;
 		mutable Vector2 m_lastPosition;
 		mutable float m_lastRotation;
-		mutable float m_lastSize;
 
 	public:
 		Camera();
@@ -36,10 +35,10 @@ namespace GOTOEngine
 		void SetDepth(int value);
 
 		float GetSize() { return m_size; }
-		void SetSize(float value) { m_size = value; }
+		void SetSize(float value) { m_isMatrixDirty = true; m_size = value; }
 
 		Rect GetRect() { return m_rect; }
-		void SetRect(Rect rect) { m_rect = rect; }
+		void SetRect(Rect rect) { m_isMatrixDirty = true; m_rect = rect; }
 
 		Color GetBackGroundColor() { return m_backGroundColor; }
 		void SetBackGroundColor(const Color& value) { m_backGroundColor = value; }

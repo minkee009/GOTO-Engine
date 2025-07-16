@@ -49,6 +49,15 @@ namespace GOTOEngine
 		/// </summary>
 		void StartRender();
 
+		/// <summary>
+		/// 렌더목록을 이용해여 렌더타겟에 그립니다.
+		/// 1. Camera Sort
+		/// 2. Renderer Sort
+		/// 3. Make Camera View Matrix
+		/// 4. Set Viewport
+		/// 5. Camera -> Renderer loop
+		/// 6. Reset Viewport
+		/// </summary>
 		void Render();
 
 		/// <summary>

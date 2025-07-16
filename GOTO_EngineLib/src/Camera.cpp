@@ -3,12 +3,13 @@
 #include "RenderManager.h"
 #include "IWindow.h"
 #include "TimeManager.h"
+#include "IRenderAPI.h"
 
 GOTOEngine::Camera* GOTOEngine::Camera::s_mainCam = nullptr;
 
 
-GOTOEngine::Camera::Camera() : m_depth(0), m_size(1.0f), m_rect(Rect{ 0.0f,0.0f,1.0f,1.0f }), m_backGroundColor(Color{ 0,0,0,1 })
-, m_renderLayer(static_cast<size_t>(-1)) , m_isMatrixDirty(true), m_lastPosition(0.0f, 0.0f), m_lastRotation(0.0f), m_lastSize(1.0f)
+GOTOEngine::Camera::Camera() : m_depth(0), m_size(1.0f), m_rect(Rect{ 0.0f,0.0f,1.0f,1.0f }), m_backGroundColor(Color{ 0,0,0,255 }/* black */)
+, m_renderLayer(static_cast<size_t>(-1)) , m_isMatrixDirty(true), m_lastPosition(0.0f, 0.0f), m_lastRotation(0.0f)
 {
 	REGISTER_BEHAVIOUR_MESSAGE(OnEnable);
 	REGISTER_BEHAVIOUR_MESSAGE(OnDisable);
@@ -56,17 +57,19 @@ GOTOEngine::Matrix3x3 GOTOEngine::Camera::GetMatrix()
 	// Transform이 변경되었거나 사이즈가 변경된 경우에만 재계산
 	if (m_isMatrixDirty ||
 		currentPosition != m_lastPosition ||
-		currentRotation != m_lastRotation ||
-		m_size != m_lastSize)
+		currentRotation != m_lastRotation )
 	{
+		auto renderAPI = RenderManager::Get()->GetRenderAPI();
 		m_cachedMatrix = transform->GetWorldMatrix().Inverse();
 		auto currentLossyScale = transform->GetLossyScale();
 		m_cachedMatrix = Matrix3x3::Scale(currentLossyScale.x * m_size, currentLossyScale.y * m_size) * m_cachedMatrix;
+		m_cachedMatrix = Matrix3x3::Translate(renderAPI->GetWindow().GetWidth() * (m_rect.x + (m_rect.width * 0.5f)),
+			renderAPI->GetWindow().GetHeight() * (1.0f - m_rect.y - (m_rect.height * 0.5f)))
+			* Matrix3x3::Scale(1.0f, -1.0f) * m_cachedMatrix;
 
 		// 캐시 상태 업데이트
 		m_lastPosition = currentPosition;
 		m_lastRotation = currentRotation;
-		m_lastSize = m_size;
 		m_isMatrixDirty = false;
 	}
 
