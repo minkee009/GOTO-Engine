@@ -73,7 +73,7 @@ OnGUI 관련 코드 정리해서 확실하게 만들기
 >> 여기까지
 
 ## 추가작업
-~~-----> Renderer의 Render()호출구조 크로스플랫폼(OS, Graphics API)에 맞게 수정 (약간의 오버헤드가 발생하더라도 만들기)~~
+~~ -----> Renderer의 Render()호출구조 크로스플랫폼(OS, Graphics API)에 맞게 수정 (약간의 오버헤드가 발생하더라도 만들기) ~~
 -----> Camera->ViewportToWorld, WolrdToViewport, ScreenToWorld,WorldToScreen 만들기
 -----> (비추천이지만) 화면 비율 고정 비고정 만들기(찌그러짐)
 	>> 클라이언트 영역 크기(윈도우 크기)가 아닌 RenderTarget(백버퍼) 크기 기준으로 VeiwPortRect 계산
