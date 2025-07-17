@@ -1,7 +1,7 @@
 #pragma once
 #include "Resource.h"
-#include "IRenderFont.h"
 #include "RenderManager.h"
+#include "IRenderFont.h"
 #include <unordered_map>
 
 namespace GOTOEngine
@@ -11,19 +11,11 @@ namespace GOTOEngine
 	private:
 		friend class ResourceManager;
 		void LoadFromFilePath(const std::wstring& filePath) override;
-		bool IsValidRawData() override;
-		std::unordered_map<size_t, IRenderFont*> m_fontHandles;
-		size_t m_size;
+		bool IsValidRawData() override { return m_fontHandle; }
+		IRenderFont* m_fontHandle;
+		~Font();
 	public:
-		static Font* CreateFontFromOSFont(const std::wstring& fontName);
-		IRenderFont* GetFont() 
-		{
-			if (m_fontHandles.find(m_size) == m_fontHandles.end())
-			{
-				//RenderManager::Get()->>
-			}
-			
-			return m_fontHandles[m_size];
-		}
+		static Font* CreateFontFromOSFont(const std::wstring& fontName, size_t size = 16);
+		IRenderFont* GetFont() { return m_fontHandle; }
 	};
 }

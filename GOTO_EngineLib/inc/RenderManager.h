@@ -68,8 +68,9 @@ namespace GOTOEngine
 		/// </summary>
 		void EndRender();
 
-		IRenderBitmap* CreateBitmap(std::wstring filePath);
-		IRenderFont* CreateFont(std::wstring filePath);
+		IRenderBitmap* CreateRenderBitmap(std::wstring filePath);
+		IRenderFont* CreateRenderFontFromFilePath(std::wstring filePath);
+		IRenderFont* CreateRenderFontFromOS(std::wstring fontName);
 
 		bool m_needCamDepthSort = false;
 		bool m_needRenderOrderSort = false;

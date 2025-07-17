@@ -27,7 +27,9 @@ namespace GOTOEngine
 		virtual void DrawString(float x, float y, float width, float height, const wchar_t* string, const IRenderFont* font, bool rightAlign, Color color) = 0;
 		virtual void DrawRect(float x, float y, float width, float height, bool fill, Color color) = 0;
 
-		virtual IRenderBitmap* CreateBitmap(std::wstring filePath) = 0;
+		virtual IRenderBitmap* CreateRenderBitmap(std::wstring filePath) = 0;
+		virtual IRenderFont* CreateRenderFontFromFilePath(std::wstring filePath) = 0;
+		virtual IRenderFont* CreateRenderFontFromOS(std::wstring fontName) = 0;
 		virtual RenderAPIMemoryStatus CollectMemoryUsage() = 0;
 
 		virtual void SetViewport(Rect rect) = 0;

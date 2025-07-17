@@ -12,7 +12,9 @@
 #endif
 
 #include "BehaviourManager.h"
-#undef CreateFont
+
+#undef CreateRenderFont
+
 using namespace GOTOEngine;
 
 void RenderManager::DrawString(float x, float y, float width, float height, const wchar_t* text, const IRenderFont* font, bool rightAlign, Color color)
@@ -115,14 +117,19 @@ void GOTOEngine::RenderManager::EndRender()
 	m_pRenderAPI->SwapBuffer();
 }
 
-IRenderBitmap* GOTOEngine::RenderManager::CreateBitmap(std::wstring filePath)
+IRenderBitmap* GOTOEngine::RenderManager::CreateRenderBitmap(std::wstring filePath)
 {
-	return m_pRenderAPI->CreateBitmap(filePath);
+	return m_pRenderAPI->CreateRenderBitmap(filePath);
 }
 
-GOTOEngine::IRenderFont* GOTOEngine::RenderManager::CreateFont(std::wstring filePath)
+IRenderFont* GOTOEngine::RenderManager::CreateRenderFontFromFilePath(std::wstring filePath)
 {
-	return nullptr;
+	return m_pRenderAPI->CreateRenderFontFromFilePath(filePath);
+}
+
+IRenderFont* GOTOEngine::RenderManager::CreateRenderFontFromOS(std::wstring fontName)
+{
+	return m_pRenderAPI->CreateRenderFontFromOS(fontName);
 }
 
 void RenderManager::SetVSyncInterval(int interval)

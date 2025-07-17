@@ -168,7 +168,7 @@ void D2DRenderAPI::Clear()
 	//		D2D1::PixelFormat(DXGI_FORMAT_B8G8R8A8_UNORM, D2D1_ALPHA_MODE_PREMULTIPLIED)
 	//	);
 
-	//	HRESULT hr = m_d2dContext->CreateBitmap(
+	//	HRESULT hr = m_d2dContext->CreateRenderBitmap(
 	//		D2D1::SizeU(d2dImage->GetSrcWidth(), d2dImage->GetSrcHeight()),
 	//		imageData->data(),
 	//		d2dImage->GetSrcWidth() * 4,
@@ -361,7 +361,7 @@ void GOTOEngine::D2DRenderAPI::ResetViewport()
 	m_d2dContext->PopAxisAlignedClip();
 }
 
-IRenderBitmap* GOTOEngine::D2DRenderAPI::CreateBitmap(std::wstring filePath)
+IRenderBitmap* GOTOEngine::D2DRenderAPI::CreateRenderBitmap(std::wstring filePath)
 {
 	ComPtr<IWICBitmapDecoder>     decoder;
 	ComPtr<IWICBitmapFrameDecode> frame;
@@ -400,6 +400,16 @@ IRenderBitmap* GOTOEngine::D2DRenderAPI::CreateBitmap(std::wstring filePath)
 	if (FAILED(hr)) return nullptr;
 
 	return new D2DBitmap(bitmap);
+}
+
+IRenderFont* GOTOEngine::D2DRenderAPI::CreateRenderFontFromFilePath(std::wstring filePath)
+{
+	return nullptr;
+}
+
+IRenderFont* GOTOEngine::D2DRenderAPI::CreateRenderFontFromOS(std::wstring fontName)
+{
+	return nullptr;
 }
 
 void D2DRenderAPI::SwapBuffer()

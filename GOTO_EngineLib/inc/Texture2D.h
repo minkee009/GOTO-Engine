@@ -13,12 +13,12 @@ namespace GOTOEngine
 		IRenderBitmap* m_bitmapHandle;
 		Rect m_rect;
 		void LoadFromFilePath(const std::wstring& filePath) override;
+		~Texture2D();
 	public:
 		Texture2D();
-		~Texture2D();
 		
 		const IRenderBitmap* GetBitmap() const { return m_bitmapHandle; }
 		const Rect& GetRect() const { return m_rect; }
-		bool IsValidRawData() override;
+		bool IsValidRawData() override { return m_bitmapHandle; }
 	};
 }

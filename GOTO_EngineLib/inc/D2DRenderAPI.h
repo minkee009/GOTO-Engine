@@ -39,7 +39,9 @@ namespace GOTOEngine
 
         void SetViewport(Rect rect) override;
         void ResetViewport() override;
-        IRenderBitmap* CreateBitmap(std::wstring filePath);
+        IRenderBitmap* CreateRenderBitmap(std::wstring filePath);
+        IRenderFont* CreateRenderFontFromFilePath(std::wstring filePath);
+        IRenderFont* CreateRenderFontFromOS(std::wstring fontName);
 
         void SwapBuffer() override;
         IWindow& GetWindow() const override { return *m_window; }

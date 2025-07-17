@@ -35,7 +35,7 @@ namespace GOTOEngine
 			// 매 프레임마다 실행할 코드 작성
 			m_timer += TimeManager::Get()->GetDeltaTime();
 
-			if (m_timer > 3.0f && Object::IsValidObject(otherGameObject) && !otherGameObject->IsActiveSelf())
+			if (m_timer > 3.0f && IsValidObject(otherGameObject) && !otherGameObject->IsActiveSelf())
 			{
 				otherGameObject->SetActive(true);
 			}
