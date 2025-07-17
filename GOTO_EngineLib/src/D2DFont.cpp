@@ -42,3 +42,8 @@ D2DFont::~D2DFont()
     if (m_fontFile)
         delete m_fontFile;
 }
+
+IDWriteTextFormat* GOTOEngine::D2DFont::GetRaw(int size, IRenderFontStyle style) const
+{
+    return nullptr;
+}
