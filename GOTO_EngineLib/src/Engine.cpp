@@ -92,9 +92,6 @@ void Engine::ProcessFrame()
 	//BehaviourManager::Get()->BroadCastBehaviourMessage("Start");
 	BehaviourManager::Get()->InitializeBehaviours();
 
-	//Behaviour 정렬 (필요시)
-	BehaviourManager::Get()->CheckAndSortBehaviours();
-
 	//고정 업데이트
 	static float accumulator = 0.0f;
 	accumulator += TimeManager::Get()->GetDeltaTime();
