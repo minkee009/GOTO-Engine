@@ -1,6 +1,8 @@
 #pragma once
 #include <dwrite.h>
+#include <dwrite_3.h>
 #include <wrl/client.h>
+#pragma comment(lib, "dwrite.lib")
 
 namespace GOTOEngine
 {

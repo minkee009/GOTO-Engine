@@ -6,6 +6,32 @@
 
 namespace GOTOEngine
 {
+	enum class FontStyle
+	{
+		Normal,
+		Bold,
+		Italic,
+		BoldItalic
+	};
+
+	class FontStyleHelper
+	{
+		static IRenderFontStyle ToRenderFontStyle(FontStyle style)
+		{
+			switch (style)
+			{
+			case FontStyle::Normal:
+				return IRenderFontStyle::Normal;
+			case FontStyle::Bold:
+				return IRenderFontStyle::Bold;
+			case FontStyle::Italic:
+				return IRenderFontStyle::Italic;
+			case FontStyle::BoldItalic:
+				return IRenderFontStyle::BoldItalic;
+			}
+		}
+	};
+
 	class Font : public Resource
 	{
 	private:
@@ -15,7 +41,7 @@ namespace GOTOEngine
 		IRenderFont* m_fontHandle;
 		~Font();
 	public:
-		static Font* CreateFontFromOSFont(const std::wstring& fontName, size_t size = 16);
+		//static Font* CreateFontFromOSFont(const std::wstring& fontName, size_t size = 16);
 		IRenderFont* GetFont() { return m_fontHandle; }
 	};
 }

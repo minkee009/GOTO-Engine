@@ -6,20 +6,49 @@
 #include <string>
 #pragma comment(lib, "dwrite.lib")
 
+#include <functional>
+#include <wrl/client.h>
+
+using namespace Microsoft::WRL;
+
+//페어 키 정의
+namespace std
+{
+    template <>
+    struct hash<std::pair<size_t, GOTOEngine::IRenderFontStyle>>
+    {
+        size_t operator()(const std::pair<size_t, GOTOEngine::IRenderFontStyle>& pair) const noexcept
+        {
+            return std::hash<size_t>()(pair.first) ^ (std::hash<GOTOEngine::IRenderFontStyle>()(pair.second) << 1);
+        }
+    };
+}
+
 namespace GOTOEngine
 {
     class D2DFont : public IRenderFont
     {
     public:
-        D2DFont(std::wstring fontFamilyName) : m_fontFamilyName(fontFamilyName) {}
+        D2DFont(std::wstring fontFamilyName) 
+            : m_fontFamilyName(fontFamilyName)
+            , m_fontCollection(nullptr)
+            , m_fontFile(nullptr) 
+        {
+
+        }
+
         ~D2DFont() override;
 
-        IDWriteTextFormat* GetRaw(int size, IRenderFontStyle style = IRenderFontStyle::Normal) const;
+        IDWriteTextFormat* GetRaw(size_t size, IRenderFontStyle style = IRenderFontStyle::Normal) const;
     private:
-        mutable std::unordered_map<int, IDWriteTextFormat*> m_textFormats;
-        IDWriteFontCollection* m_fontCollection;
-        IDWriteFontFile* m_fontFile;
+        friend class D2DRenderAPI;
+
+        mutable std::unordered_map<std::pair<size_t, IRenderFontStyle> , ComPtr<IDWriteTextFormat>> m_textFormats;
+        ComPtr<IDWriteFontCollection> m_fontCollection;
+        ComPtr<IDWriteFontFile> m_fontFile;
         std::wstring m_fontFamilyName;
+
+        IDWriteTextFormat* CreateTextFormat(size_t size, IRenderFontStyle style) const;
     };
 }
 

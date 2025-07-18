@@ -29,7 +29,7 @@ void GOTOEngine::SpriteRenderer::Render(Matrix3x3& matrix)
         ////유니티 좌표계 매트릭스 적용
         transform = matrix * transform;
 
-        renderAPI->DrawBitmap(transform, bitmap, spriteRect);
+        renderAPI->DrawBitmap(bitmap, transform, spriteRect);
     }
 }
 

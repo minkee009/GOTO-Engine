@@ -1,5 +1,6 @@
 #include "RenderManager.h"
 #include "IRenderAPI.h"
+#include "IRenderFont.h"
 #include "IWindow.h"
 #include "Camera.h"
 #include "Delegate.h"
@@ -19,7 +20,7 @@ using namespace GOTOEngine;
 
 void RenderManager::DrawString(float x, float y, float width, float height, const wchar_t* text, const IRenderFont* font, bool rightAlign, Color color)
 {
-	m_pRenderAPI->DrawString(x, y, width, height, text, font, rightAlign, color);
+	m_pRenderAPI->DrawString(text, font, 24, IRenderFontStyle::Bold, color, Matrix3x3{}, Rect{ x, y, width, height },-1,1);
 }
 
 void RenderManager::StartUp(IWindow* window)
@@ -170,11 +171,11 @@ void GOTOEngine::RenderManager::Render()
 
 		//Todo : 그리기 전에 카메라 영역 박스색칠 (렌더타겟이 없기 때문에 클리어 대신 씀)
 		m_pRenderAPI->SetViewport(camRect);
-		m_pRenderAPI->DrawRect(
+		m_pRenderAPI->DrawRect(Rect{
 			m_pRenderAPI->GetWindow().GetWidth() * camRect.x,
 			m_pRenderAPI->GetWindow().GetHeight() * camRect.y,
 			m_pRenderAPI->GetWindow().GetWidth() * camRect.width,
-			m_pRenderAPI->GetWindow().GetHeight() * camRect.height,
+			m_pRenderAPI->GetWindow().GetHeight() * camRect.height},
 			true,
 			camera->GetBackGroundColor());
 	

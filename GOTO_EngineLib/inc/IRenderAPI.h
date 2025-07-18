@@ -15,6 +15,7 @@ namespace GOTOEngine
 	class IWindow;
 	class IRenderFont;
 	class IRenderBitmap;
+	enum IRenderFontStyle;
 	class IRenderAPI
 	{
 	public:
@@ -22,10 +23,9 @@ namespace GOTOEngine
 		virtual void Release() = 0;
 		virtual void Clear() = 0;
 
-		//virtual void DrawImage(int x, int y, float scale, bool flipX, const IRenderImage* image) = 0;
-		virtual void DrawBitmap(const Matrix3x3& mat, const IRenderBitmap* bitmap, const Rect& sourceRect) = 0;
-		virtual void DrawString(float x, float y, float width, float height, const wchar_t* string, const IRenderFont* font, bool rightAlign, Color color) = 0;
-		virtual void DrawRect(float x, float y, float width, float height, bool fill, Color color) = 0;
+		virtual void DrawBitmap(const IRenderBitmap* bitmap, const Matrix3x3& mat, const Rect& sourceRect) = 0;
+		virtual void DrawString(const wchar_t* string, const IRenderFont* font, size_t size, const IRenderFontStyle& fontStyle, Color color, const Matrix3x3& mat, const Rect& rect, int hAlignment, int vAlignment) = 0;
+		virtual void DrawRect(const Rect& rect, bool fill, Color color) = 0;
 
 		virtual IRenderBitmap* CreateRenderBitmap(std::wstring filePath) = 0;
 		virtual IRenderFont* CreateRenderFontFromFilePath(std::wstring filePath) = 0;

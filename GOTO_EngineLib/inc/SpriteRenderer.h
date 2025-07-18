@@ -9,7 +9,7 @@ namespace GOTOEngine
 	//
 	//          * 유의 사항 *
 	// 
-	//  GetSprite()을 대입식에 집어넣은 경우
+	//  GetSprite()를 대입식에 집어넣은 경우
 	//  반드시 IncreaseRefCount()를 호출하여 
 	//  참조카운트가 누락되지 않도록 합니다.
 	// 

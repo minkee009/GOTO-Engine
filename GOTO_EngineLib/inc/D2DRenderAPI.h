@@ -33,9 +33,9 @@ namespace GOTOEngine
         void ClearGPUResourcesMap() { m_pGpuResourcesMap->clear(); }
         void Clear() override;
         //void DrawImage(int x, int y, float scale, bool flipX, const IRenderImage* image) override;
-        void DrawBitmap(const Matrix3x3& mat, const IRenderBitmap* bitmap, const Rect& sourceRect) override;
-        void DrawString(float x, float y, float width, float height, const wchar_t* string, const IRenderFont* font, bool rightAlign, Color color) override;
-        void DrawRect(float x, float y, float width, float height, bool fill, Color color) override;
+        void DrawBitmap(const IRenderBitmap* bitmap, const Matrix3x3& mat,  const Rect& sourceRect) override;
+        void DrawString(const wchar_t* string, const IRenderFont* font, size_t size, const IRenderFontStyle& fontStyle, Color color, const Matrix3x3& mat, const Rect& rect, int hAlignment, int vAlignment) override;
+        void DrawRect(const Rect& rect, bool fill, Color color) override;
 
         void SetViewport(Rect rect) override;
         void ResetViewport() override;
