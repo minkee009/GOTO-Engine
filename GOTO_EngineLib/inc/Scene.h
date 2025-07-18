@@ -23,9 +23,9 @@ namespace GOTOEngine
 		virtual ~Scene() { Clear(); }
 
 		void Clear();
-		void Reset() { Clear(); Init(); }
+		void Reset() { Clear(); Initialize(); }
 
-		virtual void Init() { }
+		virtual void Initialize() { }
 		//virtual void Exit() { Clear(); }
 		const std::wstring& GetSceneName() const { return m_sceneName; }
 	};

@@ -177,7 +177,7 @@ void GOTOEngine::D2DRenderAPI::DrawBitmap(const IRenderBitmap* bitmap, const Mat
 	);
 }
 
-void D2DRenderAPI::DrawString(const wchar_t* string, const Rect& rect, const IRenderFont* font, size_t size, const IRenderFontStyle& fontStyle, Color color, const Matrix3x3& mat, int hAlignment, int vAlignment)
+void D2DRenderAPI::DrawString(const wchar_t* string, const Rect& rect, const IRenderFont* font, size_t size, const IRenderFontStyle& fontStyle, Color color, const Matrix3x3& mat, int hAlignment, int vAlignment, bool useScreenPos)
 {
 	if (!string || !m_d2dContext)
 		return;
@@ -225,9 +225,20 @@ void D2DRenderAPI::DrawString(const wchar_t* string, const Rect& rect, const IRe
 
 	float screenHeight = static_cast<float>(m_window->GetHeight());
 
-	D2D1_RECT_F layoutRect = D2D1::RectF(rect.x, (screenHeight - rect.y - rect.height), (rect.x + rect.width), (screenHeight - rect.y));
+	D2D1_RECT_F layoutRect; 
+	
+	if (useScreenPos)
+	{
+		layoutRect = D2D1::RectF(rect.x, (screenHeight - rect.y - rect.height), (rect.x + rect.width), (screenHeight - rect.y));
+	}
+	else
+	{
+		layoutRect = D2D1::RectF(0.0f, 0.0f, rect.width, rect.height);
+	}
 
-	m_d2dContext->SetTransform(D2D1::IdentityMatrix());
+	auto d2dTransform = ConvertToD2DMatrix(mat);
+
+	m_d2dContext->SetTransform(d2dTransform);
 	m_d2dContext->DrawText(string, static_cast<UINT32>(wcslen(string)), textFormat, &layoutRect, m_solidColorBrush.Get());
 }
 

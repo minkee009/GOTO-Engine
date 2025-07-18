@@ -31,14 +31,27 @@ namespace GOTOEngine
 	{
 	private:
 		Font* m_font;
-		Vector2 m_pivot = { 0.5f, 0.5f };
 
 		void Render(Matrix3x3& matrix);
 	public:
+		TextRenderer() 
+			: m_font(nullptr)
+			, size(16)
+			, fontStyle(FontStyle::Normal)
+			, rect({0,0,100,100})
+			, pivot({ 0.5f, 0.5f })
+			, color({255,255,255,255}) 
+			, horizontalAlign(TextHoriAlign::Center)
+			, verticalAlign(TextVertAlign::Center)
+		{
+		}
+
+
 		std::wstring text;
 		size_t size;
 		FontStyle fontStyle;
 		Rect rect;
+		Vector2 pivot;
 		Color color;
 		TextHoriAlign horizontalAlign;
 		TextVertAlign verticalAlign;

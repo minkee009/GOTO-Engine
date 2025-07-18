@@ -34,7 +34,7 @@ bool SceneManager::CheckSceneChange()
 		m_currentScene = m_nextScene;
 		m_nextScene = nullptr;
 
-		m_currentScene->Init();
+		m_currentScene->Initialize();
 		return true;
 	}
 

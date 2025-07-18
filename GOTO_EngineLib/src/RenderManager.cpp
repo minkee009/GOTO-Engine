@@ -50,12 +50,12 @@ void GOTOEngine::RenderManager::DrawString(const wchar_t* text, Rect rect, const
 		rect = Rect{ 0,0,static_cast<float>(m_pRenderAPI->GetWindow().GetWidth()),static_cast<float>(m_pRenderAPI->GetWindow().GetHeight()) };
 	}
 
-	m_pRenderAPI->DrawString(text, rect, font, 24, IRenderFontStyle::Bold, color, Matrix3x3{}, static_cast<int>(hAlign), static_cast<int>(vAlign));
+	m_pRenderAPI->DrawString(text, rect, font, 24, IRenderFontStyle::Bold, color, Matrix3x3{}, static_cast<int>(hAlign), static_cast<int>(vAlign),true);
 }
 
 void GOTOEngine::RenderManager::DrawString(const wchar_t* text, Rect rect, Color color)
 {
-	m_pRenderAPI->DrawString(text, rect, nullptr, 24, IRenderFontStyle::Bold, color, Matrix3x3{}, -1, 1);
+	m_pRenderAPI->DrawString(text, rect, nullptr, 24, IRenderFontStyle::Bold, color, Matrix3x3{}, -1, 1, true);
 }
 
 RenderAPIMemoryStatus RenderManager::CollectMemoryUsage()

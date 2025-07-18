@@ -8,7 +8,7 @@ class TitleScene : public Scene
 {
 public:
 	TitleScene(const std::wstring& sceneName) : Scene(sceneName) {}
-	void Init() override;
+	void Initialize() override;
 
 	~TitleScene();
 };

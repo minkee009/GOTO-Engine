@@ -202,7 +202,7 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="inc\TextHelper.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>헤더 파일\헬퍼</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

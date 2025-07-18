@@ -8,7 +8,7 @@
 #include "MemoryUsageGUI.h"
 #include "MushroomCreator.h"
 
-void SampleScene::Init()
+void SampleScene::Initialize()
 {
 	//---엔진세팅
 	RenderManager::Get()->SetVSyncInterval(0);

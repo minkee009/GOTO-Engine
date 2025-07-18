@@ -14,12 +14,13 @@
 #include "PlayerMove.h"
 #include "PlayerRotate.h"
 #include <SpriteRenderer.h>
+#include <TextRenderer.h>
 #include "CameraMove.h"
 #include "RenderInfoDraw.h"
 
 using namespace GOTOEngine;
 
-void TitleScene::Init()
+void TitleScene::Initialize()
 {
     //---엔진 옵션 변경
     TimeManager::Get()->SetFixedDeltaTime(0.05f);
@@ -59,6 +60,7 @@ void TitleScene::Init()
 
     swallow_GO->AddComponent<SpriteRenderer>()->SetSprite(Resource::Load<Sprite>(L"../Resources/blue.gif"));
     swallow_GO->AddComponent<PlayerRotate>();
+    swallow_GO->AddComponent<TextRenderer>()->SetFont(Resource::Load<Font>(L"../Resources/Maplestory Bold.ttf"));
     
     camera_GO->AddComponent<CameraMove>();
     camera2_GO->AddComponent<CameraMove>();
@@ -66,6 +68,10 @@ void TitleScene::Init()
     guiDraw_Go->AddComponent<RenderInfoDraw>();
 
     //---컴포넌트 어사인
+    auto swallowText = swallow_GO->GetComponent<TextRenderer>();
+    swallowText->text = L"안녕하세요!";
+    swallowText->size = 32;
+    swallowText->SetRenderOrder(1500);
     camera_GO->GetComponent<Camera>()->SetRect({ 0,0,1.0f,1.0f });
 
     auto camera2_cameraComp = camera2_GO->GetComponent<Camera>(); 
