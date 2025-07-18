@@ -25,13 +25,13 @@ namespace GOTOEngine
 			auto dramUsage = L"DRam - " + std::wstring(m_status.dramUsage.begin(), m_status.dramUsage.end());
 			auto pagefileUsage = L"PageFile - " + std::wstring(m_status.pageFileUsage.begin(), m_status.pageFileUsage.end());
 
-			RenderManager::Get()->DrawString(0, 340, 680, 36, vramUsage.c_str(), nullptr, false, { 0,255,0,255 });
-			RenderManager::Get()->DrawString(0, 310, 500, 36, dramUsage.c_str(), nullptr, false, { 0,255,0,255 });
-			RenderManager::Get()->DrawString(0, 280, 500, 36, pagefileUsage.c_str(), nullptr, false, { 0,255,0,255 });
+			RenderManager::Get()->DrawString(vramUsage.c_str(), Rect{0, 340, 680, 36}, Color{ 0,255,0,255 });
+			RenderManager::Get()->DrawString(dramUsage.c_str(), Rect{ 0, 310, 500, 36 }, Color{ 0,255,0,255 });
+			RenderManager::Get()->DrawString(pagefileUsage.c_str(), Rect{ 0, 280, 500, 36, }, Color{ 0,255,0,255 });
 
 			//fps Ãâ·Â
 			std::wstring fpsText = std::to_wstring(1/TIME_GET_DELTATIME());
-			RenderManager::Get()->DrawString(0, winHeight - 540, 680, 540, fpsText.c_str(), nullptr, false, {0,0,255,255});
+			RenderManager::Get()->DrawString(fpsText.c_str(), Rect{ 0, (float)winHeight - 540, 680, 540 }, Color{ 0,0,255,255 });
 		}
 
 

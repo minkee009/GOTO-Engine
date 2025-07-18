@@ -2,6 +2,7 @@
 #include "Renderer.h"
 #include "Rect.h"
 #include "Font.h"
+#include "TextHelper.h"
 
 namespace GOTOEngine
 {
@@ -30,14 +31,18 @@ namespace GOTOEngine
 	{
 	private:
 		Font* m_font;
-		size_t m_size;
-		FontStyle m_fontStyle;
-
-		Rect m_rect;
 		Vector2 m_pivot = { 0.5f, 0.5f };
 
 		void Render(Matrix3x3& matrix);
 	public:
+		std::wstring text;
+		size_t size;
+		FontStyle fontStyle;
+		Rect rect;
+		Color color;
+		TextHoriAlign horizontalAlign;
+		TextVertAlign verticalAlign;
+
 		void Dispose() override { if (m_font) { m_font->DecreaseRefCount(); m_font = nullptr; } }
 		Font* GetFont() const { return m_font; }
 		void SetFont(Font* font);

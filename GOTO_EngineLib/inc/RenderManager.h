@@ -3,6 +3,8 @@
 #include "Color.h"
 #include "Vector2.h"
 #include "vector"
+#include "TextHelper.h"
+#include "Rect.h"
 
 namespace GOTOEngine
 {
@@ -17,7 +19,23 @@ namespace GOTOEngine
 		void SetVSyncInterval(int interval);
 		const IWindow* GetWindow() const;
 
-		void DrawString(float x, float y, float width, float height, const wchar_t* text, const IRenderFont* font, bool rightAlign, Color color);
+		//OnGUI용 그리기 함수
+		void DrawString(
+			const wchar_t* text,
+			Rect rect = Rect{ 0,0,0,0 },
+			const IRenderFont* font = nullptr,
+			size_t size = 24,
+			IRenderFontStyle fontStyle = IRenderFontStyle::Bold,
+			Color color = Color{ 255,255,255,255 },
+			TextHoriAlign hAlign = TextHoriAlign::Left,
+			TextVertAlign vAlign = TextVertAlign::Up);
+
+		void DrawString(
+			const wchar_t* text,
+			Rect rect = Rect{ 0,0,0,0 },
+			Color color = Color{ 255,255,255,255 });
+
+
 		RenderAPIMemoryStatus CollectMemoryUsage();
 	private:
 		friend class Engine;

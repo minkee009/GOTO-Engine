@@ -177,7 +177,7 @@ void GOTOEngine::D2DRenderAPI::DrawBitmap(const IRenderBitmap* bitmap, const Mat
 	);
 }
 
-void D2DRenderAPI::DrawString(const wchar_t* string, const IRenderFont* font, size_t size, const IRenderFontStyle& fontStyle, Color color, const Matrix3x3& mat, const Rect& rect, int hAlignment, int vAlignment)
+void D2DRenderAPI::DrawString(const wchar_t* string, const Rect& rect, const IRenderFont* font, size_t size, const IRenderFontStyle& fontStyle, Color color, const Matrix3x3& mat, int hAlignment, int vAlignment)
 {
 	if (!string || !m_d2dContext)
 		return;

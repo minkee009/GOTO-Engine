@@ -18,11 +18,6 @@
 
 using namespace GOTOEngine;
 
-void RenderManager::DrawString(float x, float y, float width, float height, const wchar_t* text, const IRenderFont* font, bool rightAlign, Color color)
-{
-	m_pRenderAPI->DrawString(text, font, 24, IRenderFontStyle::Bold, color, Matrix3x3{}, Rect{ x, y, width, height },-1,1);
-}
-
 void RenderManager::StartUp(IWindow* window)
 {
 #ifdef _USE_DIRECT2D
@@ -43,6 +38,24 @@ void RenderManager::StartUp(IWindow* window)
 #endif 
 			});
 	}
+}
+
+void GOTOEngine::RenderManager::DrawString(const wchar_t* text, Rect rect, const IRenderFont* font, size_t size, IRenderFontStyle fontStyle, Color color, TextHoriAlign hAlign, TextVertAlign vAlign)
+{
+	if (rect.x == 0 &&
+		rect.y == 0 &&
+		rect.width == 0 &&
+		rect.height == 0)
+	{
+		rect = Rect{ 0,0,static_cast<float>(m_pRenderAPI->GetWindow().GetWidth()),static_cast<float>(m_pRenderAPI->GetWindow().GetHeight()) };
+	}
+
+	m_pRenderAPI->DrawString(text, rect, font, 24, IRenderFontStyle::Bold, color, Matrix3x3{}, static_cast<int>(hAlign), static_cast<int>(vAlign));
+}
+
+void GOTOEngine::RenderManager::DrawString(const wchar_t* text, Rect rect, Color color)
+{
+	m_pRenderAPI->DrawString(text, rect, nullptr, 24, IRenderFontStyle::Bold, color, Matrix3x3{}, -1, 1);
 }
 
 RenderAPIMemoryStatus RenderManager::CollectMemoryUsage()

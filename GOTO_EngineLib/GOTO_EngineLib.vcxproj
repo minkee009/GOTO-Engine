@@ -181,6 +181,7 @@
     <ClInclude Include="inc\Singleton.h" />
     <ClInclude Include="inc\Sprite.h" />
     <ClInclude Include="inc\SpriteRenderer.h" />
+    <ClInclude Include="inc\TextHelper.h" />
     <ClInclude Include="inc\TextRenderer.h" />
     <ClInclude Include="inc\Texture2D.h" />
     <ClInclude Include="inc\TimeManager.h" />

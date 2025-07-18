@@ -50,7 +50,7 @@ namespace GOTOEngine
 			auto windowWidth = RenderManager::Get()->GetWindow()->GetWidth();
 			std::wstring outText = L"SpaceBar로 몬스터 생성";
 
-			RenderManager::Get()->DrawString(windowWidth * 0.5f - 120, 280, 500, 36, outText.c_str(), nullptr, false, { 255,0,0,255 });
+			RenderManager::Get()->DrawString(outText.c_str(), { windowWidth * 0.5f - 120, 280, 500, 36 }, {255,0,0,255});
 		}
 	public:
     MushroomCreator()

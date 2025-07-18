@@ -25,13 +25,13 @@ namespace GOTOEngine
 
 			std::wstring outText = L" 현재 플레이어의 체력 : " + hpText;
 			
-			RenderManager::Get()->DrawString(0, winHeight - 540, 680, 540, outText.c_str(), nullptr, false, {255,127,0,255});
+			RenderManager::Get()->DrawString(outText.c_str(), { 0, (float)winHeight - 540, 680, 540 }, { 255, 127, 0, 255 });
 
 			if (IsValidObject(health) && !health->IsDestroyed())
 			{
 				std::wstring outText2 = L"SpaceBar로 혼내주기";
 
-				RenderManager::Get()->DrawString(winWidth * 0.5f - 120, 280, 500, 36, outText2.c_str(), nullptr, false, { 255,0,0,255 });
+				RenderManager::Get()->DrawString(outText2.c_str(), { winWidth * 0.5f - 120, 280, 500, 36 }, { 255,0,0,255 });
 			}
 		}
 	public:
