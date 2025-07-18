@@ -76,6 +76,9 @@ void GOTOEngine::BehaviourManager::InitializeBehaviours()
 		}
 	}
 
+	// 활성화 behaviour 정렬 (필요시에)
+	CheckAndSortBehaviours();
+
 	// Awake 호출 (newBehaviours 사용)
 	for (auto& behaviour : newBehaviours)
 	{

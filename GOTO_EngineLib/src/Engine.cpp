@@ -86,6 +86,7 @@ void Engine::ProcessFrame()
 	}
 
 	//Behaviour 초기화 메시지 (필요한 객체에 한해)
+	//BehaviourManager::Get()->CheckAndSortBehaviours();
 	//BehaviourManager::Get()->BroadCastBehaviourMessage("Awake");
 	//BehaviourManager::Get()->BroadCastBehaviourMessage("OnEnable");
 	//BehaviourManager::Get()->BroadCastBehaviourMessage("Start");
