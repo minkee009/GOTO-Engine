@@ -1,5 +1,6 @@
 #include <d2d1helper.h>
 #include <WICHelper.h>
+#include "DWriteHelper.h"
 #include "D2DRenderAPI.h"
 #include "D2DFont.h"
 #include "D2DBitmap.h"
@@ -183,12 +184,11 @@ void D2DRenderAPI::DrawString(const wchar_t* string, const IRenderFont* font, si
 
 	if (!font)
 	{
-		if(!m_defaultFont)
+		if (!m_defaultFont)
 			m_defaultFont = new D2DFont(L"Segoe UI");
 
 		font = m_defaultFont;
 	}
-
 
 	IDWriteTextFormat* textFormat = static_cast<D2DFont*>(const_cast<IRenderFont*>(font))->GetRaw(size, fontStyle);
 	if (!textFormat)
@@ -319,83 +319,66 @@ IRenderBitmap* GOTOEngine::D2DRenderAPI::CreateRenderBitmap(std::wstring filePat
 
 IRenderFont* GOTOEngine::D2DRenderAPI::CreateRenderFontFromFilePath(std::wstring filePath)
 {
-	IDWriteFactory* dwriteFactory = DWriteHelper::GetFactory();
-	// DWriteHelper가 초기화되지 않은 경우 종료
+	IDWriteFactory3* dwriteFactory = DWriteHelper::GetFactory();
 	if (!dwriteFactory)
-	{
 		return nullptr;
-	}
 
-	// 폰트 파일 참조 생성
+	// 1. FontSetBuilder (IDWriteFontSetBuilder1) 생성
+	ComPtr<IDWriteFontSetBuilder> baseBuilder;
+	HRESULT hr = dwriteFactory->CreateFontSetBuilder(&baseBuilder);
+	if (FAILED(hr)) return nullptr;
+
+	ComPtr<IDWriteFontSetBuilder1> fontSetBuilder;
+	hr = baseBuilder.As(&fontSetBuilder);
+	if (FAILED(hr)) return nullptr;
+
+	// 2. FontFile 생성
 	ComPtr<IDWriteFontFile> fontFile;
-	HRESULT hr = dwriteFactory->CreateFontFileReference(
-		filePath.c_str(),
-		nullptr,
-		fontFile.GetAddressOf()
-	);
+	hr = dwriteFactory->CreateFontFileReference(filePath.c_str(), nullptr, &fontFile);
+	if (FAILED(hr)) return nullptr;
 
-	if (FAILED(hr))
-		return nullptr;
+	// 3. FontFile을 FontSetBuilder에 추가
+	hr = fontSetBuilder->AddFontFile(fontFile.Get());
+	if (FAILED(hr)) return nullptr;
 
-	// 폰트 파일 배열 생성
-	IDWriteFontFile* fontFiles[] = { fontFile.Get() };
+	// 4. FontSet 생성
+	ComPtr<IDWriteFontSet> fontSet;
+	hr = fontSetBuilder->CreateFontSet(&fontSet);
+	if (FAILED(hr)) return nullptr;
 
-	// 폰트 컬렉션 생성
-	ComPtr<IDWriteFontCollection> fontCollection;
-	hr = dwriteFactory->CreateCustomFontCollection(
-		nullptr, // 사용자 정의 폰트 컬렉션 로더 (기본 로더 사용)
-		fontFiles,
-		1,
-		fontCollection.GetAddressOf()
-	);
+	// 5. FontCollection 생성
+	ComPtr<IDWriteFontCollection1> fontCollection;
+	hr = dwriteFactory->CreateFontCollectionFromFontSet(fontSet.Get(), &fontCollection);
+	if (FAILED(hr)) return nullptr;
 
-	if (FAILED(hr))
-		return nullptr;
+	// 6. FontFamily 이름 추출
+	ComPtr<IDWriteFontFamily1> fontFamily;
+	hr = fontCollection->GetFontFamily(0, &fontFamily);
+	if (FAILED(hr)) return nullptr;
 
-	// 폰트 패밀리 가져오기
-	ComPtr<IDWriteFontFamily> fontFamily;
-	hr = fontCollection->GetFontFamily(0, fontFamily.GetAddressOf());
-
-	if (FAILED(hr))
-		return nullptr;
-
-	// 폰트 패밀리 이름 가져오기
 	ComPtr<IDWriteLocalizedStrings> familyNames;
-	hr = fontFamily->GetFamilyNames(familyNames.GetAddressOf());
+	hr = fontFamily->GetFamilyNames(&familyNames);
+	if (FAILED(hr)) return nullptr;
 
-	if (FAILED(hr))
-		return nullptr;
-
-	// 폰트 패밀리 이름 문자열 추출
 	UINT32 index = 0;
 	BOOL exists = FALSE;
 	hr = familyNames->FindLocaleName(L"en-us", &index, &exists);
-	if (FAILED(hr) || !exists)
-	{
-		// 영어 이름이 없으면 첫 번째 이름 사용
-		index = 0;
-	}
+	if (!exists) index = 0;
 
 	UINT32 length = 0;
 	hr = familyNames->GetStringLength(index, &length);
-	if (FAILED(hr))
-		return nullptr;
+	if (FAILED(hr)) return nullptr;
 
-	std::wstring fontFamilyName;
-	fontFamilyName.resize(length + 1);
+	std::wstring fontFamilyName(length + 1, L'\0');
 	hr = familyNames->GetString(index, &fontFamilyName[0], length + 1);
-	if (FAILED(hr))
-		return nullptr;
+	if (FAILED(hr)) return nullptr;
 
-	// null terminator 제거
 	fontFamilyName.resize(length);
 
-	// D2DFont 객체 생성
+	// 7. D2DFont 생성 및 반환
 	D2DFont* d2dFont = new D2DFont(fontFamilyName);
-
-	// 커스텀 폰트 정보 설정
 	d2dFont->m_fontCollection = fontCollection;
-	d2dFont->m_fontFile = fontFile;
+	d2dFont->m_fontFile = fontFile; // IDWriteFontFile으로 설정됨
 
 	return d2dFont;
 }

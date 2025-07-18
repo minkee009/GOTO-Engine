@@ -2,7 +2,6 @@
 #include <dwrite.h>
 #include <dwrite_3.h>
 #include <wrl/client.h>
-#pragma comment(lib, "dwrite.lib")
 
 namespace GOTOEngine
 {
@@ -10,10 +9,10 @@ namespace GOTOEngine
     {
     public:
         static void StartUp();
-        static IDWriteFactory* GetFactory();
+        static IDWriteFactory3* GetFactory();
         static void ShutDown() { s_factory = nullptr; }
 
     private:
-        static Microsoft::WRL::ComPtr<IDWriteFactory> s_factory;
+        static Microsoft::WRL::ComPtr<IDWriteFactory3> s_factory;
     };
 }
