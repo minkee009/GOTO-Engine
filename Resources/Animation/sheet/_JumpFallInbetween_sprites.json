@@ -1,0 +1,25 @@
+{
+    "texture": "_JumpFallInbetween.png",
+    "textureWidth": 240,
+    "textureHeight": 80,
+    "sprites": [
+        {
+            "name": "_JumpFallInbetween_0",
+            "x": 41.0,
+            "y": 79.0,
+            "width": 27.0,
+            "height": 37.0,
+            "pivotX": 0.5,
+            "pivotY": 0.5
+        },
+        {
+            "name": "_JumpFallInbetween_1",
+            "x": 159.0,
+            "y": 79.0,
+            "width": 29.0,
+            "height": 37.0,
+            "pivotX": 0.5,
+            "pivotY": 0.5
+        }
+    ]
+}

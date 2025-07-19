@@ -1,0 +1,43 @@
+{
+    "controllerName": "KnightAnimator",
+    "parameters": [],
+    "defaultState": "anim_knight_idle",
+    "states": [
+        {
+            "name": "anim_knight_idle",
+            "motionName": "anim_knight_idle",
+            "clipLength": 0.8333333134651184,
+            "loop": true,
+            "transitions": []
+        },
+        {
+            "name": "anim_knight_run",
+            "motionName": "anim_knight_run",
+            "clipLength": 0.8333333134651184,
+            "loop": true,
+            "transitions": []
+        },
+        {
+            "name": "anim_knight_jump",
+            "motionName": "anim_knight_jump",
+            "clipLength": 0.25,
+            "loop": true,
+            "transitions": []
+        },
+        {
+            "name": "anim_knight_fall",
+            "motionName": "anim_knight_fall",
+            "clipLength": 0.25,
+            "loop": true,
+            "transitions": []
+        },
+        {
+            "name": "anim_knight_crouch",
+            "motionName": "anim_knight_crouch",
+            "clipLength": 0.01666666753590107,
+            "loop": true,
+            "transitions": []
+        }
+    ],
+    "anyStateTransitions": []
+}

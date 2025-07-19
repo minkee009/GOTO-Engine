@@ -40,6 +40,18 @@
     <Filter Include="소스 파일\매니저">
       <UniqueIdentifier>{c9a0aa3d-dbc0-445f-bf87-c871ae6c8f19}</UniqueIdentifier>
     </Filter>
+    <Filter Include="헤더 파일\리소스">
+      <UniqueIdentifier>{b7877f06-c4f6-4971-8146-7985a713e6e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\리소스">
+      <UniqueIdentifier>{0cef9de0-821f-4927-9d4c-aaa3af7effd1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\리소스\구현체">
+      <UniqueIdentifier>{51f15628-e456-449b-bb03-c3edeaba996f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\리소스\구현체">
+      <UniqueIdentifier>{ecfd3104-fdda-4a99-8331-0202b13b512b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\Delegate.h">
@@ -94,9 +106,6 @@
       <Filter>헤더 파일\매니저</Filter>
     </ClInclude>
     <ClInclude Include="inc\D2DRenderAPI.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\D2DFont.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="inc\GameObject.h">
@@ -162,12 +171,6 @@
     <ClInclude Include="inc\TextRenderer.h">
       <Filter>헤더 파일\코어 컴포넌트</Filter>
     </ClInclude>
-    <ClInclude Include="inc\Sprite.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\Font.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="inc\Renderer.h">
       <Filter>헤더 파일\코어 컴포넌트</Filter>
     </ClInclude>
@@ -186,12 +189,6 @@
     <ClInclude Include="inc\Resource.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="inc\Texture2D.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\D2DBitmap.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="inc\IRenderBitmap.h">
       <Filter>헤더 파일\인터페이스</Filter>
     </ClInclude>
@@ -203,6 +200,21 @@
     </ClInclude>
     <ClInclude Include="inc\TextHelper.h">
       <Filter>헤더 파일\헬퍼</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Texture2D.h">
+      <Filter>헤더 파일\리소스</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Font.h">
+      <Filter>헤더 파일\리소스</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Sprite.h">
+      <Filter>헤더 파일\리소스</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\D2DBitmap.h">
+      <Filter>헤더 파일\리소스\구현체</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\D2DFont.h">
+      <Filter>헤더 파일\리소스\구현체</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -237,9 +249,6 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="src\D2DRenderAPI.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="src\D2DFont.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="src\Object.cpp">
@@ -290,20 +299,23 @@
     <ClCompile Include="src\Matrix3x3.cpp">
       <Filter>소스 파일\구조체</Filter>
     </ClCompile>
-    <ClCompile Include="src\Texture2D.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Sprite.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="src\SpriteRenderer.cpp">
       <Filter>소스 파일\코어 컴포넌트</Filter>
     </ClCompile>
-    <ClCompile Include="src\Font.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="src\TextRenderer.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Font.cpp">
+      <Filter>소스 파일\리소스</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sprite.cpp">
+      <Filter>소스 파일\리소스</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Texture2D.cpp">
+      <Filter>소스 파일\리소스</Filter>
+    </ClCompile>
+    <ClCompile Include="src\D2DFont.cpp">
+      <Filter>소스 파일\리소스\구현체</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
