@@ -40,6 +40,8 @@ namespace GOTOEngine
 				return IRenderFontStyle::Italic;
 			case FontStyle::BoldItalic:
 				return IRenderFontStyle::BoldItalic;
+			default:
+				return IRenderFontStyle::Normal;
 			}
 		}
 	};

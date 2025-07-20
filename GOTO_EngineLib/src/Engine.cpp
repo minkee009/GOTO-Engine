@@ -27,6 +27,10 @@ bool Engine::Initialize(int width, int height, const wchar_t* title)
 		return false;
 
     window = new WinAPIWindow();
+
+	//한글 설정
+	std::locale::global(std::locale(".UTF-8"));
+	std::wcout.imbue(std::locale());
 #endif
 
     if (!window->Create(width, height, title))

@@ -28,6 +28,9 @@ bool SceneManager::CheckSceneChange()
 {
 	if (m_nextScene)
 	{
+		//if (m_nextScene == m_currentScene)
+		//	return false;
+
 		if (m_currentScene)
 			m_currentScene->Clear();
 

@@ -244,7 +244,7 @@ void GOTOEngine::Transform::SetParent(Transform* parent, bool worldPositionStays
 	MarkDirty();
 }
 
-const GOTOEngine::Transform* GOTOEngine::Transform::GetChild(size_t idx) const
+GOTOEngine::Transform* GOTOEngine::Transform::GetChild(size_t idx)
 {
 	if (idx >= m_childs.size())
 		return nullptr;
@@ -291,9 +291,9 @@ GOTOEngine::Transform* GOTOEngine::Transform::Find(const std::wstring& path)
 	return current;
 }
 
-const GOTOEngine::Transform* GOTOEngine::Transform::GetRoot() const
+GOTOEngine::Transform* GOTOEngine::Transform::GetRoot()
 {
-	const Transform* current = this;
+	Transform* current = this;
 
 	while (current->m_parent != nullptr)
 	{

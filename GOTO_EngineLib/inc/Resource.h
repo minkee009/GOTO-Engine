@@ -2,6 +2,7 @@
 #include "Object.h"
 #include "ResourceManager.h"
 #include <string>
+#include "WStringHelper.h"
 
 namespace GOTOEngine
 {
@@ -12,7 +13,7 @@ namespace GOTOEngine
 		friend class Sprite;
 	protected:
 		virtual void LoadFromFilePath(const std::wstring& filePath) = 0;
-		virtual bool IsValidRawData() = 0;
+		virtual bool IsValidData() = 0;
 		size_t m_refCount;
 		std::wstring m_filePath;
 		Resource() : m_refCount(0), m_filePath(L"") { ResourceManager::Get()->RegisterResource(this); }
@@ -30,14 +31,16 @@ namespace GOTOEngine
 				}
 			}
 			ResourceManager::Get()->UnRegisterResource(this); 
-			std::wcout << "resource unloaded - " << this << " : " << m_filePath.c_str() << std::endl;
+#ifdef _DEBUG
+			std::cout << "resource unloaded - " << this << " : " << WStringHelper::wstring_to_string(m_filePath).c_str() << std::endl;
+#endif
 		}
 	public:
 		std::wstring GetFilePath() { return m_filePath; }
 
 	public:
-		void IncreaseRefCount() { m_refCount++; }
-		void DecreaseRefCount() { if(m_refCount != 0) m_refCount--; if (m_refCount == 0) DestroyImmediate(this); }
+		void IncreaseRefCount() { ++m_refCount; }
+		void DecreaseRefCount() { if(m_refCount > 0) --m_refCount; if (m_refCount == 0) DestroyImmediate(this); }
 
 		template <typename T>
 		static T* Load(std::wstring filePath)

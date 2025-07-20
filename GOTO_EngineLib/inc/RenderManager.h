@@ -95,6 +95,4 @@ namespace GOTOEngine
 	};
 }
 
-#define RENDER_DRAW_IMAGE GOTOEngine::RenderManager::Get()->DrawImage
 #define RENDER_DRAW_RECT GOTOEngine::RenderManager::Get()->DrawRect
-#define RENDER_DRAW_STRING GOTOEngine::RenderManager::Get()->DrawString

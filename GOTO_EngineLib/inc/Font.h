@@ -12,7 +12,7 @@ namespace GOTOEngine
 	private:
 		friend class ResourceManager;
 		void LoadFromFilePath(const std::wstring& filePath) override;
-		bool IsValidRawData() override { return m_fontHandle; }
+		bool IsValidData() override { return m_fontHandle; }
 		IRenderFont* m_fontHandle;
 		~Font();
 	public:

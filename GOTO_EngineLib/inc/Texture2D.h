@@ -19,6 +19,6 @@ namespace GOTOEngine
 		
 		const IRenderBitmap* GetBitmap() const { return m_bitmapHandle; }
 		const Rect& GetRect() const { return m_rect; }
-		bool IsValidRawData() override { return m_bitmapHandle; }
+		bool IsValidData() override { return m_bitmapHandle; }
 	};
 }

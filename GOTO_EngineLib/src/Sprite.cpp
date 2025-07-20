@@ -47,7 +47,7 @@ void GOTOEngine::Sprite::LoadFromFilePath(const std::wstring& filePath)
 
 }
 
-bool GOTOEngine::Sprite::IsValidRawData()
+bool GOTOEngine::Sprite::IsValidData()
 {
 	return m_texture;
 }

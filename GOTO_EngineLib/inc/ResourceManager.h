@@ -43,18 +43,25 @@ namespace GOTOEngine
 			if (typeMapIt != m_resourceTable.end())
 			{
 				//--- 2. 파일경로 검색
-				auto& filePathMap = typeMapIt->second; // std::unordered_map <std::wstring, Resource*>
+				auto& filePathMap = typeMapIt->second; 
 				auto resourceIt = filePathMap.find(filePath);
 
 				if (resourceIt != filePathMap.end())
 				{
 					//--- 3. 리소스 검색: 파일 경로로 리소스가 있는 경우
-					// 캐스팅이 안전한지 확인 (dynamic_cast 사용, static_cast도 가능한지 나중에 체크하기) 
-					T* existingResource = dynamic_cast<T*>(resourceIt->second);
-					if (existingResource) {
-						//existingResource->IncreaseRefCount();
-						return existingResource;
+					// 댕글러 포인터 확인
+					if (Object::IsValidObject(resourceIt->second) 
+						&& !resourceIt->second->IsDestroyed())
+					{
+						// 캐스팅이 안전한지 확인 (dynamic_cast 사용, static_cast도 가능한지 나중에 체크하기) 
+						T* existingResource = dynamic_cast<T*>(resourceIt->second);
+						if (existingResource) {
+							//existingResource->IncreaseRefCount();
+							return existingResource;
+						}
 					}
+					// 유효하지 않은 리소스로 판단, 리소스 테이블에서 원소 삭제
+					filePathMap.erase(resourceIt);
 				}
 			}
 
@@ -63,7 +70,7 @@ namespace GOTOEngine
 			newResource->m_filePath = filePath; // 파일 경로 갱신
 			newResource->LoadFromFilePath(filePath); // 파일에서 데이터 로드
 
-			if (!newResource->IsValidRawData())
+			if (!newResource->IsValidData())
 			{
 				Object::DestroyImmediate(newResource);
 				return nullptr;

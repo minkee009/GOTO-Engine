@@ -51,10 +51,10 @@ namespace GOTOEngine
 		void SetParent(Transform* parent);
 		void SetParent(Transform* parent, bool worldPositionStays);
 		Transform* GetParent() const { return m_parent; }
-		const Transform* GetChild(size_t idx) const;
+		Transform* GetChild(size_t idx);
 		size_t GetChildCount() const { return m_childs.size(); }
 		Transform* Find(const std::wstring& name);
-		const Transform* GetRoot() const;
+		Transform* GetRoot();
 		void DetachChildren();
 
 		void SetSiblingIndex(size_t idx);

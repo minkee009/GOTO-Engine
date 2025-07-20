@@ -216,6 +216,9 @@
     <ClInclude Include="inc\D2DFont.h">
       <Filter>헤더 파일\리소스\구현체</Filter>
     </ClInclude>
+    <ClInclude Include="inc\AnimationClip.h">
+      <Filter>헤더 파일\리소스</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\InputManager.cpp">
@@ -316,6 +319,9 @@
     </ClCompile>
     <ClCompile Include="src\D2DFont.cpp">
       <Filter>소스 파일\리소스\구현체</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AnimationClip.cpp">
+      <Filter>소스 파일\리소스</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -18,6 +18,8 @@
 #include "CameraMove.h"
 #include "RenderInfoDraw.h"
 
+#include <AnimationClip.h>
+
 using namespace GOTOEngine;
 
 void TitleScene::Initialize()
@@ -67,6 +69,9 @@ void TitleScene::Initialize()
 
     guiDraw_Go->AddComponent<RenderInfoDraw>();
 
+    auto clip = Resource::Load<AnimaitonClip>(L"../Resources/Animation/clip/anim_knight_idle_anim.json");
+    Object::Destroy(clip);
+
     //---컴포넌트 어사인
     auto swallowText = swallow_GO->GetComponent<TextRenderer>();
     swallowText->text = L"안녕하세요!";
@@ -79,6 +84,8 @@ void TitleScene::Initialize()
     camera2_cameraComp->SetDepth(1000);
     camera2_cameraComp->SetSize(0.5f);
     camera2_GO->GetComponent<CameraMove>()->isSub = true;
+
+    Object::DontDestroyOnLoad(mushmom_GO);
 }     
 
 TitleScene::~TitleScene()

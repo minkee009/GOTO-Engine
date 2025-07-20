@@ -15,15 +15,15 @@ namespace GOTOEngine
 		Sprite();
 		~Sprite();
 		
-		float m_pivotX = 0.5f;
-		float m_pivotY = 0.5f;
+		float m_pivotX;
+		float m_pivotY;
 		Rect m_rect;
 
 		void Dispose() override;
 
 		void LoadFromFilePath(const std::wstring& filePath) override;
 	public:
-		bool IsValidRawData() override;
+		bool IsValidData() override;
 
 		const Rect& GetRect() const { return m_rect; }
 		void SetRect(const Rect& rect) { m_rect = rect; }
