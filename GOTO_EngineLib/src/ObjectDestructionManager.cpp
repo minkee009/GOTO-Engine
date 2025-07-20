@@ -86,6 +86,7 @@ void GOTOEngine::ObjectDestructionManager::Update()
 	}
 
 	// 즉시파괴로 비정상적으로 사라진 파괴예약정보에 대한 제거
+	// 남은 지연파괴 정보는 그대로 보존 -> 다음 프레임에 다시 확인
 	for (auto it = m_destroySchedule.begin(); it != m_destroySchedule.end(); )
 	{
 		ObjectDestroyInfo* destroyInfo = it->second;

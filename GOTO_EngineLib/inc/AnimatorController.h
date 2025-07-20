@@ -5,28 +5,37 @@
 
 namespace GOTOEngine
 {
+	enum class AnimatorParameterType { Int, Float, Bool, Trigger };
 
 	struct AnimatorParameter
 	{
-
+		std::string name;
+		AnimatorParameterType type;
+		float defaultFloat = 0.0f;
+		int defaultInt = 0; 
+		bool defaultBool = false;
 	};
 
 	//functor
 	struct AnimatorCondition
 	{
-
+		std::string parameter; // 조건 파라미터 이름
+		std::string mode; // 조건 모드 (예: Greater, IfNot 등)
+		AnimatorParameterType type; // 파라미터 타입 (예: Int, Float, Bool, Trigger)
+		float threshold = 0.0f; // 조건 임계값
 	};
 
 	struct AnimatorTransition
 	{
-		std::wstring fromState;
-		std::wstring toState;
+		std::string fromState;
+		std::string toState;
 		std::vector<AnimatorCondition> conditions;
 	};
 
 	class AnimatorState : public Object
 	{
 	private:
+		friend class AnimatorController;
 		AnimationClip* m_clip;
 		std::vector<AnimatorTransition> m_transitions;
 
@@ -40,6 +49,11 @@ namespace GOTOEngine
 			}
 		}
 	public:
+		AnimatorState(AnimationClip* clip)
+			: m_clip(clip)
+		{
+
+		}
 		const float& GetDuration() const { m_clip->m_duration; }
 		const std::vector<AnimatorTransition>& GetTransitions() { return m_transitions; }
 	};
@@ -48,8 +62,13 @@ namespace GOTOEngine
 	{
 	private:
 		friend class ResourceManager;
-		std::unordered_map<std::wstring, AnimatorState*> m_states;
+		std::string m_defaultState;
+		std::unordered_map<std::string, AnimatorState*> m_states;
+		std::vector<AnimatorParameter> m_parameters;
 		void LoadFromFilePath(const std::wstring& filePath) override;
 		bool IsValidData() override { return m_states.size() > 0; }
+	public:
+		AnimatorState* GetState(std::string name);
+		const std::vector<AnimatorParameter>& GetParameters() const { return m_parameters; }
 	};
 }
