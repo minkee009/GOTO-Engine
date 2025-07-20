@@ -32,15 +32,25 @@ namespace GOTOEngine
 			}
 			ResourceManager::Get()->UnRegisterResource(this); 
 #ifdef _DEBUG
-			std::cout << "resource unloaded - " << this << " : " << WStringHelper::wstring_to_string(m_filePath).c_str() << std::endl;
+			auto runtimePath = m_filePath == L"" ? ("Runtime Instance - ID : " + std::to_string(GetInstanceID())) : "";
+			std::cout << "resource unloaded - " << this << " : " << runtimePath.c_str() << WStringHelper::wstring_to_string(m_filePath).c_str() << std::endl;
 #endif
 		}
 	public:
 		std::wstring GetFilePath() { return m_filePath; }
 
 	public:
-		void IncreaseRefCount() { ++m_refCount; }
-		void DecreaseRefCount() { if(m_refCount > 0) --m_refCount; if (m_refCount == 0) DestroyImmediate(this); }
+		void IncreaseRefCount() 
+		{ 
+			++m_refCount; 
+		}
+		void DecreaseRefCount() 
+		{ 
+			if (m_refCount > 0) 
+				--m_refCount; 
+			if (m_refCount == 0) 
+				DestroyImmediate(this); 
+		}
 
 		template <typename T>
 		static T* Load(std::wstring filePath)

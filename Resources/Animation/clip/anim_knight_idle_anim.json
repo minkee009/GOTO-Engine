@@ -1,7 +1,7 @@
 {
     "clipName": "anim_knight_idle",
     "loop": true,
-    "texturePath": "Assets/Resources/Sprtie/Knight/_Idle.png",
+    "texturePath": "../Resources/Knight/_Idle.png",
     "duration": 0.8333333134651184,
     "frames": [
         {

@@ -6,6 +6,8 @@ GOTOEngine::Sprite::Sprite()
     , m_rect(Rect{0,0,0,0})
     , m_pivotX(0.5f)
     , m_pivotY(0.5f)
+    , m_flipX(false)
+    , m_flipY(false)
 {
 }
 
@@ -16,8 +18,8 @@ GOTOEngine::Sprite::~Sprite()
 
 void GOTOEngine::Sprite::Dispose()
 {
-    Object::Dispose();
-    if (m_texture)
+    if (IsValidObject(m_texture) 
+        && !m_texture->IsDestroyed())
     {
         m_texture->DecreaseRefCount();
         m_texture = nullptr;
@@ -50,4 +52,16 @@ void GOTOEngine::Sprite::LoadFromFilePath(const std::wstring& filePath)
 bool GOTOEngine::Sprite::IsValidData()
 {
 	return m_texture;
+}
+
+void GOTOEngine::Sprite::SetTexture(Texture2D* texture)
+{
+    if (m_texture != texture)
+    {
+        if (texture)
+            texture->IncreaseRefCount();
+        if (m_texture)
+            m_texture->DecreaseRefCount();
+    }
+    m_texture = texture;
 }

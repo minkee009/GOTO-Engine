@@ -1,7 +1,7 @@
 {
     "clipName": "anim_knight_fall",
     "loop": true,
-    "texturePath": "Assets/Resources/Sprtie/Knight/_Fall.png",
+    "texturePath": "../Resources/Knight/_Fall.png",
     "duration": 0.25,
     "frames": [
         {

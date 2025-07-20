@@ -69,7 +69,7 @@ void TitleScene::Initialize()
 
     guiDraw_Go->AddComponent<RenderInfoDraw>();
 
-    auto clip = Resource::Load<AnimaitonClip>(L"../Resources/Animation/clip/anim_knight_idle_anim.json");
+    auto clip = Resource::Load<AnimationClip>(L"../Resources/Animation/clip/anim_knight_idle_anim.json");
     Object::Destroy(clip);
 
     //---컴포넌트 어사인

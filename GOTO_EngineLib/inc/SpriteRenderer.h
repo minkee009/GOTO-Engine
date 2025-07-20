@@ -36,7 +36,7 @@ namespace GOTOEngine
 		SpriteRenderer(): m_sprite(nullptr) {}
 		void SetSprite(Sprite* sprite);
 		void SetSprite(Sprite* sprite, Rect srcRect);
-		void Dispose() override { if (m_sprite) { m_sprite->DecreaseRefCount(); m_sprite = nullptr; } }
+		void Dispose() override { if (IsValidObject(m_sprite) && !m_sprite->IsDestroyed()) { m_sprite->DecreaseRefCount(); m_sprite = nullptr; } }
 		Sprite* GetSprite() { return m_sprite; } //참조 카운트 명시적으로 설정하기
 	};
  }

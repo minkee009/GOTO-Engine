@@ -74,12 +74,14 @@ def load_signatures(signatures_path):
                         params_str = match.group(2).strip()
                         param_list = parse_parameters(params_str)
                         signatures[name] = param_list
-            print(f"시그니처 파일 로드 성공: {signatures_path} (인코딩: {encoding})")
+            # print(f"시그니처 파일 로드 성공: {signatures_path} (인코딩: {encoding})")
             return signatures
         except UnicodeDecodeError:
-            print(f"시그니처 파일 로드 실패: {signatures_path} (인코딩: {encoding}) - 디코딩 오류")
+            continue
+            # print(f"시그니처 파일 로드 실패: {signatures_path} (인코딩: {encoding}) - 디코딩 오류")
         except Exception as e:
-            print(f"시그니처 파일 로드 중 오류 발생: {signatures_path} (인코딩: {encoding}) - {e}")
+            continue
+            # print(f"시그니처 파일 로드 중 오류 발생: {signatures_path} (인코딩: {encoding}) - {e}")
     
     raise Exception(f"시그니처 파일을 읽을 수 없습니다: {signatures_path} (지원되는 인코딩 없음)")
 
@@ -180,12 +182,14 @@ def process_header_file(header_path, signatures):
             with open(header_path, 'rb') as f:
                 raw_bytes = f.read()
             header_text = raw_bytes.decode(encoding)
-            print(f"헤더 파일 로드 성공: {header_path.name} (인코딩: {encoding})")
+            # print(f"헤더 파일 로드 성공: {header_path.name} (인코딩: {encoding})")
             break
         except UnicodeDecodeError:
-            print(f"헤더 파일 로드 실패: {header_path.name} (인코딩: {encoding}) - 디코딩 오류")
+            continue
+            # print(f"헤더 파일 로드 실패: {header_path.name} (인코딩: {encoding}) - 디코딩 오류")
         except Exception as e:
-            print(f"헤더 파일 로드 중 오류 발생: {header_path.name} (인코딩: {encoding}) - {e}")
+            continue
+            # print(f"헤더 파일 로드 중 오류 발생: {header_path.name} (인코딩: {encoding}) - {e}")
     else:
         print(f"[{header_path.name}] 건너뜀: 헤더 파일을 읽을 수 없습니다 (지원되는 인코딩 없음).")
         return

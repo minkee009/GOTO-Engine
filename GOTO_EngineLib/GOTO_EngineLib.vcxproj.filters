@@ -219,6 +219,12 @@
     <ClInclude Include="inc\AnimationClip.h">
       <Filter>헤더 파일\리소스</Filter>
     </ClInclude>
+    <ClInclude Include="inc\AnimatorController.h">
+      <Filter>헤더 파일\리소스</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Animator.h">
+      <Filter>헤더 파일\코어 컴포넌트</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\InputManager.cpp">
@@ -321,6 +327,9 @@
       <Filter>소스 파일\리소스\구현체</Filter>
     </ClCompile>
     <ClCompile Include="src\AnimationClip.cpp">
+      <Filter>소스 파일\리소스</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AnimatorController.cpp">
       <Filter>소스 파일\리소스</Filter>
     </ClCompile>
   </ItemGroup>

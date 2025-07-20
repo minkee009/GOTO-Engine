@@ -21,7 +21,7 @@ void GOTOEngine::SpriteRenderer::Render(Matrix3x3& matrix)
         auto transform = Matrix3x3::Translate(spriteRect.width * -m_sprite->GetPivotX(), spriteRect.height * -m_sprite->GetPivotY());
 
         //유니티 좌표계 이미지 플립
-        transform = Matrix3x3::Scale(1.0f, -1.0f) * transform;
+        transform = Matrix3x3::Scale(m_sprite->GetFlipX() ? -1.0f : 1.0f, m_sprite->GetFlipY() ? 1.0f : -1.0f) * transform;
 
         ////TRS 세팅
         transform = GetGameObject()->GetTransform()->GetWorldMatrix() * transform;

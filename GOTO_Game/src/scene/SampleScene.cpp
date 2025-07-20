@@ -14,12 +14,12 @@ void SampleScene::Initialize()
 	RenderManager::Get()->SetVSyncInterval(0);
 
 	//---게임오브젝트 초기화
-	auto camera = Camera::CreateMainCamera();
+	auto Camera = Camera::CreateMainCamera();
 	auto BG = new GameObject(L"배경");
 	auto MemoryAllocator = new GameObject(L"메모리 할당 오브젝트");
 
 	//---컴포넌트 추가
-	BG->AddComponent<SpriteRenderer>();
+	BG->AddComponent<SpriteRenderer>()->SetRenderOrder(-100);
 	MemoryAllocator->AddComponent<MemoryUsageGUI>();
 	MemoryAllocator->AddComponent<MushroomCreator>();
 	
