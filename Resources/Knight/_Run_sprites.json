@@ -2,6 +2,7 @@
     "texture": "_Run.png",
     "textureWidth": 1200,
     "textureHeight": 80,
+    "spriteRenderMode": "Point",
     "sprites": [
         {
             "name": "_Run_0",

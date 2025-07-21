@@ -146,25 +146,26 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\scene\AnimationScene.cpp" />
     <ClCompile Include="src\component\MonsterAttack.cpp" />
     <ClCompile Include="src\component\PlayerHealth.cpp" />
-    <ClCompile Include="src\AnimationController.cpp" />
     <ClCompile Include="src\GameApp.cpp" />
     <ClCompile Include="src\scene\SampleScene.cpp" />
     <ClCompile Include="src\scene\TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="inc\AnimationController.h" />
     <ClInclude Include="inc\component\CameraMove.h" />
     <ClInclude Include="inc\component\MemoryUsageGUI.h" />
     <ClInclude Include="inc\component\MonsterAttack.h" />
     <ClInclude Include="inc\component\MushroomCreator.h" />
+    <ClInclude Include="inc\component\PlayerController.h" />
     <ClInclude Include="inc\component\PlayerHealth.h" />
     <ClInclude Include="inc\component\PlayerMove.h" />
     <ClInclude Include="inc\component\PlayerRotate.h" />
     <ClInclude Include="inc\component\RenderInfoDraw.h" />
     <ClInclude Include="inc\component\TestComponent.h" />
     <ClInclude Include="inc\component\PlayerGUI.h" />
+    <ClInclude Include="inc\scene\AnimationScene.h" />
     <ClInclude Include="inc\scene\TitleScene.h" />
     <ClInclude Include="inc\scene\SampleScene.h" />
   </ItemGroup>

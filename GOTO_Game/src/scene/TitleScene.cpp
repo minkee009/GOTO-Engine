@@ -70,8 +70,6 @@ void TitleScene::Initialize()
 
     guiDraw_Go->AddComponent<RenderInfoDraw>();
 
-    auto controller = Resource::Load<AnimatorController>(L"../Resources/Animation/controller/KnightAnimator_AnimController.json");
-    Object::Destroy(controller);
 
     //---컴포넌트 어사인
     auto swallowText = swallow_GO->GetComponent<TextRenderer>();

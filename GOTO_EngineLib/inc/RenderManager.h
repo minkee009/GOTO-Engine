@@ -32,8 +32,8 @@ namespace GOTOEngine
 
 		void DrawString(
 			const wchar_t* text,
-			Rect rect = Rect{ 0,0,0,0 },
-			Color color = Color{ 255,255,255,255 });
+			Rect rect,
+			Color color);
 
 
 		RenderAPIMemoryStatus CollectMemoryUsage();

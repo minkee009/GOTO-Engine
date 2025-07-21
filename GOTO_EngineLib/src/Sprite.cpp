@@ -8,6 +8,7 @@ GOTOEngine::Sprite::Sprite()
     , m_pivotY(0.5f)
     , m_flipX(false)
     , m_flipY(false)
+    , m_renderMode(SpriteRenderMode::Point)
 {
 }
 

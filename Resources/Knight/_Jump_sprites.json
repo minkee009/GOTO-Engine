@@ -2,6 +2,7 @@
     "texture": "_Jump.png",
     "textureWidth": 360,
     "textureHeight": 80,
+    "spriteRenderMode": "Point",
     "sprites": [
         {
             "name": "_Jump_0",

@@ -33,7 +33,7 @@ namespace GOTOEngine
         void ClearGPUResourcesMap() { m_pGpuResourcesMap->clear(); }
         void Clear() override;
         //void DrawImage(int x, int y, float scale, bool flipX, const IRenderImage* image) override;
-        void DrawBitmap(const IRenderBitmap* bitmap, const Matrix3x3& mat,  const Rect& sourceRect) override;
+        void DrawBitmap(const IRenderBitmap* bitmap, const Matrix3x3& mat,  const Rect& sourceRect, TextureFiltering filter = TextureFiltering::Linear) override;
         void DrawString(const wchar_t* string, const Rect& rect, const IRenderFont* font, size_t size, const IRenderFontStyle& fontStyle, Color color, const Matrix3x3& mat, int hAlignment, int vAlignment, bool useScreenPos) override;
         void DrawRect(const Rect& rect, bool fill, Color color) override;
 

@@ -2,6 +2,7 @@
     "texture": "_Fall.png",
     "textureWidth": 360,
     "textureHeight": 80,
+    "spriteRenderMode": "Point",
     "sprites": [
         {
             "name": "_Fall_0",

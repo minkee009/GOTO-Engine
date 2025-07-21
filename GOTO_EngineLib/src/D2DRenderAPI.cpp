@@ -145,7 +145,7 @@ void D2DRenderAPI::Clear()
 	m_d2dContext->Clear(D2D1::ColorF(D2D1::ColorF::Black));
 }
 
-void GOTOEngine::D2DRenderAPI::DrawBitmap(const IRenderBitmap* bitmap, const Matrix3x3& mat, const Rect& sourceRect)
+void GOTOEngine::D2DRenderAPI::DrawBitmap(const IRenderBitmap* bitmap, const Matrix3x3& mat, const Rect& sourceRect, TextureFiltering filter)
 {
 	auto d2dTransform = ConvertToD2DMatrix(mat);
 	auto d2dBitmap = static_cast<D2DBitmap*>(const_cast<IRenderBitmap*>(bitmap))->GetRaw();
@@ -166,13 +166,24 @@ void GOTOEngine::D2DRenderAPI::DrawBitmap(const IRenderBitmap* bitmap, const Mat
 		d2dDestY + sourceRect.height
 	);
 
+	D2D1_BITMAP_INTERPOLATION_MODE mode;
+
+	switch (filter)
+	{
+	case TextureFiltering::Nearest:
+		mode = D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR;
+		break;	
+	case TextureFiltering::Linear:
+		mode = D2D1_BITMAP_INTERPOLATION_MODE_LINEAR;
+		break;
+	}
+
 	m_d2dContext->SetTransform(d2dTransform);
 	m_d2dContext->DrawBitmap(
 		d2dBitmap,
 		&destRect,
 		1.0f, // 불투명도
-		D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, 
-		// D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR
+		mode,
 		&srcRect
 	);
 }

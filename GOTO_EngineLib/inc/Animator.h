@@ -27,8 +27,6 @@ namespace GOTOEngine
 
 		RuntimeAnimatorController* GetRuntimeAnimatorController() { return m_runtimeController; }
 
-		void SetSpriteRenderer(SpriteRenderer* renderer) { m_spriteRenderer = renderer; }
-
 		void Play(std::wstring stateName);
 
 		bool GetTrigger(std::wstring name) { if (IsValidObject(m_runtimeController) && !m_runtimeController->IsDestroyed()) return m_runtimeController->GetTrigger(name); return false; }

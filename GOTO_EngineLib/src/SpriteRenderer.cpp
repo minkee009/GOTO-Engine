@@ -29,7 +29,18 @@ void GOTOEngine::SpriteRenderer::Render(Matrix3x3& matrix)
         ////유니티 좌표계 매트릭스 적용
         transform = matrix * transform;
 
-        renderAPI->DrawBitmap(bitmap, transform, spriteRect);
+        TextureFiltering filter;
+        switch (m_sprite->GetRenderMode())
+        {
+        case SpriteRenderMode::Point:
+            filter = TextureFiltering::Nearest;
+            break;  
+        case SpriteRenderMode::Bilinear:
+            filter = TextureFiltering::Linear;
+            break;
+        }
+
+        renderAPI->DrawBitmap(bitmap, transform, spriteRect, filter);
     }
 }
 

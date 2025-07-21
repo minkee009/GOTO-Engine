@@ -7,8 +7,10 @@ void GOTOEngine::Animator::OnAnimationUpdate()
 	{
 		m_runtimeController->Update(TIME_GET_DELTATIME());
 
-		if (m_spriteRenderer)
+		if (IsValidObject(m_spriteRenderer) && !m_spriteRenderer->IsDestroyed())
 			m_spriteRenderer->SetSprite(m_runtimeController->GetCurrentSprite());
+		else
+			m_spriteRenderer = GetComponent<SpriteRenderer>();
 	}
 }
 

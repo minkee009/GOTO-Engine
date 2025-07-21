@@ -73,7 +73,7 @@ GOTOEngine::RuntimeAnimatorController::RuntimeAnimatorController(AnimatorControl
 				RegisterInt(param.name, param.defaultInt);
 			}
 			else if (param.type == "Float") {
-				RegisterInt(param.name, param.defaultFloat);
+				RegisterFloat(param.name, param.defaultFloat);
 			}
 		}
 

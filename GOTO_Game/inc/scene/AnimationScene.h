@@ -2,9 +2,9 @@
 #include <Scene.h>
 
 using namespace GOTOEngine;
-class SampleScene : public Scene
+class AnimationScene : public Scene
 {
 public:
-	SampleScene(const std::wstring& sceneName) : Scene(sceneName) {}
+	AnimationScene(const std::wstring& sceneName) : Scene(sceneName) {}
 	void Initialize() override;
 };

@@ -30,27 +30,24 @@
     <ClCompile Include="src\GameApp.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="src\AnimationController.cpp">
-      <Filter>소스 파일\컴포넌트</Filter>
-    </ClCompile>
     <ClCompile Include="src\scene\TitleScene.cpp">
       <Filter>소스 파일\씬</Filter>
     </ClCompile>
     <ClCompile Include="src\scene\SampleScene.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="src\component\PlayerHealth.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="src\component\MonsterAttack.cpp">
+      <Filter>소스 파일\컴포넌트</Filter>
+    </ClCompile>
+    <ClCompile Include="src\component\PlayerHealth.cpp">
+      <Filter>소스 파일\컴포넌트</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scene\AnimationScene.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\component\TestComponent.h">
-      <Filter>헤더 파일\컴포넌트</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\AnimationController.h">
       <Filter>헤더 파일\컴포넌트</Filter>
     </ClInclude>
     <ClInclude Include="inc\scene\TitleScene.h">
@@ -71,20 +68,26 @@
     <ClInclude Include="inc\scene\SampleScene.h">
       <Filter>헤더 파일\씬</Filter>
     </ClInclude>
-    <ClInclude Include="inc\component\PlayerHealth.h">
-      <Filter>헤더 파일</Filter>
+    <ClInclude Include="inc\component\MemoryUsageGUI.h">
+      <Filter>헤더 파일\컴포넌트</Filter>
     </ClInclude>
     <ClInclude Include="inc\component\MonsterAttack.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>헤더 파일\컴포넌트</Filter>
     </ClInclude>
     <ClInclude Include="inc\component\PlayerGUI.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\component\MemoryUsageGUI.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>헤더 파일\컴포넌트</Filter>
     </ClInclude>
     <ClInclude Include="inc\component\MushroomCreator.h">
+      <Filter>헤더 파일\컴포넌트</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\component\PlayerHealth.h">
+      <Filter>헤더 파일\컴포넌트</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\component\PlayerController.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\scene\AnimationScene.h">
+      <Filter>헤더 파일\씬</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
