@@ -16,7 +16,8 @@ using std::endl;
 namespace GOTOEngine
 {
 	void from_json(const nlohmann::json& in, GOTOEngine::AnimatorParameter& out) {
-		in.at("name").get_to(out.name);
+		//in.at("name").get_to(out.name);
+		out.name = WStringHelper::string_to_wstring(in.at("name").get<std::string>());
 		in.at("type").get_to(out.type);
 		in.at("defaultFloat").get_to(out.defaultFloat);
 		in.at("defaultInt").get_to(out.defaultInt);
@@ -24,14 +25,17 @@ namespace GOTOEngine
 	}
 
 	void from_json(const nlohmann::json& in, GOTOEngine::AnimatorCondition& out) {
-		in.at("parameter").get_to(out.parameter);
+		//in.at("parameter").get_to(out.parameter);
+		out.parameter = WStringHelper::string_to_wstring(in.at("parameter").get<std::string>());
 		in.at("mode").get_to(out.mode);
 		in.at("threshold").get_to(out.threshold);
 	}
 
 	void from_json(const nlohmann::json& in, GOTOEngine::AnimatorTransition& out) {
-		in.at("fromState").get_to(out.fromState);
-		in.at("toState").get_to(out.toState);
+		//in.at("fromState").get_to(out.fromState);
+		out.fromState = WStringHelper::string_to_wstring(in.at("fromState").get<std::string>());
+		//in.at("toState").get_to(out.toState);
+		out.toState = WStringHelper::string_to_wstring(in.at("toState").get<std::string>());
 		if (in.contains("conditions")) {
 			out.conditions = in.at("conditions").get<std::vector<GOTOEngine::AnimatorCondition>>();
 		}

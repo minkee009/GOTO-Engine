@@ -12,13 +12,24 @@ namespace GOTOEngine
 		AnimatorController* m_controller; //메타데이터
 		RuntimeAnimatorController* m_runtimeController; //fsm, 생성 및 파괴 책임은 오로지 Animator에게만
 		SpriteRenderer* m_spriteRenderer;
+
+		void Dispose() override;
 	public:
-		Animator();
+		Animator() : m_controller(nullptr), m_runtimeController(nullptr), m_spriteRenderer(nullptr)
+		{
+			REGISTER_BEHAVIOUR_MESSAGE(OnAnimationUpdate);
+		}
+
+		void OnAnimationUpdate();
 
 		AnimatorController* GetAnimatorController() { return m_controller; } //참조 카운트 꼭 하기
 		void SetAnimatorController(AnimatorController* controller);
 
 		RuntimeAnimatorController* GetRuntimeAnimatorController() { return m_runtimeController; }
+
+		void SetSpriteRenderer(SpriteRenderer* renderer) { m_spriteRenderer = renderer; }
+
+		void Play(std::wstring stateName);
 
 		bool GetTrigger(std::wstring name) { if (IsValidObject(m_runtimeController) && !m_runtimeController->IsDestroyed()) return m_runtimeController->GetTrigger(name); return false; }
 		bool GetBool(std::wstring name) { if (IsValidObject(m_runtimeController) && !m_runtimeController->IsDestroyed()) return m_runtimeController->GetBool(name); return false; }

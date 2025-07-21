@@ -1,7 +1,15 @@
 {
     "controllerName": "KnightAnimator",
     "commonClipPath": "../Resources/Animation/clip/",
-    "parameters": [],
+  "parameters": [
+    {
+      "name": "attack",
+      "type": "Bool",
+      "defaultFloat": 0.0,
+      "defaultInt": 0,
+      "defaultBool": false
+    }
+  ],
     "defaultState": "anim_knight_idle",
     "states": [
         {
@@ -29,13 +37,6 @@
             "name": "anim_knight_fall",
             "motionName": "anim_knight_fall",
             "clipLength": 0.25,
-            "loop": true,
-            "transitions": []
-        },
-        {
-            "name": "anim_knight_crouch",
-            "motionName": "anim_knight_crouch",
-            "clipLength": 0.01666666753590107,
             "loop": true,
             "transitions": []
         }

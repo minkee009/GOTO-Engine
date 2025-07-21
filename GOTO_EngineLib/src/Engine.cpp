@@ -122,6 +122,8 @@ void Engine::ProcessFrame()
 	BehaviourManager::Get()->BroadCastBehaviourMessage("Update");
 	BehaviourManager::Get()->BroadCastBehaviourMessage("LateUpdate");
 
+	BehaviourManager::Get()->BroadCastBehaviourMessage("OnAnimationUpdate");
+
 	//·»´õ
 	RenderManager::Get()->StartRender();
 	RenderManager::Get()->Render();

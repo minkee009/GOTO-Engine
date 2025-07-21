@@ -9,7 +9,7 @@ namespace GOTOEngine
 
 	struct AnimatorParameter
 	{
-		std::string name;
+		std::wstring name;
 		std::string type;
 		float defaultFloat = 0.0f;
 		int defaultInt = 0; 
@@ -19,7 +19,7 @@ namespace GOTOEngine
 	//functor
 	struct AnimatorCondition
 	{
-		std::string parameter; // 조건 파라미터 이름
+		std::wstring parameter; // 조건 파라미터 이름
 		std::string mode; // 조건 모드 (예: Greater, IfNot 등)
 		AnimatorParameterType type; // 파라미터 타입 (예: Int, Float, Bool, Trigger)
 		float threshold = 0.0f; // 조건 임계값
@@ -27,8 +27,8 @@ namespace GOTOEngine
 
 	struct AnimatorTransition
 	{
-		std::string fromState;
-		std::string toState;
+		std::wstring fromState;
+		std::wstring toState;
 		std::vector<AnimatorCondition> conditions;
 	};
 
@@ -46,7 +46,7 @@ namespace GOTOEngine
 			if (IsValidObject(m_clip)
 				&& !m_clip->IsDestroyed())
 			{
-				DestroyImmediate(m_clip);
+				m_clip->DecreaseRefCount();
 				m_clip = nullptr;
 			}
 		}
@@ -54,7 +54,8 @@ namespace GOTOEngine
 		AnimatorState(AnimationClip* clip)
 			: m_clip(clip)
 		{
-
+			if (m_clip)
+				m_clip->IncreaseRefCount();
 		}
 		const float& GetDuration() const { m_clip->m_duration; }
 		const std::vector<AnimatorTransition>& GetTransitions() const { return m_transitions; }

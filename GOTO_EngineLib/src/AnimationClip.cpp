@@ -56,7 +56,13 @@ void GOTOEngine::AnimationClip::LoadFromFilePath(const std::wstring& filePath)
 				//미확인 스프라이트인 경우 생성중단 및 일괄파괴
 				for (auto spr : spriteSheet)
 				{
+#ifdef _DEBUG
+					std::wcout << L"일괄파괴" << std::endl;
+#endif
+
+
 					DestroyImmediate(spr.second);
+
 				}
 				Dispose();
 				break;
