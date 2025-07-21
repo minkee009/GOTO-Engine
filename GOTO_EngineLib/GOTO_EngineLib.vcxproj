@@ -165,7 +165,6 @@
     <ClInclude Include="inc\IInputSystem.h" />
     <ClInclude Include="inc\Mathf.h" />
     <ClInclude Include="inc\GameObject.h" />
-    <ClInclude Include="inc\IRenderFontGlyph.h" />
     <ClInclude Include="inc\InputManager.h" />
     <ClInclude Include="inc\IRenderAPI.h" />
     <ClInclude Include="inc\IWindow.h" />
@@ -179,6 +178,7 @@
     <ClInclude Include="inc\Renderer.h" />
     <ClInclude Include="inc\RenderManager.h" />
     <ClInclude Include="inc\ResourceManager.h" />
+    <ClInclude Include="inc\RuntimeAnimatorController.h" />
     <ClInclude Include="inc\Scene.h" />
     <ClInclude Include="inc\SceneManager.h" />
     <ClInclude Include="inc\ScriptBehaviour.h" />
@@ -200,6 +200,8 @@
     <ClInclude Include="inc\AnimatorController.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="inc\Animator.cpp" />
+    <ClCompile Include="src\RuntimeAnimatorController.cpp" />
     <ClCompile Include="src\AnimationClip.cpp" />
     <ClCompile Include="src\AnimatorController.cpp" />
     <ClCompile Include="src\TextRenderer.cpp" />

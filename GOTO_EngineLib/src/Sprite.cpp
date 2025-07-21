@@ -11,6 +11,10 @@ GOTOEngine::Sprite::Sprite()
 {
 }
 
+GOTOEngine::Sprite::Sprite(Texture2D* texture)
+{
+}
+
 GOTOEngine::Sprite::~Sprite()
 {
 

@@ -87,9 +87,6 @@
     <ClInclude Include="inc\IWindow.h">
       <Filter>헤더 파일\인터페이스</Filter>
     </ClInclude>
-    <ClInclude Include="inc\IRenderFontGlyph.h">
-      <Filter>헤더 파일\인터페이스</Filter>
-    </ClInclude>
     <ClInclude Include="inc\InputManager.h">
       <Filter>헤더 파일\매니저</Filter>
     </ClInclude>
@@ -195,9 +192,6 @@
     <ClInclude Include="inc\json.hpp">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="inc\IRenderFont.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="inc\TextHelper.h">
       <Filter>헤더 파일\헬퍼</Filter>
     </ClInclude>
@@ -224,6 +218,12 @@
     </ClInclude>
     <ClInclude Include="inc\Animator.h">
       <Filter>헤더 파일\코어 컴포넌트</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\IRenderFont.h">
+      <Filter>헤더 파일\인터페이스</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\RuntimeAnimatorController.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -331,6 +331,12 @@
     </ClCompile>
     <ClCompile Include="src\AnimatorController.cpp">
       <Filter>소스 파일\리소스</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RuntimeAnimatorController.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="inc\Animator.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

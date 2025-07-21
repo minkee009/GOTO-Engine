@@ -16,10 +16,7 @@ std::unordered_set<GOTOEngine::Object*> GOTOEngine::Object::s_validObjects;
 
 void GOTOEngine::Object::Destroy(Object* obj, float delay)
 {
-	//if (Mathf::Approximately(0.0f, delay))
-	//	ObjectDestructionManager::Get()->ImmediateDestroy(obj);
-	//else
-		ObjectDestructionManager::Get()->ScheduleDestroy(obj, delay);
+	ObjectDestructionManager::Get()->ScheduleDestroy(obj, delay);
 }
 
 void GOTOEngine::Object::DestroyImmediate(Object* obj)

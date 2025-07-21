@@ -26,6 +26,7 @@ namespace GOTOEngine
 		void LoadFromFilePath(const std::wstring& filePath) override;
 	public:
 		Sprite();
+		Sprite(Texture2D* texture);
 		bool IsValidData() override;
 
 		const Rect& GetRect() const { return m_rect; }

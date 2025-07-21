@@ -10,7 +10,7 @@ namespace GOTOEngine
 	struct AnimatorParameter
 	{
 		std::string name;
-		AnimatorParameterType type;
+		std::string type;
 		float defaultFloat = 0.0f;
 		int defaultInt = 0; 
 		bool defaultBool = false;
@@ -32,10 +32,12 @@ namespace GOTOEngine
 		std::vector<AnimatorCondition> conditions;
 	};
 
+	//Load<T>(filePath)로 불러올 수 없음 - 고유 클래스
 	class AnimatorState : public Object
 	{
 	private:
 		friend class AnimatorController;
+		friend class RuntimeAnimatorController;
 		AnimationClip* m_clip;
 		std::vector<AnimatorTransition> m_transitions;
 
@@ -55,20 +57,22 @@ namespace GOTOEngine
 
 		}
 		const float& GetDuration() const { m_clip->m_duration; }
-		const std::vector<AnimatorTransition>& GetTransitions() { return m_transitions; }
+		const std::vector<AnimatorTransition>& GetTransitions() const { return m_transitions; }
 	};
 
 	class AnimatorController : public Resource
 	{
 	private:
 		friend class ResourceManager;
-		std::string m_defaultState;
-		std::unordered_map<std::string, AnimatorState*> m_states;
+		friend class RuntimeAnimatorController;
+		std::wstring m_defaultState;
+		std::unordered_map<std::wstring, AnimatorState*> m_states;
 		std::vector<AnimatorParameter> m_parameters;
 		void LoadFromFilePath(const std::wstring& filePath) override;
 		bool IsValidData() override { return m_states.size() > 0; }
 	public:
-		AnimatorState* GetState(std::string name);
+		void Dispose() override;
+		AnimatorState* GetState(std::wstring name);
 		const std::vector<AnimatorParameter>& GetParameters() const { return m_parameters; }
 	};
 }

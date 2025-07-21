@@ -17,6 +17,7 @@
 #include <TextRenderer.h>
 #include "CameraMove.h"
 #include "RenderInfoDraw.h"
+#include "AnimatorController.h"
 
 #include <AnimationClip.h>
 
@@ -69,8 +70,8 @@ void TitleScene::Initialize()
 
     guiDraw_Go->AddComponent<RenderInfoDraw>();
 
-    auto clip = Resource::Load<AnimationClip>(L"../Resources/Animation/clip/anim_knight_idle_anim.json");
-    Object::Destroy(clip);
+    auto controller = Resource::Load<AnimatorController>(L"../Resources/Animation/controller/KnightAnimator_AnimController.json");
+    Object::Destroy(controller);
 
     //---컴포넌트 어사인
     auto swallowText = swallow_GO->GetComponent<TextRenderer>();
@@ -85,7 +86,11 @@ void TitleScene::Initialize()
     camera2_cameraComp->SetSize(0.5f);
     camera2_GO->GetComponent<CameraMove>()->isSub = true;
 
+
+    //Don't Destory On Load 씬으로 이동
     Object::DontDestroyOnLoad(mushmom_GO);
+
+
 }     
 
 TitleScene::~TitleScene()

@@ -1,5 +1,6 @@
 {
     "controllerName": "KnightAnimator",
+    "commonClipPath": "../Resources/Animation/clip/",
     "parameters": [],
     "defaultState": "anim_knight_idle",
     "states": [
