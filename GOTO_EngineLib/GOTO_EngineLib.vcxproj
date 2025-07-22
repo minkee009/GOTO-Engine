@@ -200,7 +200,7 @@
     <ClInclude Include="inc\AnimatorController.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="inc\Animator.cpp" />
+    <ClCompile Include="src\Animator.cpp" />
     <ClCompile Include="src\RuntimeAnimatorController.cpp" />
     <ClCompile Include="src\AnimationClip.cpp" />
     <ClCompile Include="src\AnimatorController.cpp" />

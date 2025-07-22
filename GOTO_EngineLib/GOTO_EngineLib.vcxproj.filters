@@ -335,8 +335,8 @@
     <ClCompile Include="src\RuntimeAnimatorController.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="inc\Animator.cpp">
-      <Filter>소스 파일</Filter>
+    <ClCompile Include="src\Animator.cpp">
+      <Filter>소스 파일\코어 컴포넌트</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
