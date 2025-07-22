@@ -71,26 +71,9 @@ LearnOpenGL의 리소스코드를 반드시 확인하고 AI 어시스턴트의 �
 
 
 ~~OnGUI 관련 코드 정리해서 확실하게 만들기~~
----> Draw영역(상자) 정확히 하기, { 0,0 }일 경우에 정확히 왼쪽 아래에 뜨게~~
+~~---> Draw영역(상자) 정확히 하기, { 0,0 }일 경우에 정확히 왼쪽 아래에 뜨게~~
 
 >> 여기까지
-
-## 추가작업
-~~ -----> Renderer의 Render()호출구조 크로스플랫폼(OS, Graphics API)에 맞게 수정 (약간의 오버헤드가 발생하더라도 만들기) ~~
-
------> Camera->ViewportToWorld, WolrdToViewport, ScreenToWorld,WorldToScreen 만들기
-
----> DrawRect -> Debug.DrawRect(position,width,height,color);
-
-
------> 전체화면 가능하게
-
-
------> 윈도우 핸들 처리 스레드화 -> 화면바 건드리더라도 게임은 진행되게
------> 유니티 유닛(1미터당 몇픽셀) 구현하기
------> (비추천이지만) 화면 비율 고정 비고정 만들기(찌그러짐)
-	>> 클라이언트 영역 크기(윈도우 크기)가 아닌 RenderTarget(백버퍼) 크기 기준으로 VeiwPortRect 계산
-
 
 
 
@@ -111,5 +94,25 @@ Object::Instantiate() -> dynamic_cast<T>로 해결하기 -> type_id 별로 복�
 
 >> PhysicsManager, Physcis클래스(혹은 네임스페이스) , Collider 만들기
 
-과제용 코드 분리
+collider
+
+## 추가작업
+~~ -----> Renderer의 Render()호출구조 크로스플랫폼(OS, Graphics API)에 맞게 수정 (약간의 오버헤드가 발생하더라도 만들기) ~~
+
+~~-----> Camera->ViewportToWorld, WolrdToViewport, ScreenToWorld,WorldToScreen 만들기~~
+
+---> DrawRect -> Debug.DrawRect(position,width,height,color);
+
+
+~~-----> 전체화면 가능하게~~
+
+
+-----> 윈도우 핸들 처리 스레드화 -> 화면바 건드리더라도 게임은 진행되게
+-----> 유니티 유닛(1미터당 몇픽셀) 구현하기
+-----> (비추천이지만) 화면 비율 고정 비고정 만들기(찌그러짐)
+	>> 클라이언트 영역 크기(윈도우 크기)가 아닌 RenderTarget(백버퍼) 크기 기준으로 VeiwPortRect 계산
+
+
+
+
 
