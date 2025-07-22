@@ -23,7 +23,7 @@ void StartEngineLoop()
 	SCENE_ADD_SCENE<AnimationScene>(L"AnimationScene");
 
 	//첫 씬으로 변환
-	SCENE_CHANGE_SCENE(L"Title");
+	SCENE_CHANGE_SCENE(L"AnimationScene");
 
 	ENGINE_RUN();
 	ENGINE_SHUTDOWN();

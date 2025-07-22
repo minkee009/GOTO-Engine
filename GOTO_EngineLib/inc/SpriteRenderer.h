@@ -33,7 +33,7 @@ namespace GOTOEngine
 		Sprite* m_sprite;
 		bool m_flipX;
 		bool m_flipY;
-		void Render(Matrix3x3& matrix) override;
+		void Render(Matrix3x3& viewMatrix) override;
 	public:
 		SpriteRenderer(): m_sprite(nullptr), m_flipX(false), m_flipY(false) {}
 		void SetSprite(Sprite* sprite);

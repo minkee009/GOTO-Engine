@@ -2,18 +2,42 @@
 
 GOTOEngine::Matrix3x3 GOTOEngine::Matrix3x3::operator*(const Matrix3x3& rhs) const
 {
+    //Matrix3x3 result;
+
+    //for (int c = 0; c < 3; ++c) // result의 열
+    //{
+    //    for (int r = 0; r < 3; ++r) // result의 행
+    //    {
+    //        result.m[c][r] =
+    //            m[0][r] * rhs.m[c][0] +
+    //            m[1][r] * rhs.m[c][1] +
+    //            m[2][r] * rhs.m[c][2];
+    //    }
+    //}
+    //return result;
+
     Matrix3x3 result;
 
-    for (int c = 0; c < 3; ++c) // result의 열
-    {
-        for (int r = 0; r < 3; ++r) // result의 행
-        {
-            result.m[c][r] =
-                m[0][r] * rhs.m[c][0] +
-                m[1][r] * rhs.m[c][1] +
-                m[2][r] * rhs.m[c][2];
-        }
-    }
+    // 상단 2x2 회전/스케일 부분 계산 (m[c][r], c=0,1, r=0,1)
+    // result.m[c][r] = m[0][r] * rhs.m[c][0] + m[1][r] * rhs.m[c][1] + m[2][r] * rhs.m[c][2];
+    // 여기서 m[2][r]은 r=0,1일 때 0이므로, m[2][r]*rhs.m[c][2] 항은 0이 됩니다.
+    result.m[0][0] = m[0][0] * rhs.m[0][0] + m[1][0] * rhs.m[0][1];
+    result.m[0][1] = m[0][1] * rhs.m[0][0] + m[1][1] * rhs.m[0][1];
+
+    result.m[1][0] = m[0][0] * rhs.m[1][0] + m[1][0] * rhs.m[1][1];
+    result.m[1][1] = m[0][1] * rhs.m[1][0] + m[1][1] * rhs.m[1][1];
+
+    // 평행이동 부분 계산 (m[2][r], r=0,1)
+    // result.m[2][r] = m[0][r] * rhs.m[2][0] + m[1][r] * rhs.m[2][1] + m[2][r] * rhs.m[2][2];
+    // 여기서 rhs.m[2][2]는 1이므로, + m[2][r]이 됩니다.
+    result.m[2][0] = m[0][0] * rhs.m[2][0] + m[1][0] * rhs.m[2][1] + m[2][0];
+    result.m[2][1] = m[0][1] * rhs.m[2][0] + m[1][1] * rhs.m[2][1] + m[2][1];
+
+    // 마지막 열은 항상 고정된 값 (2D 변환 행렬의 특성)
+    result.m[0][2] = 0.0f;
+    result.m[1][2] = 0.0f;
+    result.m[2][2] = 1.0f;
+
     return result;
 }
 
@@ -55,57 +79,95 @@ void GOTOEngine::Matrix3x3::ToColumnMajorArray(float out[9]) const
 
 GOTOEngine::Matrix3x3 GOTOEngine::Matrix3x3::Inverse() const
 {
+    //Matrix3x3 inv;
+    //// 이 코드는 Column-Major 저장 방식에 따라 인덱스를 조정해야 합니다.
+    //// mat[col * 3 + row] 형태로 변환하여 접근하거나 m[col][row] 형태로 직접 접근합니다.
+    //// 현재 코드는 mat[idx] 형식으로 접근하므로, 이를 m[c][r] 형태로 변경합니다.
+    //const float* mat_ptr = &this->m[0][0]; // m[0][0], m[1][0], m[2][0], m[0][1] ...
+
+    //// 행렬 요소에 직접 접근하도록 변경 (m[column][row])
+    //float det = m[0][0] * (m[1][1] * m[2][2] - m[2][1] * m[1][2]) -
+    //    m[1][0] * (m[0][1] * m[2][2] - m[2][1] * m[0][2]) +
+    //    m[2][0] * (m[0][1] * m[1][2] - m[1][1] * m[0][2]);
+
+    //if (std::fabs(det) < 1e-6f)
+    //{
+    //    // Singular matrix
+    //    return Matrix3x3(); // 단위행렬 반환
+    //}
+
+    //float invDet = 1.0f / det;
+
+    //// 수반 행렬의 전치 (Adjugate)를 계산한 후 역행렬 공식 적용
+    //// (column-major 출력을 위해)
+    //inv.m[0][0] = (m[1][1] * m[2][2] - m[1][2] * m[2][1]) * invDet;
+    //inv.m[1][0] = (m[1][2] * m[2][0] - m[1][0] * m[2][2]) * invDet;
+    //inv.m[2][0] = (m[1][0] * m[2][1] - m[1][1] * m[2][0]) * invDet;
+
+    //inv.m[0][1] = (m[0][2] * m[2][1] - m[0][1] * m[2][2]) * invDet;
+    //inv.m[1][1] = (m[0][0] * m[2][2] - m[0][2] * m[2][0]) * invDet;
+    //inv.m[2][1] = (m[0][1] * m[2][0] - m[0][0] * m[2][1]) * invDet;
+
+    //inv.m[0][2] = (m[0][1] * m[1][2] - m[0][2] * m[1][1]) * invDet;
+    //inv.m[1][2] = (m[0][2] * m[1][0] - m[0][0] * m[1][2]) * invDet;
+    //inv.m[2][2] = (m[0][0] * m[1][1] - m[0][1] * m[1][0]) * invDet;
+
+    //return inv;
     Matrix3x3 inv;
-    // 이 코드는 Column-Major 저장 방식에 따라 인덱스를 조정해야 합니다.
-    // mat[col * 3 + row] 형태로 변환하여 접근하거나 m[col][row] 형태로 직접 접근합니다.
-    // 현재 코드는 mat[idx] 형식으로 접근하므로, 이를 m[c][r] 형태로 변경합니다.
-    const float* mat_ptr = &this->m[0][0]; // m[0][0], m[1][0], m[2][0], m[0][1] ...
 
-    // 행렬 요소에 직접 접근하도록 변경 (m[column][row])
-    float det = m[0][0] * (m[1][1] * m[2][2] - m[2][1] * m[1][2]) -
-        m[1][0] * (m[0][1] * m[2][2] - m[2][1] * m[0][2]) +
-        m[2][0] * (m[0][1] * m[1][2] - m[1][1] * m[0][2]);
-
+    // 상단 2x2 행렬의 행렬식
+    float det = m[0][0] * m[1][1] - m[1][0] * m[0][1];
     if (std::fabs(det) < 1e-6f)
-    {
-        // Singular matrix
-        return Matrix3x3(); // 단위행렬 반환
-    }
+        return Matrix3x3(); // 단위 행렬 (혹은 실패 처리)
 
     float invDet = 1.0f / det;
 
-    // 수반 행렬의 전치 (Adjugate)를 계산한 후 역행렬 공식 적용
-    // (column-major 출력을 위해)
-    inv.m[0][0] = (m[1][1] * m[2][2] - m[1][2] * m[2][1]) * invDet;
-    inv.m[1][0] = (m[1][2] * m[2][0] - m[1][0] * m[2][2]) * invDet;
-    inv.m[2][0] = (m[1][0] * m[2][1] - m[1][1] * m[2][0]) * invDet;
+    // 2x2 역행렬 (회전+스케일의 역변환)
+    inv.m[0][0] = m[1][1] * invDet;
+    inv.m[0][1] = -m[0][1] * invDet;
+    inv.m[1][0] = -m[1][0] * invDet;
+    inv.m[1][1] = m[0][0] * invDet;
 
-    inv.m[0][1] = (m[0][2] * m[2][1] - m[0][1] * m[2][2]) * invDet;
-    inv.m[1][1] = (m[0][0] * m[2][2] - m[0][2] * m[2][0]) * invDet;
-    inv.m[2][1] = (m[0][1] * m[2][0] - m[0][0] * m[2][1]) * invDet;
+    // (translation 역변환)
+    float tx = m[2][0];
+    float ty = m[2][1];
 
-    inv.m[0][2] = (m[0][1] * m[1][2] - m[0][2] * m[1][1]) * invDet;
-    inv.m[1][2] = (m[0][2] * m[1][0] - m[0][0] * m[1][2]) * invDet;
-    inv.m[2][2] = (m[0][0] * m[1][1] - m[0][1] * m[1][0]) * invDet;
+    inv.m[2][0] = -(inv.m[0][0] * tx + inv.m[1][0] * ty);
+    inv.m[2][1] = -(inv.m[0][1] * tx + inv.m[1][1] * ty);
+
+    // 나머지 고정
+    inv.m[0][2] = 0.0f;
+    inv.m[1][2] = 0.0f;
+    inv.m[2][2] = 1.0f;
 
     return inv;
 }
 
 float GOTOEngine::Matrix3x3::GetRotation() const
 {
-    // X축 방향 벡터의 제곱 길이를 구함 (sqrt 연산 최소화)
+    //// X축 방향 벡터의 제곱 길이를 구함 (sqrt 연산 최소화)
+    //float scaleXSquared = m[0][0] * m[0][0] + m[0][1] * m[0][1];
+
+    //// 아주 작은 스케일 체크 (제곱값으로 비교하여 sqrt 생략)
+    //if (scaleXSquared < 1e-12f) {
+    //    return 0.0f;
+    //}
+
+    //// 빠른 역제곱근 또는 일반 sqrt 사용
+    //float invScaleX = 1.0f / std::sqrt(scaleXSquared);
+
+    //// 정규화된 벡터로부터 회전 각도 추출
+    //return std::atan2(m[0][1] * invScaleX, m[0][0] * invScaleX);
+
     float scaleXSquared = m[0][0] * m[0][0] + m[0][1] * m[0][1];
 
-    // 아주 작은 스케일 체크 (제곱값으로 비교하여 sqrt 생략)
-    if (scaleXSquared < 1e-12f) {
+    if (scaleXSquared < 1e-12f) { // 스케일이 거의 0인 경우 (회전 무의미)
         return 0.0f;
     }
 
-    // 빠른 역제곱근 또는 일반 sqrt 사용
-    float invScaleX = 1.0f / std::sqrt(scaleXSquared);
-
-    // 정규화된 벡터로부터 회전 각도 추출
-    return std::atan2(m[0][1] * invScaleX, m[0][0] * invScaleX);
+    // m[0][1]은 sin(theta), m[0][0]은 cos(theta)에 비례하므로
+    // 바로 atan2를 사용하여 각도 추출. 별도의 정규화 필요 없음.
+    return std::atan2(m[0][1], m[0][0]);
 }
 
 GOTOEngine::Vector2 GOTOEngine::Matrix3x3::GetLossyScale() const

@@ -5,9 +5,9 @@ namespace GOTOEngine
 {
 	enum class TextHoriAlign
 	{
-		Right = -1,
+		Right = 1,
 		Center = 0,
-		Left = 1
+		Left = -1
 	};
 
 	enum class TextVertAlign

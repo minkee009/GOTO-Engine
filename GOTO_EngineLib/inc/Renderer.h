@@ -16,7 +16,7 @@ namespace GOTOEngine
 		size_t m_renderLayer; //렌더링 레이어 -> 카메라 별로 레이어 컬링 설정가능
 
 	protected:
-		virtual void Render(Matrix3x3& matrix) = 0;
+		virtual void Render(Matrix3x3& viewMatrix) = 0;
 		Renderer();
 		~Renderer();
 

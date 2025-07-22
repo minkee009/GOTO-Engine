@@ -178,22 +178,23 @@ void GOTOEngine::RenderManager::Render()
 		if (!camera->GetEnabled())
 			continue;
 
-		//카메라 행렬 구하기
-		auto camRect = camera->GetRect();
-		Matrix3x3 cameraMat = camera->GetMatrix();
+		
 
-		//Todo : 그리기 전에 카메라 영역 박스색칠 (렌더타겟이 없기 때문에 클리어 대신 씀)
+		//카메라 행렬 구하기
+		Matrix3x3 cameraMat = camera->GetMatrix();
+		auto camRect = camera->GetRect();
+
+		//그리기 전에 카메라 영역 박스색칠 (렌더타겟이 없기 때문에 클리어 대신 씀)
 		m_pRenderAPI->SetViewport(camRect);
 		m_pRenderAPI->DrawRect(Rect{
 			m_pRenderAPI->GetWindow().GetWidth() * camRect.x,
 			m_pRenderAPI->GetWindow().GetHeight() * camRect.y,
 			m_pRenderAPI->GetWindow().GetWidth() * camRect.width,
-			m_pRenderAPI->GetWindow().GetHeight() * camRect.height},
+			m_pRenderAPI->GetWindow().GetHeight() * camRect.height },
 			true,
 			Matrix3x3{},
 			camera->GetBackGroundColor(),
 			true);
-	
 		
 		for (const auto& renderer : m_renderers)
 		{

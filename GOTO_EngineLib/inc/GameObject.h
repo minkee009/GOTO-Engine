@@ -67,7 +67,7 @@ namespace GOTOEngine
 		}
 
 		template <typename T>
-		T* GetComponent() const
+		T* GetComponent()
 		{
 			// T가 Component의 파생 클래스이거나 Component 자체인지 확인
 			static_assert(std::is_base_of<Component, T>::value, "GetComponent()의 T는 Component를 상속받아야 합니다.");
@@ -81,7 +81,7 @@ namespace GOTOEngine
 			return nullptr;
 		}
 
-		Transform* const GetTransform() { return m_transform; }
+		Transform* GetTransform() { return m_transform; }
 
 		unsigned int layer = 1;
 
