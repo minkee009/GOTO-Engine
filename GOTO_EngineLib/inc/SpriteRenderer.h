@@ -31,11 +31,19 @@ namespace GOTOEngine
 	private:
 		friend class RenderManager;
 		Sprite* m_sprite;
+		bool m_flipX;
+		bool m_flipY;
 		void Render(Matrix3x3& matrix) override;
 	public:
-		SpriteRenderer(): m_sprite(nullptr) {}
+		SpriteRenderer(): m_sprite(nullptr), m_flipX(false), m_flipY(false) {}
 		void SetSprite(Sprite* sprite);
 		void SetSprite(Sprite* sprite, Rect srcRect);
+
+		bool GetFlipX() const { return m_flipX; }
+		bool GetFlipY() const { return m_flipY; }
+		void SetFlipX(bool value) { m_flipX = value; }
+		void SetFlipY(bool value) { m_flipY = value; }
+
 		void Dispose() override { if (IsValidObject(m_sprite) && !m_sprite->IsDestroyed()) { m_sprite->DecreaseRefCount(); m_sprite = nullptr; } }
 		Sprite* GetSprite() { return m_sprite; } //참조 카운트 명시적으로 설정하기
 	};

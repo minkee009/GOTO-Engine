@@ -165,6 +165,7 @@
     <ClInclude Include="inc\component\RenderInfoDraw.h" />
     <ClInclude Include="inc\component\TestComponent.h" />
     <ClInclude Include="inc\component\PlayerGUI.h" />
+    <ClInclude Include="inc\component\PlayerFSMController.h" />
     <ClInclude Include="inc\scene\AnimationScene.h" />
     <ClInclude Include="inc\scene\TitleScene.h" />
     <ClInclude Include="inc\scene\SampleScene.h" />

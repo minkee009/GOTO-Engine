@@ -35,26 +35,24 @@ void GOTOEngine::AnimationClip::LoadFromFilePath(const std::wstring& filePath)
 			{
 				auto createdSprite = new Sprite();
 
-				if (jFromSheetFile.contains("spriteRenderMode"))
-				{
-
-
-					auto renderMode = jFromSheetFile.at("spriteRenderMode").get<std::string>();
-					if (renderMode == "Point")
-					{
-						createdSprite->SetRenderMode(SpriteRenderMode::Point);
-					}
-					else if (renderMode == "Bilinear")
-					{
-						createdSprite->SetRenderMode(SpriteRenderMode::Bilinear);
-					}
-				}
-
 				createdSprite->SetTexture(Load<Texture2D>(m_texturePath));
 				createdSprite->SetRect(
 					Rect{ spriteInfo["x"],spriteInfo["y"],spriteInfo["width"],spriteInfo["height"] });
 				createdSprite->SetPivotX(spriteInfo["pivotX"]);
 				createdSprite->SetPivotY(spriteInfo["pivotY"]);
+
+				if (jFromSheetFile.contains("textureRenderMode"))
+				{
+					auto renderMode = jFromSheetFile.at("textureRenderMode").get<std::string>();
+					if (renderMode == "Point")
+					{
+						createdSprite->GetTexture()->SetRenderMode(TextureRenderMode::Point);
+					}
+					else if (renderMode == "Bilinear")
+					{
+						createdSprite->GetTexture()->SetRenderMode(TextureRenderMode::Bilinear);
+					}
+				}
 
 				spriteSheet[spriteInfo["name"]] = createdSprite;
 			}

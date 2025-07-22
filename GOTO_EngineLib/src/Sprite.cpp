@@ -6,13 +6,14 @@ GOTOEngine::Sprite::Sprite()
     , m_rect(Rect{0,0,0,0})
     , m_pivotX(0.5f)
     , m_pivotY(0.5f)
-    , m_flipX(false)
-    , m_flipY(false)
-    , m_renderMode(SpriteRenderMode::Point)
 {
 }
 
 GOTOEngine::Sprite::Sprite(Texture2D* texture)
+    : m_texture(texture)
+    , m_rect(Rect{ 0,0,0,0 })
+    , m_pivotX(0.5f)
+    , m_pivotY(0.5f)
 {
 }
 

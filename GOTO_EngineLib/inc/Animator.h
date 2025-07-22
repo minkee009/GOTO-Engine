@@ -29,6 +29,8 @@ namespace GOTOEngine
 
 		void Play(std::wstring stateName);
 
+		const std::wstring& GetCurrentStateName() const { return m_runtimeController->GetCurrentStateName(); }
+
 		bool GetTrigger(std::wstring name) { if (IsValidObject(m_runtimeController) && !m_runtimeController->IsDestroyed()) return m_runtimeController->GetTrigger(name); return false; }
 		bool GetBool(std::wstring name) { if (IsValidObject(m_runtimeController) && !m_runtimeController->IsDestroyed()) return m_runtimeController->GetBool(name); return false; }
 		int GetInt(std::wstring name) { if (IsValidObject(m_runtimeController) && !m_runtimeController->IsDestroyed()) return m_runtimeController->GetInt(name); return 0; }

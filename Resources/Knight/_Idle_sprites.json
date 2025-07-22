@@ -2,7 +2,7 @@
     "texture": "_Idle.png",
     "textureWidth": 1200,
     "textureHeight": 80,
-    "spriteRenderMode": "Point",
+    "textureRenderMode": "Point",
     "sprites": [
         {
             "name": "_Idle_0",

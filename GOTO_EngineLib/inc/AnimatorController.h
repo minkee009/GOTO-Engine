@@ -29,6 +29,8 @@ namespace GOTOEngine
 	{
 		std::wstring fromState;
 		std::wstring toState;
+		bool hasExitTime = false; // 종료 시간이 있는지 여부
+		float exitTime = -1.0f; // 1.0이면 100% 완료 후 전이, -1.0이면 종료 시간 없음
 		std::vector<AnimatorCondition> conditions;
 	};
 
@@ -40,6 +42,7 @@ namespace GOTOEngine
 		friend class RuntimeAnimatorController;
 		AnimationClip* m_clip;
 		std::vector<AnimatorTransition> m_transitions;
+		std::wstring m_stateName;
 
 		void Dispose() override
 		{
@@ -57,7 +60,8 @@ namespace GOTOEngine
 			if (m_clip)
 				m_clip->IncreaseRefCount();
 		}
-		const float& GetDuration() const { m_clip->m_duration; }
+		const float& GetDuration() const { return m_clip->m_duration; }
+		const std::wstring& GetStateName() const { return m_stateName; }
 		const std::vector<AnimatorTransition>& GetTransitions() const { return m_transitions; }
 	};
 
@@ -69,8 +73,10 @@ namespace GOTOEngine
 		std::wstring m_defaultState;
 		std::unordered_map<std::wstring, AnimatorState*> m_states;
 		std::vector<AnimatorParameter> m_parameters;
+		std::unordered_map<std::wstring, AnimatorParameterType> m_paramTypes;
 		void LoadFromFilePath(const std::wstring& filePath) override;
 		bool IsValidData() override { return m_states.size() > 0; }
+		AnimatorParameterType stringToParamType(const std::string& type);
 	public:
 		void Dispose() override;
 		AnimatorState* GetState(std::wstring name);

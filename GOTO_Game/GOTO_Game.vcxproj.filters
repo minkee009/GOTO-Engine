@@ -89,5 +89,8 @@
     <ClInclude Include="inc\scene\AnimationScene.h">
       <Filter>헤더 파일\씬</Filter>
     </ClInclude>
+    <ClInclude Include="inc\component\PlayerFSMController.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

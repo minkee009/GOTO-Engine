@@ -1,6 +1,7 @@
 #include "AnimationScene.h"
 #include <Animator.h>
 #include "PlayerController.h"
+#include "PlayerFSMController.h"
 #include "Camera.h"
 
 void AnimationScene::Initialize()
@@ -12,7 +13,7 @@ void AnimationScene::Initialize()
 	player->AddComponent<SpriteRenderer>()->AddComponent<SpriteRenderer>();
 	player->AddComponent<Animator>()->SetAnimatorController(Resource::Load<AnimatorController>(L"../Resources/Animation/controller/KnightAnimator_AnimController.json"));
 	
-	player->AddComponent<PlayerController>();
+	player->AddComponent<PlayerFSMController>();
 
 	player->GetTransform()->SetLocalScale({ 10.0f,10.0f });
 }

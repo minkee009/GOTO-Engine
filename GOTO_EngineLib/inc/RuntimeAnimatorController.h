@@ -35,6 +35,12 @@ namespace GOTOEngine
 		}
 
 		Sprite* GetCurrentSprite();
+		const std::wstring& GetCurrentStateName() const 
+		{ 
+			if (m_currentState) 
+				return m_currentState->GetStateName(); 
+			return L""; 
+		}
 
 		void RegisterTrigger(std::wstring name, bool defaultvalue);
 		void RegisterBool(std::wstring name, bool defaultvalue);
@@ -46,7 +52,11 @@ namespace GOTOEngine
 		int GetInt(std::wstring name) { if (m_ints.find(name) != m_ints.end()) return m_ints[name]; return 0; }
 		float GetFloat(std::wstring name) { if (m_floats.find(name) != m_floats.end()) return m_floats[name]; return 0.0f; }
 		
-		void SetTrigger(std::wstring name) { if (m_triggers.find(name) != m_triggers.end()) m_triggers[name] = true; }
+		void SetTrigger(std::wstring name) 
+		{ 
+			if (m_triggers.find(name) != m_triggers.end()) 
+				m_triggers[name] = true; 
+		}
 		void ResetTrigger(std::wstring name) { if (m_triggers.find(name) != m_triggers.end()) m_triggers[name] = false; }
 		void SetBool(std::wstring name, bool value) { if (m_bools.find(name) != m_bools.end()) m_bools[name] = value; }
 		void SetInt(std::wstring name, int value) { if (m_ints.find(name) != m_ints.end()) m_ints[name] = value; }

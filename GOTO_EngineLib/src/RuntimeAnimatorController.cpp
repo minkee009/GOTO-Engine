@@ -85,38 +85,61 @@ GOTOEngine::RuntimeAnimatorController::RuntimeAnimatorController(AnimatorControl
 
 void GOTOEngine::RuntimeAnimatorController::Update(float deltaTime)
 {
-	for (auto transition : m_currentState->GetTransitions())
+	auto currentClip = m_currentState->m_clip;
+
+	if (currentClip && !currentClip->GetKeyframes().empty())
+		m_time += deltaTime;
+
+	float currentClipDuration = currentClip->GetDuration();
+
+	if (currentClip->IsLoop()) {
+		if (currentClipDuration > 0.0f) {
+			m_time = std::fmod(m_time, currentClipDuration);
+		}
+	}
+	else {
+		if (m_time > currentClipDuration) {
+			m_time = currentClipDuration;
+		}
+	}
+
+	float normalizedTime = (currentClipDuration > 0.0f) ? (m_time / currentClipDuration) : 0.0f;
+
+	for (const auto& transition : m_currentState->GetTransitions())
 	{
+		// 1. ExitTime 조건 확인
+		if (transition.hasExitTime)
+		{
+			if (normalizedTime < transition.exitTime)
+				continue; // 아직 전이 가능하지 않음
+		}
+
+		// 2. 전이 조건 확인
 		bool allConditionsMet = true;
-		for (auto& condition : transition.conditions)
+		std::vector<std::wstring> savedTriggers;
+		for (const auto& condition : transition.conditions)
 		{
 			if (!CheckCondition(condition)) {
 				allConditionsMet = false;
 				break;
 			}
+
+			if (condition.type == AnimatorParameterType::Trigger)
+			{
+				savedTriggers.emplace_back(condition.parameter);
+			}
 		}
 
 		if (allConditionsMet)
 		{
+			for (auto& trigger : savedTriggers)
+			{
+				ResetTrigger(trigger);
+			}
+
 			m_currentState = m_controller->GetState(transition.toState);
-			m_time = 0.0f; // 애니메이션 시간 리셋
+			m_time = 0.0f; // 애니메이션 시간 초기화
 			break;
-		}
-	}
-
-	auto currentClip = m_currentState->m_clip;
-	if(!currentClip->GetKeyframes().empty())
-		m_time += deltaTime;
-	auto curretnClipDuration = currentClip->GetDuration();
-
-	if (currentClip->IsLoop()) {
-		while (m_time > curretnClipDuration) {
-			m_time -= curretnClipDuration;
-		}
-	}
-	else {
-		if (m_time > curretnClipDuration) {
-			m_time = curretnClipDuration;
 		}
 	}
 }
