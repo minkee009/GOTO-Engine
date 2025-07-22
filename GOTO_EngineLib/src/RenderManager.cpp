@@ -190,7 +190,9 @@ void GOTOEngine::RenderManager::Render()
 			m_pRenderAPI->GetWindow().GetWidth() * camRect.width,
 			m_pRenderAPI->GetWindow().GetHeight() * camRect.height},
 			true,
-			camera->GetBackGroundColor());
+			Matrix3x3{},
+			camera->GetBackGroundColor(),
+			true);
 	
 		
 		for (const auto& renderer : m_renderers)

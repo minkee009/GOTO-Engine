@@ -94,6 +94,74 @@ void WinAPIWindow::PollEvents()
     }
 }
 
+// WinAPIWindow.cpp에 추가할 구현
+void WinAPIWindow::ToggleFullScreen()
+{
+    if (!m_hwnd)
+        return;
+
+    if (m_isFullScreen)
+    {
+        // 전체화면 -> 창 모드로 전환
+        SetWindowPos(m_hwnd, HWND_NOTOPMOST,
+            m_savedWindowRect.left,
+            m_savedWindowRect.top,
+            m_savedWindowRect.right - m_savedWindowRect.left,
+            m_savedWindowRect.bottom - m_savedWindowRect.top,
+            SWP_FRAMECHANGED | SWP_NOACTIVATE);
+
+        ShowWindow(m_hwnd, SW_NORMAL);
+
+        // 창 모드 클라이언트 영역 크기로 업데이트
+        RECT clientRect;
+        GetClientRect(m_hwnd, &clientRect);
+        m_width = clientRect.right - clientRect.left;
+        m_height = clientRect.bottom - clientRect.top;
+
+        m_isFullScreen = false;
+    }
+    else
+    {
+        // 창 모드 -> 전체화면으로 전환
+        // 현재 창 위치/크기 저장
+        GetWindowRect(m_hwnd, &m_savedWindowRect);
+
+        // 모니터 정보 가져오기
+        HMONITOR hMonitor = MonitorFromWindow(m_hwnd, MONITOR_DEFAULTTONEAREST);
+        MONITORINFO mi = {};
+        mi.cbSize = sizeof(MONITORINFO);
+        GetMonitorInfo(hMonitor, &mi);
+
+        // 타이틀바 높이 계산
+        RECT windowRect, clientRect;
+        GetWindowRect(m_hwnd, &windowRect);
+        GetClientRect(m_hwnd, &clientRect);
+        int titleBarHeight = (windowRect.bottom - windowRect.top) - (clientRect.bottom - clientRect.top);
+
+        // 창을 모니터 위쪽으로 이동 (타이틀바가 숨겨지도록)
+        // 클라이언트 영역이 정확히 모니터 전체를 덮도록 계산
+        int windowX = mi.rcMonitor.left;
+        int windowY = mi.rcMonitor.top - titleBarHeight;
+        int windowWidth = mi.rcMonitor.right - mi.rcMonitor.left;
+        int windowHeight = (mi.rcMonitor.bottom - mi.rcMonitor.top) + titleBarHeight;
+
+        SetWindowPos(m_hwnd, HWND_TOPMOST,
+            windowX, windowY,
+            windowWidth, windowHeight,
+            SWP_FRAMECHANGED | SWP_NOACTIVATE);
+
+        ShowWindow(m_hwnd, SW_NORMAL);
+
+        // 클라이언트 영역 크기로 멤버 변수 업데이트 (모니터 전체 크기)
+        m_width = mi.rcMonitor.right - mi.rcMonitor.left;
+        m_height = mi.rcMonitor.bottom - mi.rcMonitor.top;
+
+        m_isFullScreen = true;
+    }
+
+    m_onChangedWindowSize(m_width, m_height);
+}
+
 void WinAPIWindow::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     switch (uMsg)

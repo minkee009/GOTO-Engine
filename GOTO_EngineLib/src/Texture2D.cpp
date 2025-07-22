@@ -11,7 +11,7 @@ void GOTOEngine::Texture2D::LoadFromFilePath(const std::wstring& filePath)
 	}
 }
 
-GOTOEngine::Texture2D::Texture2D() : m_bitmapHandle(nullptr), m_rect(Rect{0,0,0,0}), m_renderMode(TextureRenderMode::Point)
+GOTOEngine::Texture2D::Texture2D() : m_bitmapHandle(nullptr), m_rect(Rect{0,0,0,0}), m_renderMode(TextureRenderMode::Bilinear)
 {
 }
 

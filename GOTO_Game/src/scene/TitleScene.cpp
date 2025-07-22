@@ -88,7 +88,3 @@ void TitleScene::Initialize()
     //Don't Destory On Load æ¿¿∏∑Œ ¿Ãµø
     Object::DontDestroyOnLoad(mushmom_GO);
 }     
-
-TitleScene::~TitleScene()
-{
-}

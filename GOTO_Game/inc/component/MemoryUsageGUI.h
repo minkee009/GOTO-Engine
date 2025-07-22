@@ -3,6 +3,7 @@
 #include <RenderManager.h>
 #include <TimeManager.h>
 #include <IRenderAPI.h>
+#include <WStringHelper.h>
 
 namespace GOTOEngine
 {

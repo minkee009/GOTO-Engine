@@ -12,6 +12,8 @@ namespace GOTOEngine
 		virtual bool ShouldClose() const = 0;
 		virtual int GetWidth() const = 0;
 		virtual int GetHeight() const = 0;
+		virtual bool IsFullScreen() const = 0;
+		virtual void ToggleFullScreen() = 0;
 		virtual ~IWindow() = default;
 	};
 }

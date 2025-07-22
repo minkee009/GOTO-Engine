@@ -33,9 +33,6 @@
     <ClCompile Include="src\scene\TitleScene.cpp">
       <Filter>소스 파일\씬</Filter>
     </ClCompile>
-    <ClCompile Include="src\scene\SampleScene.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="src\component\MonsterAttack.cpp">
       <Filter>소스 파일\컴포넌트</Filter>
     </ClCompile>
@@ -43,7 +40,10 @@
       <Filter>소스 파일\컴포넌트</Filter>
     </ClCompile>
     <ClCompile Include="src\scene\AnimationScene.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\씬</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scene\SampleScene.cpp">
+      <Filter>소스 파일\씬</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

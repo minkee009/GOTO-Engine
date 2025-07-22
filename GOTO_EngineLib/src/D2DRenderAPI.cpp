@@ -145,17 +145,34 @@ void D2DRenderAPI::Clear()
 	m_d2dContext->Clear(D2D1::ColorF(D2D1::ColorF::Black));
 }
 
-void GOTOEngine::D2DRenderAPI::DrawBitmap(const IRenderBitmap* bitmap, const Matrix3x3& mat, const Rect& sourceRect, TextureFiltering filter)
+void GOTOEngine::D2DRenderAPI::DrawBitmap(const IRenderBitmap* bitmap, const Matrix3x3& mat, const Rect& destRect, const Rect& sourceRect, TextureFiltering filter, bool useScreenPos)
 {
 	auto d2dTransform = ConvertToD2DMatrix(mat);
 	auto d2dBitmap = static_cast<D2DBitmap*>(const_cast<IRenderBitmap*>(bitmap))->GetRaw();
 
-	D2D1_RECT_F destRect = D2D1::RectF(
-		0.0f,
-		0.0f,
-		sourceRect.width,
-		sourceRect.height
-	);
+	float screenHeight = static_cast<float>(m_window->GetHeight());
+
+
+	D2D1_RECT_F dstRect;
+
+	if (useScreenPos)
+	{
+		dstRect = D2D1::RectF(
+			destRect.x,
+			(screenHeight - destRect.y - destRect.height),
+			(destRect.x + destRect.width),
+			(screenHeight - destRect.y)
+		);
+	}
+	else
+	{
+		dstRect = D2D1::RectF(
+			0,
+			0,
+			destRect.width,
+			destRect.height
+		);
+	}
 
 	auto d2dDestY = bitmap->GetHeight() - sourceRect.y - sourceRect.height;
 
@@ -166,7 +183,7 @@ void GOTOEngine::D2DRenderAPI::DrawBitmap(const IRenderBitmap* bitmap, const Mat
 		d2dDestY + sourceRect.height
 	);
 
-	D2D1_BITMAP_INTERPOLATION_MODE mode;
+	D2D1_BITMAP_INTERPOLATION_MODE mode = D2D1_BITMAP_INTERPOLATION_MODE_LINEAR;
 
 	switch (filter)
 	{
@@ -181,7 +198,7 @@ void GOTOEngine::D2DRenderAPI::DrawBitmap(const IRenderBitmap* bitmap, const Mat
 	m_d2dContext->SetTransform(d2dTransform);
 	m_d2dContext->DrawBitmap(
 		d2dBitmap,
-		&destRect,
+		&dstRect,
 		1.0f, // 불투명도
 		mode,
 		&srcRect
@@ -253,22 +270,45 @@ void D2DRenderAPI::DrawString(const wchar_t* string, const Rect& rect, const IRe
 	m_d2dContext->DrawText(string, static_cast<UINT32>(wcslen(string)), textFormat, &layoutRect, m_solidColorBrush.Get());
 }
 
-void GOTOEngine::D2DRenderAPI::DrawRect(const Rect& rect, bool fill, Color color)
+void GOTOEngine::D2DRenderAPI::DrawRect(const Rect& rect, bool fill, const Matrix3x3& mat, Color color, bool useScreenPos)
 {
 	if (!m_solidColorBrush) {
 		OutputDebugStringA("SolidColorBrush가 초기화되지 않았습니다.\n");
 		return;
 	}
+
+	auto d2dTransform = ConvertToD2DMatrix(mat);
+
 	float screenHeight = static_cast<float>(m_window->GetHeight());
-	m_d2dContext->SetTransform(D2D1::IdentityMatrix());
+	m_d2dContext->SetTransform(d2dTransform);
 	m_solidColorBrush->SetColor(D2D1::ColorF(color.R / 255.0f, color.G / 255.0f, color.B / 255.0f, color.A / 255.0f));
+
+	D2D1_RECT_F dstRect;
+
+	if (useScreenPos)
+	{
+		dstRect = D2D1::RectF(
+			rect.x,
+			(screenHeight - rect.y - rect.height),
+			(rect.x + rect.width),
+			(screenHeight - rect.y)
+		);
+	}
+	else
+	{
+		dstRect = D2D1::RectF(
+			0,
+			0,
+			rect.width,
+			rect.height
+		);
+	}
+
 	if (fill) {
-		m_d2dContext->FillRectangle(D2D1::RectF(rect.x, (screenHeight - rect.y - rect.height),
-			(rect.x + rect.width), (screenHeight - rect.y)), m_solidColorBrush.Get());
+		m_d2dContext->FillRectangle(dstRect, m_solidColorBrush.Get());
 	}
 	else {
-		m_d2dContext->DrawRectangle(D2D1::RectF(rect.x, (screenHeight - rect.y - rect.height),
-			(rect.x + rect.width), (screenHeight - rect.y)), m_solidColorBrush.Get());
+		m_d2dContext->DrawRectangle(dstRect, m_solidColorBrush.Get());
 	}
 }
 

@@ -17,6 +17,9 @@ namespace GOTOEngine
         int GetWidth() const override;
         int GetHeight() const override;
 
+        bool IsFullScreen() const override { return m_isFullScreen; }
+        void ToggleFullScreen() override;
+
         virtual void HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
         virtual ~WinAPIWindow() { m_onChangedWindowSize.Clear(); };
     protected:
@@ -27,5 +30,10 @@ namespace GOTOEngine
         int m_height = 768;
         bool m_shouldClose = false;
         Delegate<void, int, int> m_onChangedWindowSize;
+
+        bool m_isFullScreen = false;
+        RECT m_savedWindowRect = {}; // 창 모드일 때 위치/크기 저장
+        DWORD m_savedStyle = 0;      // 창 모드일 때 스타일 저장
+        DWORD m_savedExStyle = 0;    // 창 모드일 때 확장 스타일 저장
     };
 }
