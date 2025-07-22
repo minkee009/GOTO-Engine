@@ -3,6 +3,7 @@
 #include "PlayerController.h"
 #include "PlayerFSMController.h"
 #include "Camera.h"
+#include "TimeManager.h"
 
 void AnimationScene::Initialize()
 {

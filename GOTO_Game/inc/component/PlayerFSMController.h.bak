@@ -14,6 +14,7 @@ namespace GOTOEngine
 	private:
 		Animator* m_animator = nullptr;
 		SpriteRenderer* m_renderer = nullptr;
+		bool m_timeSlower = false;
 	public:
     PlayerFSMController()
     {
@@ -39,23 +40,29 @@ namespace GOTOEngine
 			else
 				m_animator->SetBool(L"Move", false);
 
-			if (IsValidObject(m_renderer))
-				m_renderer->SetFlipX(hInput != 0 ? (hInput < 0) : m_renderer->GetFlipX());
-
 			bool attack = INPUT_GET_KEYDOWN(KeyCode::Space);
 
 			if (attack)
 				m_animator->SetTrigger(L"Attack");
 
-			auto ss = m_animator->GetCurrentStateName();
+			if (m_animator->GetCurrentStateName() != L"anim_knight_attack")
+			{
+				if (IsValidObject(m_renderer))
+					m_renderer->SetFlipX(hInput != 0 ? (hInput < 0) : m_renderer->GetFlipX());
 
-			if(m_animator->GetCurrentStateName() != L"anim_knight_attack")
 				GetTransform()->SetPosition(GetTransform()->GetPosition() + (Vector2{ hInput, vInput }.Normalized() * moveSpeed * TIME_GET_DELTATIME()));
+			}
+
+			if (INPUT_GET_KEYDOWN(KeyCode::T))
+			{
+				m_timeSlower = !m_timeSlower;
+				TimeManager::Get()->SetTimeScale(m_timeSlower ? 0.25f : 1.0f);
+			}
 		}
 
 		void OnGUI()
 		{
-			RenderManager::Get()->DrawString(L"방향키 - 이동 \n Space바 - 공격");
+			RenderManager::Get()->DrawString(L"방향키 - 이동 \n Space바 - 공격 \n T키 - 시간 변경");
 		}
 	};
 }
