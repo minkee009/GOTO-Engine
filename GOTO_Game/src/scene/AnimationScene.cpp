@@ -12,9 +12,9 @@ void AnimationScene::Initialize()
 	camera->SetBackGroundColor({ 17,150,193,255 });
 
 	player->AddComponent<SpriteRenderer>()->AddComponent<SpriteRenderer>();
-	player->AddComponent<Animator>()->SetAnimatorController(Resource::Load<AnimatorController>(L"../Resources/Animation/controller/KnightAnimator_AnimController.json"));
+	player->AddComponent<Animator>()->SetAnimatorController(Resource::Load<AnimatorController>(L"../Resources/Animation/controller/KnightAnimator_AnimControllerNoFSM.json"));
 	
-	player->AddComponent<PlayerFSMController>();
+	player->AddComponent<PlayerController>();
 
 	player->GetTransform()->SetLocalScale({ 10.0f,10.0f });
 }
