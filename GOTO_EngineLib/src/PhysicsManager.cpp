@@ -25,30 +25,6 @@ void GOTOEngine::PhysicsManager::RegisterRigidBody2D(RigidBody2D* rigidBody)
 
 	m_createdRigidBody2D.push_back(rigidBody);
 
-	auto go = rigidBody->GetGameObject(); 
-	auto it = m_currentBody2Ds.find(go);
-
-	if (it != m_currentBody2Ds.end())
-	{
-		auto body2DWrapper = m_currentBody2Ds[go];
-
-		//이미 중복 생성되어 있음
-		if(body2DWrapper->HasRigidbody())
-			return nullptr;
-
-		body2DWrapper->InitRigidBody(rigidBody);
-
-		return body2DWrapper;
-	}
-
-	auto createdBody2DWrapper = new Body2DWrapper(rigidBody->GetGameObject());
-	createdBody2DWrapper->InitRigidBody(rigidBody);
-	createdBody2DWrapper->m_pOwner = rigidBody->GetGameObject();
-	PendingAddBodyInWrapper(createdBody2DWrapper->GetBody());
-	
-	m_currentBody2Ds[go] = createdBody2DWrapper;
-
-	return createdBody2DWrapper;
 }
 
 void GOTOEngine::PhysicsManager::RegisterCollider2D(Collider2D* collider)

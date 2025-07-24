@@ -127,8 +127,8 @@ namespace GOTOEngine
 					continue;
 				}
 
-				auto createdBody2DWrapper = new Body2DWrapper(rigidBody->GetGameObject());
-				createdBody2DWrapper->InitRigidBody(rigidBody);
+				auto createdBody2DWrapper = new Body2DWrapper(col->GetGameObject());
+				createdBody2DWrapper->InitCollider(col);
 				createdBody2DWrapper->m_pOwner = rigidBody->GetGameObject();
 				PendingAddBodyInWrapper(createdBody2DWrapper->GetBody());
 
