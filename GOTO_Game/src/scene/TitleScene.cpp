@@ -58,7 +58,7 @@ void TitleScene::Initialize()
     spriteRendererBG->SetRenderOrder(-1000);
 
     mushmom_GO->AddComponent<SpriteRenderer>()->SetSprite(Resource::Load<Sprite>(L"../Resources/stand.gif"));
-    mushmom_GO->AddComponent<PlayerRotate>();
+    //mushmom_GO->AddComponent<PlayerRotate>();
 
     slime_GO->AddComponent<SpriteRenderer>()->SetSprite(Resource::Load<Sprite>(L"../Resources/slime.png"));
     slime_GO->AddComponent<PlayerRotate>();

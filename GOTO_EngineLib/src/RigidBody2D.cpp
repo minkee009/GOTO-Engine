@@ -4,14 +4,11 @@
 
 GOTOEngine::RigidBody2D::RigidBody2D()
 {
-	m_wrapperBody = PhysicsManager::Get()->RegisterRigidBody2D(this);
-	if (!m_wrapperBody)
-		DestroyImmediate(this);
+	PhysicsManager::Get()->RegisterRigidBody2D(this);
 }
 
 GOTOEngine::RigidBody2D::~RigidBody2D()
 {
-	m_wrapperBody = nullptr;
 	PhysicsManager::Get()->UnRegisterRigigdBody2D(this);
 }
 

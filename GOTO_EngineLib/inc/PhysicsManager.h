@@ -107,37 +107,7 @@ namespace GOTOEngine
 			}
 		}
 
-		void MakeAndRegisterBodyWrapper2D()
-		{
-			for (auto col : m_createdCollider2D)
-			{
-				auto go = col->GetGameObject();
-				auto it = m_currentBody2Ds.find(go);
-
-				if (it != m_currentBody2Ds.end())
-				{
-					auto body2DWrapper = m_currentBody2Ds[go];
-
-					//이미 중복 생성되어 있음
-					if (body2DWrapper->HasCollider())
-						continue;
-
-					body2DWrapper->InitCollider(col);
-
-					continue;
-				}
-
-				auto createdBody2DWrapper = new Body2DWrapper(col->GetGameObject());
-				createdBody2DWrapper->InitCollider(col);
-				createdBody2DWrapper->m_pOwner = rigidBody->GetGameObject();
-				PendingAddBodyInWrapper(createdBody2DWrapper->GetBody());
-
-				m_currentBody2Ds[go] = createdBody2DWrapper;
-
-				return createdBody2DWrapper;
-			}
-			
-		}
+		void MakeAndRegisterBodyWrapper2D();
 
 		std::vector<Collider2D*> m_createdCollider2D;
 		std::vector<RigidBody2D*> m_createdRigidBody2D;
@@ -164,6 +134,8 @@ namespace GOTOEngine
 
 		void Simulate(float deltaTime)
 		{
+			MakeAndRegisterBodyWrapper2D();
+
 			RefreshBodyFromPhysicsWorld();
 
 			if (m_physicsWorld2D)
