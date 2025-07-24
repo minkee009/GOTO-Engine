@@ -35,7 +35,6 @@ namespace GOTOEngine
 			Rect rect,
 			Color color);
 
-
 		RenderAPIMemoryStatus CollectMemoryUsage();
 	private:
 		friend class Engine;

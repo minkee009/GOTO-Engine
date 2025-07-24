@@ -10,9 +10,8 @@
 #include "Matrix3x3.h"
 #ifdef _DEBUG
 #include <iostream>
+#include "PhysicsManager.h"
 #endif
-
-#include "BehaviourManager.h"
 
 #undef CreateRenderFont
 
@@ -205,6 +204,33 @@ void GOTOEngine::RenderManager::Render()
 			//뷰포트 제한
 			renderer->Render(cameraMat);
 		}
+
+#ifdef _DEBUG
+		//Physics 디버그 드로잉
+		for (auto pair : PhysicsManager::Get()->GetBody2DWrappers())
+		{
+			auto wrapper = pair.second;
+
+			if (wrapper->IsInPhysicsWorld())
+			{
+				Rect drawRect = { 0,0,wrapper->GetBody()->width.x,wrapper->GetBody()->width.y };
+
+				//피벗 이동
+				auto transform = Matrix3x3::Translate(drawRect.width * -0.5f, drawRect.height * -0.5f);
+
+				//유니티 좌표계 플립
+				transform = Matrix3x3::Scale(1.0f, -1.0f) * transform;
+
+				////TRS 세팅
+				transform = wrapper->GetTransform()->GetWorldMatrix() * transform;
+
+				////유니티 좌표계 매트릭스 적용
+				transform = cameraMat * transform;
+
+				m_pRenderAPI->DrawRect(drawRect, false, transform, { 0,255,0,255 }, false);
+			}
+		}
+#endif
 		m_pRenderAPI->ResetViewport();
 	}
 }

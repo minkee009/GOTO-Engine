@@ -1,6 +1,6 @@
 #include "Collider2D.h"
 
-GOTOEngine::Collider2D::Collider2D() 
+GOTOEngine::Collider2D::Collider2D() : m_wrapperBody(nullptr), m_size({50,50})
 {
 	PhysicsManager::Get()->RegisterCollider2D(this);
 }

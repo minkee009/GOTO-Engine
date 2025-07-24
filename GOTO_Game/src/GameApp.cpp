@@ -12,6 +12,7 @@
 #include "TitleScene.h"
 #include "SampleScene.h"
 #include "AnimationScene.h"
+#include "PhysicsScene.h"
 
 void StartEngineLoop()
 {
@@ -21,9 +22,10 @@ void StartEngineLoop()
 	SCENE_ADD_SCENE<TitleScene>(L"Title");
 	SCENE_ADD_SCENE<SampleScene>(L"SampleScene");
 	SCENE_ADD_SCENE<AnimationScene>(L"AnimationScene");
+	SCENE_ADD_SCENE<PhysicsScene>(L"PhysicsScene");
 
 	//첫 씬으로 변환
-	SCENE_CHANGE_SCENE(L"Title");
+	SCENE_CHANGE_SCENE(L"PhysicsScene");
 
 	ENGINE_RUN();
 	ENGINE_SHUTDOWN();

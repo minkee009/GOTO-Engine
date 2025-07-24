@@ -28,7 +28,7 @@ using namespace GOTOEngine;
 void TitleScene::Initialize()
 {
     //---엔진 옵션 변경
-    TimeManager::Get()->SetFixedDeltaTime(0.05f);
+    //TimeManager::Get()->SetFixedDeltaTime(0.05f);
 
     //---오브젝트 초기화
     auto mushmom_GO = new GameObject(L"머쉬맘");
@@ -58,7 +58,7 @@ void TitleScene::Initialize()
     spriteRendererBG->SetRenderOrder(-1000);
 
     mushmom_GO->AddComponent<SpriteRenderer>()->SetSprite(Resource::Load<Sprite>(L"../Resources/stand.gif"));
-    //mushmom_GO->AddComponent<PlayerRotate>();
+    mushmom_GO->AddComponent<PlayerRotate>();
 
     slime_GO->AddComponent<SpriteRenderer>()->SetSprite(Resource::Load<Sprite>(L"../Resources/slime.png"));
     slime_GO->AddComponent<PlayerRotate>();
@@ -71,9 +71,6 @@ void TitleScene::Initialize()
     camera2_GO->AddComponent<CameraMove>();
 
     guiDraw_Go->AddComponent<RenderInfoDraw>();
-
-    mushmom_GO->AddComponent<Collider2D>();
-    mushmom_GO->AddComponent<RigidBody2D>();
 
 
     //---컴포넌트 어사인

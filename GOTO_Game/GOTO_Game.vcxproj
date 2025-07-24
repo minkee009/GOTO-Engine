@@ -146,6 +146,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\PhysicsScene.cpp" />
     <ClCompile Include="src\scene\AnimationScene.cpp" />
     <ClCompile Include="src\component\MonsterAttack.cpp" />
     <ClCompile Include="src\component\PlayerHealth.cpp" />
@@ -166,6 +167,7 @@
     <ClInclude Include="inc\component\TestComponent.h" />
     <ClInclude Include="inc\component\PlayerGUI.h" />
     <ClInclude Include="inc\component\PlayerFSMController.h" />
+    <ClInclude Include="inc\PhysicsScene.h" />
     <ClInclude Include="inc\scene\AnimationScene.h" />
     <ClInclude Include="inc\scene\TitleScene.h" />
     <ClInclude Include="inc\scene\SampleScene.h" />

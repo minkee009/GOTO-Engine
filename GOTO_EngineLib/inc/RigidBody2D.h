@@ -5,11 +5,17 @@
 
 namespace GOTOEngine
 {
-	class PhysicsManager::Body2DWrapper;
 	class RigidBody2D : public Component
 	{
 	private:
+		friend class PhysicsManager;
+		friend class PhysicsManager::Body2DWrapper;
 		PhysicsManager::Body2DWrapper* m_wrapperBody;
+		PhysicsManager::Body2DWrapper* GetWrapperBody() { return m_wrapperBody; };
+
+		Vector2 m_position;
+		float m_rotation;
+		float m_mass;
 
 		~RigidBody2D();
 	public:

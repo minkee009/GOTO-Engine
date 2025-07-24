@@ -6,13 +6,17 @@
 
 namespace GOTOEngine
 {
-	class PhysicsManager::Body2DWrapper;
 	class Collider2D : public Component
 	{
 	private:
+		friend class PhysicsManager;
+		friend class PhysicsManager::Body2DWrapper;
 		PhysicsManager::Body2DWrapper* m_wrapperBody;
+		Vector2 m_size;
 
 		PhysicsManager::Body2DWrapper* GetWrapperBody() { return m_wrapperBody; };
+		
+
 		~Collider2D();
 	public:
 		Collider2D();
@@ -23,12 +27,14 @@ namespace GOTOEngine
 			 if(GetWrapperBody() && GetWrapperBody()->m_pBody )
 				 return  { GetWrapperBody()->m_pBody->width.x,m_wrapperBody->m_pBody->width.y};
 
-			 return { 0,0 };
+			 return m_size;
 		}
 		void SetSize(const Vector2& size) 
 		{ 
 			if (GetWrapperBody() && GetWrapperBody()->m_pBody)
 				GetWrapperBody()->m_pBody->width = { size.x, size.y };
+			else
+				m_size = size;
 		}
 	};
 }

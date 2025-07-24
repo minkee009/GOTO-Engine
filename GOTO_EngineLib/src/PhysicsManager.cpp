@@ -1,8 +1,9 @@
 #include "PhysicsManager.h"
 #include "RigidBody2D.h"
 #include "Collider2D.h"
+#include "Mathf.h"
 
-void GOTOEngine::PhysicsManager::RefreshBodyFromPhysicsWorld()
+void GOTOEngine::PhysicsManager::RefreshBodyFromPhysicsWorld2D()
 {
 	if (m_needRefreshBodyInPhysicsWorld)
 	{
@@ -17,6 +18,26 @@ void GOTOEngine::PhysicsManager::RefreshBodyFromPhysicsWorld()
 			m_physicsWorld2D->Remove(body);
 		}
 		m_removePendingBody.clear();
+	}
+}
+
+void GOTOEngine::PhysicsManager::CheckAtiveBodyWrapper()
+{
+	for (auto pair : m_currentBody2Ds)
+	{
+		auto wrapperBody = pair.second;
+
+		if (m_physicsWorld2D->IsValidBody(wrapperBody->GetBody())
+			&& !wrapperBody->m_pOwner->IsActiveInHierarchy())
+		{
+			PendingRemoveBodyInWrapper(wrapperBody->GetBody());
+		}
+
+		else if (!m_physicsWorld2D->IsValidBody(wrapperBody->GetBody())
+			&& wrapperBody->m_pOwner->IsActiveInHierarchy())
+		{
+			PendingAddBodyInWrapper(wrapperBody->GetBody());
+		}
 	}
 }
 
@@ -44,6 +65,7 @@ void GOTOEngine::PhysicsManager::MakeAndRegisterBodyWrapper2D()
 		createdBody2DWrapper->InitCollider(col);
 		createdBody2DWrapper->m_pOwner = col->GetGameObject();
 		PendingAddBodyInWrapper(createdBody2DWrapper->GetBody());
+		col->m_wrapperBody = createdBody2DWrapper;
 
 		m_currentBody2Ds[go] = createdBody2DWrapper;
 	}
@@ -71,10 +93,27 @@ void GOTOEngine::PhysicsManager::MakeAndRegisterBodyWrapper2D()
 		createdBody2DWrapper->InitRigidBody(rb);
 		createdBody2DWrapper->m_pOwner = rb->GetGameObject();
 		PendingAddBodyInWrapper(createdBody2DWrapper->GetBody());
+		rb->m_wrapperBody = createdBody2DWrapper;
 
 		m_currentBody2Ds[go] = createdBody2DWrapper;
 	}
-	m_createdCollider2D.clear();
+	m_createdRigidBody2D.clear();
+}
+
+void GOTOEngine::PhysicsManager::ApplyTransform()
+{
+	for (auto pair : m_currentBody2Ds)
+	{
+		auto wrapperBody = pair.second;
+
+		if (m_physicsWorld2D->IsValidBody(wrapperBody->GetBody()))
+		{
+			auto transform = pair.second->GetTransform();
+
+			transform->SetPosition({ wrapperBody->GetBody()->position.x,wrapperBody->GetBody()->position.y });
+			transform->SetRotation(wrapperBody->GetBody()->rotation * Mathf::Rad2Deg);
+		}
+	}
 }
 
 void GOTOEngine::PhysicsManager::RegisterRigidBody2D(RigidBody2D* rigidBody)
@@ -139,12 +178,18 @@ void GOTOEngine::PhysicsManager::UnRegisterCollider2D(Collider2D* collider)
 
 void GOTOEngine::PhysicsManager::Body2DWrapper::InitCollider(Collider2D* col)
 {
-	m_pBody->Set({ 50,50 }, m_pBody->mass);
+	m_pBody->Set({col->m_size.x,col->m_size.y}, m_pBody->mass);
+	m_pBody->position = { col->GetTransform()->GetPosition().x , col->GetTransform()->GetPosition().y };
 }
 
 void GOTOEngine::PhysicsManager::Body2DWrapper::InitRigidBody(RigidBody2D* rb)
 {
-	m_pBody->Set(m_pBody->width, { 1.0f });
+	m_pBody->Set(m_pBody->width, rb->m_mass);
+	if(rb->m_position.x != 0.0f
+		|| rb->m_position.y != 0.0f)
+	m_pBody->position = { rb->m_position.x , rb->m_position.y };
+	if (rb->m_rotation != 0.0f)
+		m_pBody->rotation = rb->m_rotation * Mathf::Deg2Rad;
 }
 
 void GOTOEngine::PhysicsManager::Body2DWrapper::ExcludeCollider()

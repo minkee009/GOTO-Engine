@@ -4,6 +4,7 @@
 #include "box2d-lite/Body.h"
 #include "GameObject.h"
 #include "Transform.h"
+#include "RenderManager.h"
 #include <unordered_map>
 
 namespace GOTOEngine
@@ -13,6 +14,7 @@ namespace GOTOEngine
 	private:
 		friend class Collider2D;
 		friend class RigidBody2D;
+		friend class Engine;
 		class Body2DWrapper
 		{
 		private:
@@ -45,10 +47,12 @@ namespace GOTOEngine
 
 			Body* GetBody() { return m_pBody; }
 			
-			Transform* GetTransfrom() { return m_pOwner->GetTransform(); }
+			Transform* GetTransform() { return m_pOwner->GetTransform(); }
 
 			bool HasCollider() { return m_pCol; }
 			bool HasRigidbody() { return m_pRb; }
+
+			bool IsInPhysicsWorld() { return PhysicsManager::Get()->m_physicsWorld2D->IsValidBody(m_pBody); }
 
 			void InitCollider(Collider2D* col);
 			void InitRigidBody(RigidBody2D* rb);
@@ -60,7 +64,7 @@ namespace GOTOEngine
 		
 
 		int m_phyiscsIteration = 10;
-		Vector2 m_gravity = { 0.0f, -10.0f };
+		Vector2 m_gravity = { 0.0f, -50.0f };
 		World* m_physicsWorld2D;
 
 		bool m_needRefreshBodyInPhysicsWorld = false;    //RigidBody 등록 및 해제(파괴) 시 적용
@@ -71,7 +75,7 @@ namespace GOTOEngine
 		void UnRegisterRigigdBody2D(RigidBody2D* rigidBody);
 		void UnRegisterCollider2D(Collider2D* collider);
 
-		void RefreshBodyFromPhysicsWorld();
+		void RefreshBodyFromPhysicsWorld2D();
 
 		void PhysicsWorld2DRefreshDirtySet() { m_needRefreshBodyInPhysicsWorld = true; }
 
@@ -87,25 +91,7 @@ namespace GOTOEngine
 			m_removePendingBody.push_back(body2DWrapper);
 		}
 
-		void CheckAtiveBodyWrapper()
-		{
-			for (auto pair : m_currentBody2Ds)
-			{
-				auto wrapperBody = pair.second;
-
-				if (m_physicsWorld2D->IsValidBody(wrapperBody->GetBody())
-					&& !wrapperBody->m_pOwner->IsActiveInHierarchy())
-				{
-					PendingRemoveBodyInWrapper(wrapperBody->GetBody());
-				}
-
-				else if (!m_physicsWorld2D->IsValidBody(wrapperBody->GetBody())
-					&& wrapperBody->m_pOwner->IsActiveInHierarchy())
-				{
-					PendingAddBodyInWrapper(wrapperBody->GetBody());
-				}
-			}
-		}
+		void CheckAtiveBodyWrapper();
 
 		void MakeAndRegisterBodyWrapper2D();
 
@@ -132,31 +118,23 @@ namespace GOTOEngine
 			return nullptr;
 		}
 
+		const std::unordered_map<GameObject*, Body2DWrapper*>& GetBody2DWrappers() const
+		{
+			return m_currentBody2Ds;
+		}
+
 		void Simulate(float deltaTime)
 		{
 			MakeAndRegisterBodyWrapper2D();
 
-			RefreshBodyFromPhysicsWorld();
+			RefreshBodyFromPhysicsWorld2D();
 
 			if (m_physicsWorld2D)
 				m_physicsWorld2D->Step(deltaTime);
 		}
 
-		void ApplyTransform()
-		{
-			for (auto pair : m_currentBody2Ds)
-			{
-				auto wrapperBody = pair.second;
+		void ApplyTransform();
 
-				if (m_physicsWorld2D->IsValidBody(wrapperBody->GetBody()))
-				{
-					auto transform = pair.second->GetTransfrom();
-
-					transform->SetPosition({ wrapperBody->GetBody()->position.x,wrapperBody->GetBody()->position.y });
-					transform->SetRotation(wrapperBody->GetBody()->rotation);
-				}
-			}
-		}
 
 		void ShutDown()
 		{
