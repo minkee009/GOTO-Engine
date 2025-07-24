@@ -18,6 +18,8 @@
 #include "CameraMove.h"
 #include "RenderInfoDraw.h"
 #include "AnimatorController.h"
+#include <RigidBody2D.h>
+#include <Collider2D.h>
 
 #include <AnimationClip.h>
 
@@ -69,6 +71,9 @@ void TitleScene::Initialize()
     camera2_GO->AddComponent<CameraMove>();
 
     guiDraw_Go->AddComponent<RenderInfoDraw>();
+
+    mushmom_GO->AddComponent<Collider2D>();
+    mushmom_GO->AddComponent<RigidBody2D>();
 
 
     //---컴포넌트 어사인

@@ -26,14 +26,87 @@ bool World::positionCorrection = true;
 
 void World::Add(Body* body)
 {
-	bodies.push_back(body);
+	if (body == nullptr) return;
+
+	// 중복 추가 방지
+	auto it = std::find(bodies.begin(), bodies.end(), body);
+	if (it == bodies.end())
+	{
+		bodies.push_back(body);
+	}
+
+	validBodies.insert(body);
+}
+
+void World::Remove(Body* body)
+{
+	if (body == nullptr) return;
+
+	// bodies 벡터에서 제거
+	auto bodyIt = std::find(bodies.begin(), bodies.end(), body);
+	if (bodyIt != bodies.end())
+	{
+		bodies.erase(bodyIt);
+	}
+
+	// 관련된 Arbiter들 제거
+	auto arbiterIt = arbiters.begin();
+	while (arbiterIt != arbiters.end())
+	{
+		if (arbiterIt->first.body1 == body || arbiterIt->first.body2 == body)
+		{
+			arbiterIt = arbiters.erase(arbiterIt);
+		}
+		else
+		{
+			++arbiterIt;
+		}
+	}
+
+	// 관련된 Joint들 제거 (선택사항)
+	auto jointIt = joints.begin();
+	while (jointIt != joints.end())
+	{
+		if ((*jointIt)->body1 == body || (*jointIt)->body2 == body)
+		{
+			jointIt = joints.erase(jointIt);
+		}
+		else
+		{
+			++jointIt;
+		}
+	}
+
+	validBodies.erase(body);
 }
 
 void World::Add(Joint* joint)
 {
-	joints.push_back(joint);
+	if (joint == nullptr) return;
+
+	// 중복 추가 방지
+	auto it = std::find(joints.begin(), joints.end(), joint);
+	if (it == joints.end())
+	{
+		joints.push_back(joint);
+	}
+
+	validjoints.insert(joint);
 }
 
+void World::Remove(Joint* joint)
+{
+	if (joint == nullptr) return;
+
+	// joints 벡터에서 제거
+	auto jointIt = std::find(joints.begin(), joints.end(), joint);
+	if (jointIt != joints.end())
+	{
+		joints.erase(jointIt);
+	}
+
+	validjoints.erase(joint);
+}
 void World::Clear()
 {
 	bodies.clear();

@@ -13,6 +13,7 @@
 #define WORLD_H
 
 #include <vector>
+#include <unordered_set>
 #include <map>
 #include "MathUtils.h"
 #include "Arbiter.h"
@@ -24,16 +25,25 @@ struct World
 {
 	World(Vec2 gravity, int iterations) : gravity(gravity), iterations(iterations) {}
 
+	// Body 관련
 	void Add(Body* body);
+	void Remove(Body* body);
+
+	// Joint 관련
 	void Add(Joint* joint);
+	void Remove(Joint* joint);
 	void Clear();
 
 	void Step(float dt);
 
 	void BroadPhase();
 
+	bool IsValidBody(Body* body) { return validBodies.find(body) != validBodies.end(); }
+
 	std::vector<Body*> bodies;
+	std::unordered_set<Body*> validBodies;
 	std::vector<Joint*> joints;
+	std::unordered_set<Joint*> validjoints;
 	std::map<ArbiterKey, Arbiter> arbiters;
 	Vec2 gravity;
 	int iterations;

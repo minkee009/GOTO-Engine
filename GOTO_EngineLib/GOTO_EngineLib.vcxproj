@@ -143,10 +143,18 @@
   <ItemGroup>
     <ClInclude Include="inc\AnimationClip.h" />
     <ClInclude Include="inc\Animator.h" />
+    <ClInclude Include="inc\box2d-lite\Arbiter.h" />
+    <ClInclude Include="inc\box2d-lite\Body.h" />
+    <ClInclude Include="inc\box2d-lite\Joint.h" />
+    <ClInclude Include="inc\box2d-lite\MathUtils.h" />
+    <ClInclude Include="inc\box2d-lite\World.h" />
+    <ClInclude Include="inc\Collider.h" />
+    <ClInclude Include="inc\Collider2D.h" />
     <ClInclude Include="inc\D2DBitmap.h" />
     <ClInclude Include="inc\IRenderBitmap.h" />
     <ClInclude Include="inc\IRenderFont.h" />
     <ClInclude Include="inc\json.hpp" />
+    <ClInclude Include="inc\PhysicsManager.h" />
     <ClInclude Include="inc\Resource.h" />
     <ClInclude Include="inc\BBox.h" />
     <ClInclude Include="inc\Behaviour.h" />
@@ -178,6 +186,7 @@
     <ClInclude Include="inc\Renderer.h" />
     <ClInclude Include="inc\RenderManager.h" />
     <ClInclude Include="inc\ResourceManager.h" />
+    <ClInclude Include="inc\RigidBody2D.h" />
     <ClInclude Include="inc\RuntimeAnimatorController.h" />
     <ClInclude Include="inc\Scene.h" />
     <ClInclude Include="inc\SceneManager.h" />
@@ -200,7 +209,15 @@
     <ClInclude Include="inc\AnimatorController.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Collider2D.cpp" />
+    <ClCompile Include="src\PhysicsManager.cpp" />
+    <ClCompile Include="src\RigidBody2D.cpp" />
     <ClCompile Include="src\Animator.cpp" />
+    <ClCompile Include="src\box2d-lite\Arbiter.cpp" />
+    <ClCompile Include="src\box2d-lite\Body.cpp" />
+    <ClCompile Include="src\box2d-lite\Collide.cpp" />
+    <ClCompile Include="src\box2d-lite\Joint.cpp" />
+    <ClCompile Include="src\box2d-lite\World.cpp" />
     <ClCompile Include="src\RuntimeAnimatorController.cpp" />
     <ClCompile Include="src\AnimationClip.cpp" />
     <ClCompile Include="src\AnimatorController.cpp" />

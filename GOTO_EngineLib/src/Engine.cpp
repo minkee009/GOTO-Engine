@@ -6,6 +6,7 @@
 #include "RenderManager.h"
 #include "ResourceManager.h"
 #include "BehaviourManager.h"
+#include "PhysicsManager.h"
 #ifdef _OS_WINDOWS
 #include "WICHelper.h"
 #include "DWriteHelper.h"
@@ -46,6 +47,7 @@ bool Engine::Initialize(int width, int height, const wchar_t* title)
 	InputManager::Get()->Startup(static_cast<HWND>(m_window->GetNativeHandle()));
 	TimeManager::Get()->StartUp();
 #endif
+	PhysicsManager::Get()->StartUp();
 	SceneManager::Get()->StartUp();
     RenderManager::Get()->StartUp(static_cast<IWindow*>(m_window));
 	ResourceManager::Get()->StartUp();
@@ -113,6 +115,8 @@ void Engine::ProcessFrame()
 		accumulator -= fixedDelta;
 		TimeManager::Get()->FixedUpdate();
 		BehaviourManager::Get()->BroadCastBehaviourMessage("FixedUpdate");
+		PhysicsManager::Get()->Simulate(fixedDelta);
+		PhysicsManager::Get()->ApplyTransform();
 	}
 
 	//GetTime -> 일반시간 반환으로 변경
@@ -156,10 +160,10 @@ void Engine::Shutdown()
 
 	BehaviourManager::Get()->ShutDown();
 	ResourceManager::Get()->ShutDown();
+	PhysicsManager::Get()->ShutDown();
 	ObjectDestructionManager::Get()->ShutDown();
 
 	RenderManager::Get()->ShutDown();
-
 #ifdef _OS_WINDOWS
 	WICHelper::ShutDown();
 	DWriteHelper::ShutDown();
