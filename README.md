@@ -9,7 +9,7 @@ Unity 루프 기반 게임엔진입니다.
 
 # Dependencies
 
-이 프로젝트에는 다음의 서드파티 라이브러리들이 포함되어 있으며, 모두 소스 트리에 직접 통합되어 있습니다. 두 라이브러리 모두 MIT 라이선스를 따릅니다.
+이 프로젝트에는 다음의 서드파티 라이브러리들이 포함되어 있으며, 모두 소스 트리에 직접 통합되어 있습니다. 이 서드파티 라이브러리들은 모두 MIT 라이선스를 따릅니다.
 
 This project includes the following third-party libraries, directly integrated into the source tree. Both are licensed under the MIT License.
 

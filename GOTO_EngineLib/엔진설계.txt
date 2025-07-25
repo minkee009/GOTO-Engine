@@ -101,8 +101,22 @@ LearnOpenGL의 리소스코드를 반드시 확인하고 AI 어시스턴트의 �
 
 
 
+---> DrawRect -> Debug.DrawRect(position,width,height,color);
 
- 
+>> PhysicsManager, Physcis클래스(혹은 네임스페이스) , Collider 만들기
+
+
+body2dwrapper 더 쉬운 생성방법 , 관리방법 찾기
+
+transform 더티셋 관리 시스템 구축
+
+>> 보간기능 추가
+
+collider2D -> enabled 추가후 메시지 발생 기능 추가
+
+
+Object::Instantiate() -> dynamic_cast<T>로 해결하기 -> type_id 별로 복사 컨텍스트 만들어주기 
+
 IRoutine을 이용한 코루틴 구현하기
 
 // 루틴 인터페이스
@@ -110,15 +124,6 @@ struct IRoutine {
     virtual bool MoveNext() = 0;
     virtual ~IRoutine() = default;
 };
-
-Object::Instantiate() -> dynamic_cast<T>로 해결하기 -> type_id 별로 복사 컨텍스트 만들어주기
-
-
----> DrawRect -> Debug.DrawRect(position,width,height,color);
-
->> PhysicsManager, Physcis클래스(혹은 네임스페이스) , Collider 만들기
-
-collider
 
 
 
