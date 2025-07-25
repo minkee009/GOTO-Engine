@@ -35,10 +35,10 @@ namespace GOTOEngine
 			float hInput = (INPUT_GET_KEY(KeyCode::RightArrow) ? 1.0f : 0.0f) + (INPUT_GET_KEY(KeyCode::LeftArrow) ? -1.0f : 0.0f);
 			float vInput = (INPUT_GET_KEY(KeyCode::UpArrow) ? 1.0f : 0.0f) + (INPUT_GET_KEY(KeyCode::DownArrow) ? -1.0f : 0.0f);
 
-			if (INPUT_GAMEPAD_IS_CONNECTED(1))
+			if (INPUT_GAMEPAD_IS_CONNECTED(0))
 			{
-				hInput = INPUT_GET_GAMEPAD_AXIS(1, GamepadAxis::LeftStickX);
-				vInput = INPUT_GET_GAMEPAD_AXIS(1, GamepadAxis::LeftStickY);
+				hInput = INPUT_GET_GAMEPAD_AXIS(0, GamepadAxis::LeftStickX);
+				vInput = INPUT_GET_GAMEPAD_AXIS(0, GamepadAxis::LeftStickY);
 			}
 
 			auto moveInput = Vector2{ hInput, vInput };

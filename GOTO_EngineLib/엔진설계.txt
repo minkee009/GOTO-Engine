@@ -103,6 +103,8 @@ LearnOpenGL의 리소스코드를 반드시 확인하고 AI 어시스턴트의 �
 
 ---> DrawRect -> Debug.DrawRect(position,width,height,color);
 
+---> UI 클릭과 같은 코어 컴포넌트 제공
+
 >> PhysicsManager, Physcis클래스(혹은 네임스페이스) , Collider 만들기
 
 
