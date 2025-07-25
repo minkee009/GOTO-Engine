@@ -1,14 +1,21 @@
 #include "WinAPIInputSystem.h"
 #include "InputManager.h" // KeyCode enum을 위해 포함
+#include "XInputGamepadDevice.h"
 
 namespace GOTOEngine
 {
-    // Windows API의 KEY_PRESSED 정의 (InputManager.h에서 가져와서 여기에 정의)
+    // Windows API의 KEY_PRESSED 정의
 #define KEY_PRESSED 0x8000
 
     WinAPIInputSystem::WinAPIInputSystem()
     {
         InitKeyCodeMap();
+        InitGamepads();
+    }
+
+    WinAPIInputSystem::~WinAPIInputSystem()
+    {
+        CleanupGamepads();
     }
 
     void WinAPIInputSystem::Startup(void* windowHandle)
@@ -23,9 +30,19 @@ namespace GOTOEngine
         ::ScreenToClient(m_hWnd, &m_mouseClient);
         ::GetClientRect(m_hWnd, &m_clientRect);
 
+        // 키보드 상태 업데이트
         memcpy_s(m_prevState, sizeof(m_prevState), m_currState, sizeof(m_currState));
         for (int i = 0; i < 256; i++) {
             m_currState[i] = GetAsyncKeyState(i);
+        }
+
+        // 게임패드 상태 업데이트
+        for (auto& gamepad : m_gamepads)
+        {
+            if (gamepad)
+            {
+                gamepad->Update();
+            }
         }
     }
 
@@ -33,25 +50,28 @@ namespace GOTOEngine
     {
         int height = m_clientRect.bottom - m_clientRect.top;
 
-        //유니티 스크린 좌표계로 치환
+        //유니티 스크린 좌표계로 변환
         return Vector2{ (float)m_mouseClient.x, (float)(height - m_mouseClient.y) };
     }
 
     bool WinAPIInputSystem::GetKey(KeyCode keyCode)
     {
-		auto nativeKeyCode = GetNativeKeyCode(keyCode);
+        auto nativeKeyCode = GetNativeKeyCode(keyCode);
+        if (nativeKeyCode == -1) return false;
         return (m_currState[nativeKeyCode] & KEY_PRESSED) != 0;
     }
 
     bool WinAPIInputSystem::GetKeyDown(KeyCode keyCode)
     {
         auto nativeKeyCode = GetNativeKeyCode(keyCode);
+        if (nativeKeyCode == -1) return false;
         return (!(m_prevState[nativeKeyCode] & KEY_PRESSED) && (m_currState[nativeKeyCode] & KEY_PRESSED));
     }
 
     bool WinAPIInputSystem::GetKeyUp(KeyCode keyCode)
     {
         auto nativeKeyCode = GetNativeKeyCode(keyCode);
+        if (nativeKeyCode == -1) return false;
         return ((m_prevState[nativeKeyCode] & KEY_PRESSED) && !(m_currState[nativeKeyCode] & KEY_PRESSED));
     }
 
@@ -63,6 +83,27 @@ namespace GOTOEngine
             return it->second;
         }
         return -1; // KeyCode가 매핑되지 않은 경우 -1 반환
+    }
+
+    IGamepadDevice* WinAPIInputSystem::GetGamepad(int index)
+    {
+        if (index >= 0 && index < 4)
+        {
+            return m_gamepads[index];
+        }
+        return nullptr;
+    }
+
+    void WinAPIInputSystem::SetGamepadConnectionCallback(GamepadConnectionCallback callback)
+    {
+        // 모든 게임패드에 콜백 설정
+        for (auto& gamepad : m_gamepads)
+        {
+            if (gamepad)
+            {
+                gamepad->SetConnectionCallback(callback);
+            }
+        }
     }
 
     void WinAPIInputSystem::InitKeyCodeMap()
@@ -128,5 +169,27 @@ namespace GOTOEngine
         m_keyCodeMap[KeyCode::MouseLeft] = VK_LBUTTON;
         m_keyCodeMap[KeyCode::MouseRight] = VK_RBUTTON;
         m_keyCodeMap[KeyCode::MouseMiddle] = VK_MBUTTON;
+    }
+
+    void WinAPIInputSystem::InitGamepads()
+    {
+        // 4개의 XInput 게임패드 생성
+        for (int i = 0; i < 4; ++i)
+        {
+            m_gamepads[i] = new XInputGamepadDevice(i);
+        }
+    }
+
+    void WinAPIInputSystem::CleanupGamepads()
+    {
+        // 게임패드 메모리 해제
+        for (auto& gamepad : m_gamepads)
+        {
+            if (gamepad)
+            {
+                delete gamepad;
+                gamepad = nullptr;
+            }
+        }
     }
 }

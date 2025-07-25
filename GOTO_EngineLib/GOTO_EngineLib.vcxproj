@@ -112,7 +112,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);_USE_MATH_DEFINES;_OS_WINDOWS;_USE_DIRECT2D;_SIMD_OPTIMIZED;_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)inc\libgamepad;$(ProjectDir)src\libgamepad;$(ProjectDir)inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
     </ClCompile>
@@ -129,7 +129,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);_USE_MATH_DEFINES;_OS_WINDOWS;_USE_DIRECT2D;_SIMD_OPTIMIZED;_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)inc;$(ProjectDir)inc\libgamepad;$(ProjectDir)src\libgamepad;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
     </ClCompile>
@@ -141,6 +141,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\Downloads\libgamepad-1.1\include\gamepad\config.h" />
+    <ClInclude Include="..\..\..\..\Downloads\libgamepad-1.1\include\gamepad\device.hpp" />
     <ClInclude Include="inc\AnimationClip.h" />
     <ClInclude Include="inc\Animator.h" />
     <ClInclude Include="inc\box2d-lite\Arbiter.h" />
@@ -148,9 +150,9 @@
     <ClInclude Include="inc\box2d-lite\Joint.h" />
     <ClInclude Include="inc\box2d-lite\MathUtils.h" />
     <ClInclude Include="inc\box2d-lite\World.h" />
-    <ClInclude Include="inc\Collider.h" />
     <ClInclude Include="inc\Collider2D.h" />
     <ClInclude Include="inc\D2DBitmap.h" />
+    <ClInclude Include="inc\IGamepadDevice.h" />
     <ClInclude Include="inc\IRenderBitmap.h" />
     <ClInclude Include="inc\IRenderFont.h" />
     <ClInclude Include="inc\json.hpp" />
@@ -207,6 +209,7 @@
     <ClInclude Include="inc\WinAPIWindow.h" />
     <ClInclude Include="inc\WStringHelper.h" />
     <ClInclude Include="inc\AnimatorController.h" />
+    <ClInclude Include="inc\XInputGamepadDevice.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Collider2D.cpp" />
@@ -254,6 +257,7 @@
     <ClCompile Include="src\WinAPIInputSystem.cpp" />
     <ClCompile Include="src\WinAPIWindow.cpp" />
     <ClCompile Include="src\WStringHelper.cpp" />
+    <ClCompile Include="src\XInputGamepadDevice.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

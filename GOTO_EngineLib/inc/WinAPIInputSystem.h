@@ -1,14 +1,23 @@
 #pragma once
-#include "IInputSystem.h"
 #include <Windows.h>
+#include <array>
+#include <map>
+#include <functional>
+#include "IInputSystem.h"
+#include "IGamepadDevice.h"
 
 namespace GOTOEngine
 {
+    class XInputGamepadDevice; // 전방 선언
+
+    // 게임패드 연결/해제 이벤트 콜백
+    using GamepadConnectionCallback = std::function<void(int gamepadIndex, bool connected)>;
+
     class WinAPIInputSystem : public IInputSystem
     {
     public:
         WinAPIInputSystem();
-        virtual ~WinAPIInputSystem() = default;
+        virtual ~WinAPIInputSystem();
 
         void Startup(void* windowHandle) override;
         void Update() override;
@@ -18,6 +27,11 @@ namespace GOTOEngine
         bool GetKeyUp(KeyCode keyCode) override;
         int GetNativeKeyCode(KeyCode keyCode) const override;
 
+        IGamepadDevice* GetGamepad(int index) override;
+
+        // 핫플러그 지원
+        void SetGamepadConnectionCallback(GamepadConnectionCallback callback) override;
+
     private:
         HWND m_hWnd; // 윈도우 핸들
         POINT m_mouseClient; // 마우스 좌표
@@ -26,8 +40,13 @@ namespace GOTOEngine
 
         RECT m_clientRect;
 
-		std::map<KeyCode, int> m_keyCodeMap; // KeyCode와 Windows VKey 매핑
+        std::map<KeyCode, int> m_keyCodeMap; // KeyCode와 Windows VKey 매핑
 
         void InitKeyCodeMap(); // KeyCode를 Windows VKey로 매핑
+
+        // 게임패드 관리 (최대 4개)
+        std::array<XInputGamepadDevice*, 4> m_gamepads;
+        void InitGamepads(); // 게임패드 초기화
+        void CleanupGamepads(); // 게임패드 정리
     };
 }

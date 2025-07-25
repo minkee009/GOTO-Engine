@@ -35,6 +35,14 @@ namespace GOTOEngine
 			float hInput = (INPUT_GET_KEY(KeyCode::RightArrow) ? 1.0f : 0.0f) + (INPUT_GET_KEY(KeyCode::LeftArrow) ? -1.0f : 0.0f);
 			float vInput = (INPUT_GET_KEY(KeyCode::UpArrow) ? 1.0f : 0.0f) + (INPUT_GET_KEY(KeyCode::DownArrow) ? -1.0f : 0.0f);
 
+			if (INPUT_GAMEPAD_IS_CONNECTED(1))
+			{
+				hInput = INPUT_GET_GAMEPAD_AXIS(1, GamepadAxis::LeftStickX);
+				vInput = INPUT_GET_GAMEPAD_AXIS(1, GamepadAxis::LeftStickY);
+			}
+
+			auto moveInput = Vector2{ hInput, vInput };
+
 			if (hInput || vInput)
 				m_animator->SetBool(L"Move", true);
 			else
@@ -50,7 +58,8 @@ namespace GOTOEngine
 				if (IsValidObject(m_renderer))
 					m_renderer->SetFlipX(hInput != 0 ? (hInput < 0) : m_renderer->GetFlipX());
 
-				GetTransform()->SetPosition(GetTransform()->GetPosition() + (Vector2{ hInput, vInput }.Normalized() * moveSpeed * TIME_GET_DELTATIME()));
+
+				GetTransform()->SetPosition(GetTransform()->GetPosition() + (moveInput.Normalized() * Vector2::ClampMagnitude(moveInput,1.0f).Magnitude() * moveSpeed * TIME_GET_DELTATIME()));
 			}
 
 			if (INPUT_GET_KEYDOWN(KeyCode::T))

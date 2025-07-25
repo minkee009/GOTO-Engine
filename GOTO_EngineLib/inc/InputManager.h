@@ -1,50 +1,126 @@
 #pragma once
 #include "Singleton.h"
 #include "Vector2.h"
+#include <functional>
+
+#define MAX_GAMEPADS 4
 
 namespace GOTOEngine
 {
-	enum class KeyCode
-	{
-		// 알파벳
-		A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z,
+    // 키보드/마우스 전용 KeyCode
+    enum class KeyCode
+    {
+        // 알파벳
+        A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z,
 
-		// 숫자
-		Alpha0, Alpha1, Alpha2, Alpha3, Alpha4, Alpha5, Alpha6, Alpha7, Alpha8, Alpha9,
+        // 숫자
+        Alpha0, Alpha1, Alpha2, Alpha3, Alpha4, Alpha5, Alpha6, Alpha7, Alpha8, Alpha9,
 
-		// 특수 키
-		Escape, Space, Enter, Tab, Backspace, Delete,
-		LeftShift, RightShift, LeftControl, RightControl, LeftAlt, RightAlt,
-		UpArrow, DownArrow, LeftArrow, RightArrow,
+        // 특수 키
+        Escape, Space, Enter, Tab, Backspace, Delete,
+        LeftShift, RightShift, LeftControl, RightControl, LeftAlt, RightAlt,
+        UpArrow, DownArrow, LeftArrow, RightArrow,
 
-		// 마우스 버튼
-		MouseLeft, MouseRight, MouseMiddle,
+        // 마우스 버튼
+        MouseLeft, MouseRight, MouseMiddle,
 
-		// 기타 (필요에 따라 추가)
-		Unknown
-	};
+        // 기타
+        Unknown,
+    };
 
-	class IInputSystem;
-	class InputManager : public Singleton<InputManager>
-	{
-	public:
-		InputManager() = default;
-		~InputManager() = default;
-		void Startup(void* windowHandle);
-		void Shutdown();
+    // 게임패드 버튼 (플랫폼 독립적)
+    enum class GamepadButton
+    {
+        ButtonSouth = 0,  // A / Cross
+        ButtonEast,       // B / Circle  
+        ButtonNorth,      // Y / Triangle
+        ButtonWest,       // X / Square
+        ButtonL1,         // Left Shoulder
+        ButtonR1,         // Right Shoulder
+        ButtonStart,      // Start/Options/Menu
+        ButtonSelect,     // Back/Share/View
+        Count
+    };
 
-		void Update();
+    // 게임패드 축 (플랫폼 독립적)
+    enum class GamepadAxis
+    {
+        LeftStickX = 0,
+        LeftStickY,
+        RightStickX,
+        RightStickY,
+        LeftTrigger,
+        RightTrigger,
+        Count
+    };
 
-		Vector2 GetMousePos();
-		bool GetKey(KeyCode keyCode);
-		bool GetKeyDown(KeyCode keyCode);
-		bool GetKeyUp(KeyCode keyCode);
-	private:
-		IInputSystem* m_inputSystem = nullptr;
-	};
+    // 게임패드 연결/해제 이벤트 콜백
+    using GamepadConnectionCallback = std::function<void(int gamepadIndex, bool connected)>;
+
+    class IInputSystem;
+    class InputManager : public Singleton<InputManager>
+    {
+    public:
+        InputManager() = default;
+        ~InputManager() = default;
+
+        void Startup(void* windowHandle);
+        void Shutdown();
+        void Update();
+
+        // === 키보드 및 마우스 입력 ===
+        Vector2 GetMousePos();
+        bool GetKey(KeyCode keyCode);
+        bool GetKeyDown(KeyCode keyCode);
+        bool GetKeyUp(KeyCode keyCode);
+
+        // === 게임패드 입력 ===
+        // 버튼 입력
+        bool GetGamepadButton(int gamepadIndex, GamepadButton button);
+        bool GetGamepadButtonDown(int gamepadIndex, GamepadButton button);
+        bool GetGamepadButtonUp(int gamepadIndex, GamepadButton button);
+
+        // 아날로그 축 입력
+        float GetGamepadAxis(int gamepadIndex, GamepadAxis axis);
+        Vector2 GetLeftStick(int gamepadIndex);   // 왼쪽 스틱 (X, Y)
+        Vector2 GetRightStick(int gamepadIndex);  // 오른쪽 스틱 (X, Y)
+        float GetLeftTrigger(int gamepadIndex);   // 왼쪽 트리거 (0.0f ~ 1.0f)
+        float GetRightTrigger(int gamepadIndex);  // 오른쪽 트리거 (0.0f ~ 1.0f)
+
+        // === 게임패드 상태 정보 ===
+        bool IsGamepadConnected(int gamepadIndex);
+        int GetConnectedGamepadCount();
+        int GetFirstConnectedGamepad();
+
+        // === 핫플러그 지원 ===
+        void SetGamepadConnectionCallback(GamepadConnectionCallback callback);
+        bool WasGamepadJustConnected(int gamepadIndex);
+        bool WasGamepadJustDisconnected(int gamepadIndex);
+        void ClearGamepadConnectionEvents();
+
+    private:
+        IInputSystem* m_inputSystem = nullptr;
+        GamepadConnectionCallback m_connectionCallback;
+    };
 }
 
+// === 키보드/마우스 입력 매크로 ===
 #define INPUT_GET_KEY GOTOEngine::InputManager::Get()->GetKey
 #define INPUT_GET_KEYDOWN GOTOEngine::InputManager::Get()->GetKeyDown
 #define INPUT_GET_KEYUP GOTOEngine::InputManager::Get()->GetKeyUp
 #define INPUT_GET_MOUSEPOS GOTOEngine::InputManager::Get()->GetMousePos
+
+// === 게임패드 입력 매크로 ===
+#define INPUT_GET_GAMEPAD_BUTTON(index, button) GOTOEngine::InputManager::Get()->GetGamepadButton(index, button)
+#define INPUT_GET_GAMEPAD_BUTTONDOWN(index, button) GOTOEngine::InputManager::Get()->GetGamepadButtonDown(index, button)
+#define INPUT_GET_GAMEPAD_BUTTONUP(index, button) GOTOEngine::InputManager::Get()->GetGamepadButtonUp(index, button)
+#define INPUT_GET_GAMEPAD_AXIS(index, axis) GOTOEngine::InputManager::Get()->GetGamepadAxis(index, axis)
+#define INPUT_GAMEPAD_IS_CONNECTED(index) GOTOEngine::InputManager::Get()->IsGamepadConnected(index)
+#define INPUT_GET_LEFTSTICK(index) GOTOEngine::InputManager::Get()->GetLeftStick(index)
+#define INPUT_GET_RIGHTSTICK(index) GOTOEngine::InputManager::Get()->GetRightStick(index)
+#define INPUT_GET_LEFTTRIGGER(index) GOTOEngine::InputManager::Get()->GetLeftTrigger(index)
+#define INPUT_GET_RIGHTTRIGGER(index) GOTOEngine::InputManager::Get()->GetRightTrigger(index)
+
+// === 핫플러그 매크로 ===
+#define INPUT_GAMEPAD_JUST_CONNECTED(index) GOTOEngine::InputManager::Get()->WasGamepadJustConnected(index)
+#define INPUT_GAMEPAD_JUST_DISCONNECTED(index) GOTOEngine::InputManager::Get()->WasGamepadJustDisconnected(index)
