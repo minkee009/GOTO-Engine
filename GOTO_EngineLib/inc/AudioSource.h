@@ -58,12 +58,12 @@ namespace GOTOEngine
 		void ApplySettings();
 
 	protected:
-		AudioSource();
 		~AudioSource();
 
 	public:
 		void SetClip(AudioClip* clip);
 		AudioClip* GetClip() const { return m_clip; } // 참조 카운트 명시적으로 설정하기
+		AudioSource();
 
 		void Play();
 		void Stop();

@@ -4,6 +4,7 @@
 #include "IWindow.h"
 #include "TimeManager.h"
 #include "IRenderAPI.h"
+#include "AudioListener.h"
 
 GOTOEngine::Camera* GOTOEngine::Camera::s_mainCam = nullptr;
 
@@ -105,9 +106,22 @@ GOTOEngine::GameObject* GOTOEngine::Camera::CreateMainCamera()
 	auto cameraGO = new GameObject(L"MainCamera");
 	cameraGO->SetTag("MainCamera");
 	auto cam = cameraGO->AddComponent<Camera>();
+	cameraGO->AddComponent<AudioListener>();
 
 	if (!s_mainCam)
 		s_mainCam = cam;
+
+	return cameraGO;
+}
+
+GOTOEngine::GameObject* GOTOEngine::Camera::CreateSubCamera()
+{
+	//카메라 오브젝트를 생성할 씬이 없음
+	if (!SceneManager::Get()->GetCurrentScene())
+		return nullptr;
+
+	auto cameraGO = new GameObject(L"SubCamera");
+	auto cam = cameraGO->AddComponent<Camera>();
 
 	return cameraGO;
 }

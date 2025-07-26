@@ -15,10 +15,10 @@ namespace GOTOEngine
 		void OnDestroy();
 
 	protected:
-		AudioListener();
 		~AudioListener();
 
 	public:
+		AudioListener();
 		void UpdateListenerPosition();
 
 		static AudioListener* GetMain();

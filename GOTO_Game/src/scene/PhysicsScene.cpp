@@ -4,6 +4,8 @@
 #include "RigidBody2D.h"
 
 #include <Animator.h>
+#include <AudioClip.h>
+#include <AudioSource.h>
 #include "PlayerController.h"
 #include "PlayerFSMController.h"
 #include "TimeManager.h"
@@ -55,4 +57,9 @@ void PhysicsScene::Initialize()
 	player->AddComponent<PlayerFSMController>();
 
 	player->GetTransform()->SetLocalScale({ 10.0f,10.0f });
+
+	auto audioSource = player->AddComponent<AudioSource>();
+	audioSource->SetPlayOnAwake(true);
+
+	audioSource->SetClip(Resource::Load<AudioClip>(L"../Resources/boss3.mp3"));
 }

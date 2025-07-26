@@ -45,7 +45,7 @@
     <ClCompile Include="src\scene\SampleScene.cpp">
       <Filter>소스 파일\씬</Filter>
     </ClCompile>
-    <ClCompile Include="src\PhysicsScene.cpp">
+    <ClCompile Include="src\scene\PhysicsScene.cpp">
       <Filter>소스 파일\씬</Filter>
     </ClCompile>
   </ItemGroup>
@@ -89,7 +89,7 @@
     <ClInclude Include="inc\scene\AnimationScene.h">
       <Filter>헤더 파일\씬</Filter>
     </ClInclude>
-    <ClInclude Include="inc\PhysicsScene.h">
+    <ClInclude Include="inc\scene\PhysicsScene.h">
       <Filter>헤더 파일\씬</Filter>
     </ClInclude>
     <ClInclude Include="inc\component\PlayerController.h">

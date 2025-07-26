@@ -104,7 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)GOTO_Game\inc\scene;$(SolutionDir)GOTO_Game\inc\component;$(SolutionDir)GOTO_EngineLib\inc;$(SolutionDir)GOTO_Game\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)GOTO_Game\inc\scene;$(SolutionDir)GOTO_Game\inc\component;$(SolutionDir)GOTO_EngineLib\inc;$(SolutionDir)GOTO_EngineLib\inc\miniaudio;$(SolutionDir)GOTO_EngineLib\inc\box2d-lite;$(SolutionDir)GOTO_Game\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
     </ClCompile>
@@ -125,7 +125,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)GOTO_Game\inc\scene;$(SolutionDir)GOTO_Game\inc\component;$(SolutionDir)GOTO_EngineLib\inc;$(SolutionDir)GOTO_Game\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)GOTO_Game\inc\scene;$(SolutionDir)GOTO_Game\inc\component;$(SolutionDir)GOTO_EngineLib\inc;$(SolutionDir)GOTO_EngineLib\inc\miniaudio;$(SolutionDir)GOTO_EngineLib\inc\box2d-lite;$(SolutionDir)GOTO_Game\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -146,7 +146,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\PhysicsScene.cpp" />
+    <ClCompile Include="src\scene\PhysicsScene.cpp" />
     <ClCompile Include="src\scene\AnimationScene.cpp" />
     <ClCompile Include="src\component\MonsterAttack.cpp" />
     <ClCompile Include="src\component\PlayerHealth.cpp" />
@@ -167,7 +167,7 @@
     <ClInclude Include="inc\component\TestComponent.h" />
     <ClInclude Include="inc\component\PlayerGUI.h" />
     <ClInclude Include="inc\component\PlayerFSMController.h" />
-    <ClInclude Include="inc\PhysicsScene.h" />
+    <ClInclude Include="inc\scene\PhysicsScene.h" />
     <ClInclude Include="inc\scene\AnimationScene.h" />
     <ClInclude Include="inc\scene\TitleScene.h" />
     <ClInclude Include="inc\scene\SampleScene.h" />

@@ -28,7 +28,8 @@ using namespace GOTOEngine;
 void TitleScene::Initialize()
 {
     //---엔진 옵션 변경
-    //TimeManager::Get()->SetFixedDeltaTime(0.05f);
+    TimeManager::Get()->SetFixedDeltaTime(0.05f);
+    //TimeManager::Get()->SetTimeScale(0.5f);
 
     //---오브젝트 초기화
     auto mushmom_GO = new GameObject(L"머쉬맘");
@@ -36,7 +37,7 @@ void TitleScene::Initialize()
     auto swallow_GO = new GameObject(L"파란달팽이");
     auto backGround_GO = new GameObject(L"BG");
     auto camera_GO = Camera::CreateMainCamera();
-    auto camera2_GO = Camera::CreateMainCamera();
+    auto camera2_GO = Camera::CreateSubCamera();
     auto guiDraw_Go = new GameObject(L"GUI");
 
     //---트랜스 폼 설정

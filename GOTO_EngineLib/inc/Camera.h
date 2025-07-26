@@ -58,5 +58,6 @@ namespace GOTOEngine
 
 		static Camera* GetMainCamera();
 		static GameObject* CreateMainCamera();
+		static GameObject* CreateSubCamera();
 	};
 }
