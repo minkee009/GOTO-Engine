@@ -25,16 +25,16 @@ namespace GOTOEngine
 		AnimatorController* GetAnimatorController() { return m_controller; } //참조 카운트 꼭 하기
 		void SetAnimatorController(AnimatorController* controller);
 
-		RuntimeAnimatorController* GetRuntimeAnimatorController() { return m_runtimeController; }
+		const RuntimeAnimatorController* GetRuntimeAnimatorController() const { return m_runtimeController; }
 
 		void Play(std::wstring stateName);
 
 		const std::wstring& GetCurrentStateName() const { return m_runtimeController->GetCurrentStateName(); }
 
-		bool GetTrigger(std::wstring name) { if (IsValidObject(m_runtimeController) && !m_runtimeController->IsDestroyed()) return m_runtimeController->GetTrigger(name); return false; }
-		bool GetBool(std::wstring name) { if (IsValidObject(m_runtimeController) && !m_runtimeController->IsDestroyed()) return m_runtimeController->GetBool(name); return false; }
-		int GetInt(std::wstring name) { if (IsValidObject(m_runtimeController) && !m_runtimeController->IsDestroyed()) return m_runtimeController->GetInt(name); return 0; }
-		float GetFloat(std::wstring name) { if (IsValidObject(m_runtimeController) && !m_runtimeController->IsDestroyed()) return m_runtimeController->GetFloat(name); return 0.0f; }
+		bool GetTrigger(std::wstring name) const { if (IsValidObject(m_runtimeController) && !m_runtimeController->IsDestroyed()) return m_runtimeController->GetTrigger(name); return false; }
+		bool GetBool(std::wstring name) const { if (IsValidObject(m_runtimeController) && !m_runtimeController->IsDestroyed()) return m_runtimeController->GetBool(name); return false; }
+		int GetInt(std::wstring name) const { if (IsValidObject(m_runtimeController) && !m_runtimeController->IsDestroyed()) return m_runtimeController->GetInt(name); return 0; }
+		float GetFloat(std::wstring name) const { if (IsValidObject(m_runtimeController) && !m_runtimeController->IsDestroyed()) return m_runtimeController->GetFloat(name); return 0.0f; }
 
 		void SetTrigger(std::wstring name) { if (IsValidObject(m_runtimeController) && !m_runtimeController->IsDestroyed()) m_runtimeController->SetTrigger(name); }
 		void ResetTrigger(std::wstring name) { if (IsValidObject(m_runtimeController) && !m_runtimeController->IsDestroyed()) m_runtimeController->ResetTrigger(name); }

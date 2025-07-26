@@ -37,18 +37,18 @@ namespace GOTOEngine
 
 			if (INPUT_GAMEPAD_IS_CONNECTED(0))
 			{
-				hInput = INPUT_GET_GAMEPAD_AXIS(0, GamepadAxis::LeftStickX);
-				vInput = INPUT_GET_GAMEPAD_AXIS(0, GamepadAxis::LeftStickY);
+				hInput += INPUT_GET_GAMEPAD_AXIS(0, GamepadAxis::LeftStickX);
+				vInput += INPUT_GET_GAMEPAD_AXIS(0, GamepadAxis::LeftStickY);
 			}
 
-			auto moveInput = Vector2{ hInput, vInput };
+			auto moveInput = Vector2::ClampMagnitude(Vector2{ hInput, vInput }, 1.0f);
 
 			if (hInput || vInput)
 				m_animator->SetBool(L"Move", true);
 			else
 				m_animator->SetBool(L"Move", false);
 
-			bool attack = INPUT_GET_KEYDOWN(KeyCode::Space);
+			bool attack = INPUT_GET_KEYDOWN(KeyCode::Space) || INPUT_GET_GAMEPAD_BUTTONDOWN(0, GamepadButton::ButtonSouth);
 
 			if (attack)
 				m_animator->SetTrigger(L"Attack");
@@ -59,10 +59,10 @@ namespace GOTOEngine
 					m_renderer->SetFlipX(hInput != 0 ? (hInput < 0) : m_renderer->GetFlipX());
 
 
-				GetTransform()->SetPosition(GetTransform()->GetPosition() + (moveInput.Normalized() * Vector2::ClampMagnitude(moveInput,1.0f).Magnitude() * moveSpeed * TIME_GET_DELTATIME()));
+				GetTransform()->SetPosition(GetTransform()->GetPosition() + (moveInput.Normalized() * moveInput.Magnitude() * moveSpeed * TIME_GET_DELTATIME()));
 			}
 
-			if (INPUT_GET_KEYDOWN(KeyCode::T))
+			if (INPUT_GET_KEYDOWN(KeyCode::T) || INPUT_GET_GAMEPAD_BUTTONDOWN(0,GamepadButton::ButtonNorth))
 			{
 				m_timeSlower = !m_timeSlower;
 				TimeManager::Get()->SetTimeScale(m_timeSlower ? 0.25f : 1.0f);

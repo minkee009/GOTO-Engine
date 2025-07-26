@@ -7,6 +7,7 @@
 #include "ResourceManager.h"
 #include "BehaviourManager.h"
 #include "PhysicsManager.h"
+#include "AudioManager.h"
 #ifdef _OS_WINDOWS
 #include "WICHelper.h"
 #include "DWriteHelper.h"
@@ -50,7 +51,9 @@ bool Engine::Initialize(int width, int height, const wchar_t* title)
 	PhysicsManager::Get()->StartUp();
 	SceneManager::Get()->StartUp();
     RenderManager::Get()->StartUp(static_cast<IWindow*>(m_window));
+	AudioManager::Get()->StartUp();
 	ResourceManager::Get()->StartUp();
+	BehaviourManager::Get()->StartUp();
 	ObjectDestructionManager::Get()->StartUp();
 
 	//헬퍼 초기화
@@ -124,6 +127,7 @@ void Engine::ProcessFrame()
 
 	//업데이트
 	BehaviourManager::Get()->BroadCastBehaviourMessage("Update");
+	AudioManager::Get()->Update();
 	BehaviourManager::Get()->BroadCastBehaviourMessage("LateUpdate");
 
 	BehaviourManager::Get()->BroadCastBehaviourMessage("OnAnimationUpdate");
@@ -160,6 +164,7 @@ void Engine::Shutdown()
 
 	BehaviourManager::Get()->ShutDown();
 	ResourceManager::Get()->ShutDown();
+	AudioManager::Get()->ShutDown();
 	PhysicsManager::Get()->ShutDown();
 	ObjectDestructionManager::Get()->ShutDown();
 

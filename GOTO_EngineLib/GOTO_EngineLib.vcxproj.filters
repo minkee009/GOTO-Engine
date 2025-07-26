@@ -58,6 +58,12 @@
     <Filter Include="헤더 파일\Box2D">
       <UniqueIdentifier>{db2dffea-506e-458f-b62c-9bd35dca09eb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="헤더 파일\miniaudio">
+      <UniqueIdentifier>{7c21825b-6077-476e-b9ec-0db666d780e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\miniaudio">
+      <UniqueIdentifier>{1a9b3b47-728a-42e1-9ac0-1c1222e6a642}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\Delegate.h">
@@ -267,6 +273,21 @@
     <ClInclude Include="inc\XInputGamepadDevice.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="inc\AudioManager.h">
+      <Filter>헤더 파일\매니저</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\AudioClip.h">
+      <Filter>헤더 파일\리소스</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\AudioSource.h">
+      <Filter>헤더 파일\코어 컴포넌트</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\AudioListener.h">
+      <Filter>헤더 파일\코어 컴포넌트</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\miniaudio\miniaudio.h">
+      <Filter>헤더 파일\miniaudio</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\InputManager.cpp">
@@ -406,6 +427,21 @@
     </ClCompile>
     <ClCompile Include="src\XInputGamepadDevice.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AudioManager.cpp">
+      <Filter>소스 파일\매니저</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AudioClip.cpp">
+      <Filter>소스 파일\리소스</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AudioSource.cpp">
+      <Filter>소스 파일\코어 컴포넌트</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AudioListener.cpp">
+      <Filter>소스 파일\코어 컴포넌트</Filter>
+    </ClCompile>
+    <ClCompile Include="src\miniaudio\miniaudio.c">
+      <Filter>소스 파일\miniaudio</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
