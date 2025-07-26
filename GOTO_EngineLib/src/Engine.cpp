@@ -164,15 +164,16 @@ void Engine::Shutdown()
 
 	BehaviourManager::Get()->ShutDown();
 	ResourceManager::Get()->ShutDown();
-	AudioManager::Get()->ShutDown();
 	PhysicsManager::Get()->ShutDown();
 	ObjectDestructionManager::Get()->ShutDown();
-
 	RenderManager::Get()->ShutDown();
 #ifdef _OS_WINDOWS
 	WICHelper::ShutDown();
 	DWriteHelper::ShutDown();
 #endif
+
+	//오디오 스레드 종료
+	AudioManager::Get()->ShutDown();
 
 	if (m_window)
 	{

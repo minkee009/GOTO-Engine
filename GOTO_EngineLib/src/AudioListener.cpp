@@ -48,7 +48,7 @@ void AudioListener::OnDisable()
 
 void AudioListener::OnDestroy()
 {
-	OnDisable();
+
 }
 
 void AudioListener::UpdateListenerPosition()

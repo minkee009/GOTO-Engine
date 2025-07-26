@@ -77,7 +77,6 @@ void AudioSource::OnDisable()
 
 void AudioSource::OnDestroy()
 {
-	OnDisable();
 	CleanupSound();
 
 	// 소멸 시 레퍼런스 카운트 감소
