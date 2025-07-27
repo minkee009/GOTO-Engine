@@ -261,12 +261,6 @@
     <ClInclude Include="inc\Collider2D.h">
       <Filter>헤더 파일\코어 컴포넌트</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\Downloads\libgamepad-1.1\include\gamepad\config.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Downloads\libgamepad-1.1\include\gamepad\device.hpp">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="inc\IGamepadDevice.h">
       <Filter>헤더 파일\인터페이스</Filter>
     </ClInclude>

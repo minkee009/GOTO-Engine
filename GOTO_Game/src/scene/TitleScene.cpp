@@ -28,7 +28,7 @@ using namespace GOTOEngine;
 void TitleScene::Initialize()
 {
     //---엔진 옵션 변경
-    TimeManager::Get()->SetFixedDeltaTime(0.05f);
+    //TimeManager::Get()->SetFixedDeltaTime(0.05f);
     //TimeManager::Get()->SetTimeScale(0.5f);
 
     //---오브젝트 초기화

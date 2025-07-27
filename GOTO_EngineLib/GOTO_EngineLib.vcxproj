@@ -141,8 +141,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\Downloads\libgamepad-1.1\include\gamepad\config.h" />
-    <ClInclude Include="..\..\..\..\Downloads\libgamepad-1.1\include\gamepad\device.hpp" />
     <ClInclude Include="inc\AnimationClip.h" />
     <ClInclude Include="inc\Animator.h" />
     <ClInclude Include="inc\AudioClip.h" />
