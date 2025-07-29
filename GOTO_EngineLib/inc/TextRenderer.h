@@ -59,5 +59,6 @@ namespace GOTOEngine
 		void Dispose() override { if (IsValidObject(m_font) && !m_font->IsDestroyed()) { m_font->DecreaseRefCount(); m_font = nullptr; } }
 		Font* GetFont() const { return m_font; }
 		void SetFont(Font* font);
+		void SetFont(std::wstring filePath);
 	};
 }

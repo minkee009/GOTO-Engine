@@ -12,29 +12,27 @@ namespace GOTOEngine
 		friend class PhysicsManager;
 		friend class PhysicsManager::Body2DWrapper;
 		PhysicsManager::Body2DWrapper* m_wrapperBody;
-		Vector2 m_size;
 
 		PhysicsManager::Body2DWrapper* GetWrapperBody() { return m_wrapperBody; };
 		
-
 		~Collider2D();
+
+		void AdditionalInitialize() override;
 	public:
 		Collider2D();
-
 
 		Vector2 GetSize() 
 		{ 
 			 if(GetWrapperBody() && GetWrapperBody()->m_pBody )
 				 return  { GetWrapperBody()->m_pBody->width.x,m_wrapperBody->m_pBody->width.y};
 
-			 return m_size;
+			 return { 0,0 };
 		}
+
 		void SetSize(const Vector2& size) 
 		{ 
 			if (GetWrapperBody() && GetWrapperBody()->m_pBody)
 				GetWrapperBody()->m_pBody->width = { size.x, size.y };
-			else
-				m_size = size;
 		}
 	};
 }

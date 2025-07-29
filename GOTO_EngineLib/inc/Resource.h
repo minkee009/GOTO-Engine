@@ -17,8 +17,9 @@ namespace GOTOEngine
 		size_t m_refCount;
 		std::wstring m_filePath;
 		Resource() : m_refCount(0), m_filePath(L"") { ResourceManager::Get()->RegisterResource(this); }
-	    ~Resource() 
-		{ 
+	    
+		void Dispose() override 
+		{
 			auto& resourceTable = ResourceManager::Get()->m_resourceTable;
 			auto resourceTypeInfo = resourceTable.find(typeid(*this));
 			if (resourceTypeInfo != resourceTable.end())
@@ -30,12 +31,13 @@ namespace GOTOEngine
 					resourceTypeTable.erase(resource);
 				}
 			}
-			ResourceManager::Get()->UnRegisterResource(this); 
+			ResourceManager::Get()->UnRegisterResource(this);
 #ifdef _DEBUG
 			auto runtimePath = m_filePath == L"" ? ("Runtime Instance - ID : " + std::to_string(GetInstanceID())) : "";
 			std::cout << "resource unloaded - " << this << " : " << runtimePath.c_str() << WStringHelper::wstring_to_string(m_filePath).c_str() << std::endl;
 #endif
 		}
+
 	public:
 		std::wstring GetFilePath() { return m_filePath; }
 

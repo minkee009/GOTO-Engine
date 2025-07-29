@@ -13,9 +13,7 @@ namespace GOTOEngine
 		PhysicsManager::Body2DWrapper* m_wrapperBody;
 		PhysicsManager::Body2DWrapper* GetWrapperBody() { return m_wrapperBody; };
 
-		Vector2 m_position;
-		float m_rotation;
-		float m_mass;
+		void AdditionalInitialize() override;
 
 		~RigidBody2D();
 	public:

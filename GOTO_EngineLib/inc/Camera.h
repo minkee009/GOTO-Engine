@@ -43,6 +43,7 @@ namespace GOTOEngine
 		void SetBackGroundColor(const Color& value) { m_backGroundColor = value; }
 
 		size_t GetRenderLayer() { return m_renderLayer; }
+		void SetRenderLayer(size_t layer) { m_renderLayer = layer; }
 
 		Matrix3x3 GetMatrix();
 

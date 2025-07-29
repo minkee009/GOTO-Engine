@@ -195,7 +195,32 @@ void GOTOEngine::D2DRenderAPI::DrawBitmap(const IRenderBitmap* bitmap, const Mat
 		break;
 	}
 
+	//// 1. Blur Effect 생성
+	//Microsoft::WRL::ComPtr<ID2D1Effect> blurEffect;
+	//m_d2dContext->CreateEffect(CLSID_D2D1GaussianBlur, &blurEffect);
+	//blurEffect->SetInput(0, d2dBitmap);
+	//blurEffect->SetValue(D2D1_GAUSSIANBLUR_PROP_STANDARD_DEVIATION, 3.0f);
+
+	//// 2. Optional: 색상 변경
+	//Microsoft::WRL::ComPtr<ID2D1Effect> colorEffect;
+	//m_d2dContext->CreateEffect(CLSID_D2D1ColorMatrix, &colorEffect);
+	//colorEffect->SetInputEffect(0, blurEffect.Get());
+
+	//D2D1_COLOR_F outlineColor = D2D1::ColorF(D2D1::ColorF::Black);
+	//D2D1_MATRIX_5X4_F colorMatrix = {
+	//	0, 0, 0, 0,  // R
+	//	0, 0, 0, 0,  // G
+	//	0, 0, 0, 0,  // B
+	//	0, 0, 0, 1,  // A
+	//	outlineColor.r, outlineColor.g, outlineColor.b, 0 // 색상 대체
+	//};
+	//colorEffect->SetValue(D2D1_COLORMATRIX_PROP_COLOR_MATRIX, colorMatrix);
+
+	
+
 	m_d2dContext->SetTransform(d2dTransform);
+	// 3. Draw: Blur된 외곽선 먼저
+	//m_d2dContext->DrawImage(colorEffect.Get());
 	m_d2dContext->DrawBitmap(
 		d2dBitmap,
 		&dstRect,

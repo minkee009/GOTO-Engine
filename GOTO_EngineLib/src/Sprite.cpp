@@ -24,6 +24,7 @@ GOTOEngine::Sprite::~Sprite()
 
 void GOTOEngine::Sprite::Dispose()
 {
+    Resource::Dispose();
     if (IsValidObject(m_texture) 
         && !m_texture->IsDestroyed())
     {

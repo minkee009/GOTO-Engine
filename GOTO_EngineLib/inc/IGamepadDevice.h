@@ -35,8 +35,8 @@ namespace GOTOEngine
         // 아날로그 축 입력 (스틱, 트리거)
         virtual float GetAxis(int axisIndex) const = 0;
         virtual float GetAxis(GamepadAxis axis) const = 0;
-        //virtual float GetAxisRaw(int axisIndex) const = 0;
-        //virtual float GetAxisRaw(GamepadAxis axis) const = 0;
+        virtual float GetAxisRaw(int axisIndex) const = 0;
+        virtual float GetAxisRaw(GamepadAxis axis) const = 0;
 
         // 편의 함수들
         virtual Vector2 GetLeftStick() const = 0;   // (X, Y)

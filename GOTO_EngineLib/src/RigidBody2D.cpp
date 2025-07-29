@@ -2,7 +2,12 @@
 #include "PhysicsManager.h"
 #include "box2d-lite/Body.h"
 
-GOTOEngine::RigidBody2D::RigidBody2D() : m_wrapperBody(nullptr), m_position({0,0}), m_rotation(0), m_mass(200.0f)
+GOTOEngine::RigidBody2D::RigidBody2D() : m_wrapperBody(nullptr)
+{
+	
+}
+
+void GOTOEngine::RigidBody2D::AdditionalInitialize()
 {
 	PhysicsManager::Get()->RegisterRigidBody2D(this);
 }
@@ -24,31 +29,27 @@ GOTOEngine::Vector2 GOTOEngine::RigidBody2D::GetPosition()
 		return Vector2{ m_wrapperBody->GetBody()->position.x,m_wrapperBody->GetBody()->position.y };
 
 	else
-		return m_position;
+		return { 0,0 };
 }
 
 void GOTOEngine::RigidBody2D::SetPosition(Vector2 pos)
 {
 	if (GetWrapperBody() && GetWrapperBody()->m_pBody)
 		m_wrapperBody->GetBody()->position = { pos.x, pos.y };
-	else
-		m_position = pos;
 }
 
 float GOTOEngine::RigidBody2D::GetRotation()
 {
 	if (GetWrapperBody() && GetWrapperBody()->m_pBody)
-		return m_wrapperBody->GetBody()->rotation;
+		return m_wrapperBody->GetBody()->rotation * Mathf::Rad2Deg;
 	else
-		return m_rotation;
+		return 0;
 }
 
 void GOTOEngine::RigidBody2D::SetRotation(float rot)
 {
 	if (GetWrapperBody() && GetWrapperBody()->m_pBody)
-		m_wrapperBody->GetBody()->rotation = rot;
-	else
-		m_rotation = rot;
+		m_wrapperBody->GetBody()->rotation = rot * Mathf::Deg2Rad;
 }
 
 float GOTOEngine::RigidBody2D::GetMass()
@@ -56,15 +57,24 @@ float GOTOEngine::RigidBody2D::GetMass()
 	if (GetWrapperBody() && GetWrapperBody()->m_pBody)
 		return m_wrapperBody->GetBody()->mass;
 	else
-		return m_mass;
+		return 0.0f;
 }
 
 void GOTOEngine::RigidBody2D::SetMass(float mass)
 {
 	if (GetWrapperBody() && GetWrapperBody()->m_pBody)
-		m_wrapperBody->GetBody()->mass = mass;
-	else
-		m_mass = mass;
+	{
+		if (mass != FLT_MAX)
+			m_wrapperBody->GetBody()->mass = mass;
+		else
+		{
+			auto body = m_wrapperBody->GetBody();
+			body->invMass = 0.0f;
+			body->I = FLT_MAX;
+			body->invI = 0.0f;
+		}
+	}
+		
 }
 
 

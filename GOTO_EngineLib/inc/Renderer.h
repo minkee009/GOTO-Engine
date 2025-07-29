@@ -27,6 +27,6 @@ namespace GOTOEngine
 		int GetRenderOrder();
 		void SetRenderOrder(int value);
 		size_t GetRenderLayer() { return m_renderLayer; }
-
+		void SetRenderLayer(size_t layer);
 	};
 }

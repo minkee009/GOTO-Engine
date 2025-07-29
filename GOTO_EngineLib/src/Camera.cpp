@@ -5,6 +5,8 @@
 #include "TimeManager.h"
 #include "IRenderAPI.h"
 #include "AudioListener.h"
+#include "Screen.h"
+#include "IWindow.h"
 
 GOTOEngine::Camera* GOTOEngine::Camera::s_mainCam = nullptr;
 
@@ -70,10 +72,18 @@ GOTOEngine::Matrix3x3 GOTOEngine::Camera::GetMatrix()
 		m_isMatrixDirty = false;
 	}
 
+
 	auto renderAPI = RenderManager::Get()->GetRenderAPI();
-	return Matrix3x3::Translate(renderAPI->GetWindow().GetWidth() * (m_rect.x + (m_rect.width * 0.5f)),
-		renderAPI->GetWindow().GetHeight() * (1.0f - m_rect.y - (m_rect.height * 0.5f)))
-		* Matrix3x3::Scale(1.0f, -1.0f) * m_cachedMatrix;
+
+	float windowWidth = static_cast<float>(renderAPI->GetWindow().GetWidth());
+	float windowHeight = static_cast<float>(renderAPI->GetWindow().GetHeight());
+
+	float xScale = windowWidth / Screen::GetWidth();
+	float yScale = windowHeight / Screen::GetHeight();
+
+	return Matrix3x3::Translate(windowWidth * (m_rect.x + (m_rect.width * 0.5f)),
+		windowHeight * (1.0f - m_rect.y - (m_rect.height * 0.5f)))
+		* Matrix3x3::Scale(1.0f * xScale, -1.0f * yScale) * m_cachedMatrix;
 }
 
 GOTOEngine::Camera* GOTOEngine::Camera::GetMainCamera()
@@ -175,20 +185,26 @@ GOTOEngine::Vector2 GOTOEngine::Camera::ScreenToViewportPoint(const Vector2& scr
 }
 GOTOEngine::Vector2 GOTOEngine::Camera::ScreenToWorldPoint(const Vector2& screenPoint)
 {
+	auto renderAPI = RenderManager::Get()->GetRenderAPI();
+
+	float windowWidth = static_cast<float>(renderAPI->GetWindow().GetWidth());
+	float windowHeight = static_cast<float>(renderAPI->GetWindow().GetHeight());
+
+	float xScale = windowWidth / Screen::GetWidth();
+	float yScale = windowHeight / Screen::GetHeight();
+
 	Transform* transform = GetGameObject()->GetTransform();
-	auto currentLossyScale = transform->GetLossyScale();
 
 	// 뷰 행렬 (World → Camera space) 구성
 	Matrix3x3 viewMatrix = transform->GetWorldMatrix().Inverse();
 
 	// 전체 스케일 적용 (m_size 포함)
-	float sx = currentLossyScale.x * m_size;
-	float sy = currentLossyScale.y * m_size;
+	float sx = xScale * m_size;
+	float sy = yScale * m_size;
 
 	// 카메라 중심이 차지하는 스크린 공간 위치 (픽셀 좌표)
-	auto renderAPI = RenderManager::Get()->GetRenderAPI();
-	float screenCenterX = renderAPI->GetWindow().GetWidth() * (m_rect.x + m_rect.width * 0.5f);
-	float screenCenterY = renderAPI->GetWindow().GetHeight() * (m_rect.y + m_rect.height * 0.5f);
+	float screenCenterX = windowWidth * (m_rect.x + m_rect.width * 0.5f);
+	float screenCenterY = windowHeight * (m_rect.y + m_rect.height * 0.5f);
 
 	// 최종 변환: 화면 좌표 → 월드 좌표
 	// step 1: 화면 기준점 보정
@@ -204,19 +220,22 @@ GOTOEngine::Vector2 GOTOEngine::Camera::ScreenToWorldPoint(const Vector2& screen
 
 GOTOEngine::Vector2 GOTOEngine::Camera::WorldToViewportPoint(const Vector2& worldPoint)
 {
+
 	Transform* transform = GetGameObject()->GetTransform();
-	auto currentLossyScale = transform->GetLossyScale();
+	auto renderAPI = RenderManager::Get()->GetRenderAPI();
+
+	float windowWidth = static_cast<float>(renderAPI->GetWindow().GetWidth());
+	float windowHeight = static_cast<float>(renderAPI->GetWindow().GetHeight());
+
+	float xScale = windowWidth / Screen::GetWidth();
+	float yScale = windowHeight / Screen::GetHeight();
 
 	Matrix3x3 viewMatrix = transform->GetWorldMatrix().Inverse();
 	GOTOEngine::Vector2 cameraSpacePoint = viewMatrix.MultiplyPoint(worldPoint);
 
-	float sx = currentLossyScale.x * m_size;
-	float sy = currentLossyScale.y * m_size;
+	float sx = xScale * m_size;
+	float sy = yScale * m_size;
 	GOTOEngine::Vector2 scaledCameraSpacePoint = Vector2(cameraSpacePoint.x * sx, cameraSpacePoint.y * sy);
-
-	auto renderAPI = RenderManager::Get()->GetRenderAPI();
-	float windowWidth = static_cast<float>(renderAPI->GetWindow().GetWidth());
-	float windowHeight = static_cast<float>(renderAPI->GetWindow().GetHeight());
 
 	float screenCenterX = windowWidth * (m_rect.x + m_rect.width * 0.5f);
 	float screenCenterY = windowHeight * (m_rect.y + m_rect.height * 0.5f);
@@ -260,7 +279,13 @@ GOTOEngine::Vector2 GOTOEngine::Camera::WorldToViewportPoint(const Vector2& worl
 GOTOEngine::Vector2 GOTOEngine::Camera::WorldToScreenPoint(const Vector2& worldPoint)
 {
 	Transform* transform = GetGameObject()->GetTransform();
-	auto currentLossyScale = transform->GetLossyScale();
+	auto renderAPI = RenderManager::Get()->GetRenderAPI();
+
+	float windowWidth = static_cast<float>(renderAPI->GetWindow().GetWidth());
+	float windowHeight = static_cast<float>(renderAPI->GetWindow().GetHeight());
+
+	float xScale = windowWidth / Screen::GetWidth();
+	float yScale = windowHeight / Screen::GetHeight();
 
 	// 1. 월드 포인트를 카메라 공간(Camera Local Space)으로 변환합니다.
 	// 이는 카메라의 월드 행렬의 역행렬을 곱하는 것과 같습니다.
@@ -269,15 +294,12 @@ GOTOEngine::Vector2 GOTOEngine::Camera::WorldToScreenPoint(const Vector2& worldP
 
 	// 2. 카메라의 스케일(m_size 및 lossyScale)을 적용하여 화면 공간 픽셀 스케일에 맞춥니다.
 	// ScreenToWorldPoint에서 나눗셈을 했으므로 여기서는 곱셈을 합니다.
-	float sx = currentLossyScale.x * m_size;
-	float sy = currentLossyScale.y * m_size;
+	float sx = xScale * m_size;
+	float sy = yScale * m_size;
 	GOTOEngine::Vector2 scaledCameraSpacePoint = Vector2(cameraSpacePoint.x * sx, cameraSpacePoint.y * sy);
 
 	// 3. 카메라 중심이 차지하는 스크린 공간 위치(픽셀 좌표)를 가져옵니다.
 	// 이 좌표는 GOTOEngine의 화면 좌표계 (좌측 하단 0,0 기준)를 따릅니다.
-	auto renderAPI = RenderManager::Get()->GetRenderAPI();
-	float windowWidth = static_cast<float>(renderAPI->GetWindow().GetWidth());
-	float windowHeight = static_cast<float>(renderAPI->GetWindow().GetHeight());
 
 	float screenCenterX = windowWidth * (m_rect.x + m_rect.width * 0.5f);
 	float screenCenterY = windowHeight * (m_rect.y + m_rect.height * 0.5f);
@@ -327,12 +349,15 @@ GOTOEngine::Vector2 GOTOEngine::Camera::ViewportToWorldPoint(const Vector2& view
 
 	// 2. ScreenToWorldPoint 로직을 역으로 적용하여 화면 픽셀 좌표를 월드 좌표로 변환합니다.
 	Transform* transform = GetGameObject()->GetTransform();
-	auto currentLossyScale = transform->GetLossyScale();
 
 	// 카메라 중심이 차지하는 스크린 공간 위치 (픽셀 좌표)
 	auto renderAPI = RenderManager::Get()->GetRenderAPI();
 	float windowWidth = static_cast<float>(renderAPI->GetWindow().GetWidth());
 	float windowHeight = static_cast<float>(renderAPI->GetWindow().GetHeight());
+
+
+	float xScale = windowWidth / Screen::GetWidth();
+	float yScale = windowHeight / Screen::GetHeight();
 
 	float screenCenterX = windowWidth * (m_rect.x + m_rect.width * 0.5f);
 	float screenCenterY = windowHeight * (m_rect.y + m_rect.height * 0.5f);
@@ -342,8 +367,8 @@ GOTOEngine::Vector2 GOTOEngine::Camera::ViewportToWorldPoint(const Vector2& view
 
 	// step 2: 스케일 역변환 (ScreenToWorldPoint에서 했던 그대로 나눗셈을 합니다)
 	// 0으로 나누는 것을 방지하기 위한 안전 장치 추가
-	float sx = currentLossyScale.x * m_size;
-	float sy = currentLossyScale.y * m_size;
+	float sx = xScale * m_size;
+	float sy = yScale * m_size;
 
 	if (sx != 0.0f) {
 		centeredScreenPoint.x /= sx;

@@ -10,6 +10,7 @@ namespace GOTOEngine
 	private:
 		friend class GameObject;
 		GameObject* m_gameObject;
+
 	protected:
 		Component() : m_gameObject(nullptr) {}
 		~Component() 
@@ -20,6 +21,8 @@ namespace GOTOEngine
 				m_gameObject = nullptr;
 			}
 		}
+
+		virtual void AdditionalInitialize() {};
 	public:
 		GameObject* GetGameObject() { return m_gameObject; }
 		Transform* GetTransform() { return m_gameObject->GetTransform(); }
@@ -33,6 +36,17 @@ namespace GOTOEngine
 				return GetGameObject()->GetComponent<T>();
 			}
 			return nullptr;
+		}
+
+		template <typename T>
+		std::vector<T*> GetComponents()
+		{
+			if (IsValidObject(GetGameObject())
+				&& !GetGameObject()->IsDestroyed())
+			{
+				return GetGameObject()->GetComponents<T>();
+			}
+			return {};
 		}
 
 		template <typename T>

@@ -9,10 +9,10 @@
 
 void GOTOEngine::SpriteRenderer::Render(Matrix3x3& matrix)
 {
-    auto renderAPI = GetRenderAPIFromManager();
-
     if (m_sprite && m_sprite->m_texture)
     {
+        auto renderAPI = GetRenderAPIFromManager();
+
         auto bitmap = m_sprite->m_texture->GetBitmap();
 
         auto spriteRect = m_sprite->GetRect();
@@ -59,6 +59,20 @@ void GOTOEngine::SpriteRenderer::SetSprite(Sprite* sprite)
 void GOTOEngine::SpriteRenderer::SetSprite(Sprite* sprite, Rect srcRect)
 {
     SetSprite(sprite);
+    if (m_sprite)
+    {
+        m_sprite->SetRect(srcRect);
+    }
+}
+
+void GOTOEngine::SpriteRenderer::SetSprite(const std::wstring filePath)
+{
+	SetSprite(Resource::Load<Sprite>(filePath));
+}
+
+void GOTOEngine::SpriteRenderer::SetSprite(const std::wstring filePath, Rect srcRect)
+{
+    SetSprite(Resource::Load<Sprite>(filePath));
     if (m_sprite)
     {
         m_sprite->SetRect(srcRect);

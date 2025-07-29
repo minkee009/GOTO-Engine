@@ -282,6 +282,27 @@
     <ClInclude Include="inc\miniaudio\miniaudio.h">
       <Filter>헤더 파일\miniaudio</Filter>
     </ClInclude>
+    <ClInclude Include="inc\Graphic.h">
+      <Filter>헤더 파일\코어 컴포넌트</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Canvas.h">
+      <Filter>헤더 파일\코어 컴포넌트</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Image.h">
+      <Filter>헤더 파일\코어 컴포넌트</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\RectTransform.h">
+      <Filter>헤더 파일\코어 컴포넌트</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Screen.h">
+      <Filter>헤더 파일\코어 컴포넌트</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Text.h">
+      <Filter>헤더 파일\코어 컴포넌트</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\UIBehaviour.h">
+      <Filter>헤더 파일\코어 컴포넌트</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\InputManager.cpp">
@@ -436,6 +457,24 @@
     </ClCompile>
     <ClCompile Include="src\miniaudio\miniaudio.c">
       <Filter>소스 파일\miniaudio</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Canvas.cpp">
+      <Filter>소스 파일\코어 컴포넌트</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphic.cpp">
+      <Filter>소스 파일\코어 컴포넌트</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Image.cpp">
+      <Filter>소스 파일\코어 컴포넌트</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RectTransform.cpp">
+      <Filter>소스 파일\코어 컴포넌트</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Text.cpp">
+      <Filter>소스 파일\코어 컴포넌트</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UIBehaviour.cpp">
+      <Filter>소스 파일\코어 컴포넌트</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

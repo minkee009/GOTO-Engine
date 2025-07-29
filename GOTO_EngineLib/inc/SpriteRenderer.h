@@ -39,6 +39,9 @@ namespace GOTOEngine
 		void SetSprite(Sprite* sprite);
 		void SetSprite(Sprite* sprite, Rect srcRect);
 
+		void SetSprite(const std::wstring filePath);
+		void SetSprite(const std::wstring filePath, Rect srcRect);
+
 		bool GetFlipX() const { return m_flipX; }
 		bool GetFlipY() const { return m_flipY; }
 		void SetFlipX(bool value) { m_flipX = value; }

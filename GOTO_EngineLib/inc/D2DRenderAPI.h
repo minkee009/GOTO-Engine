@@ -20,6 +20,9 @@
 #include "IWindow.h"
 #include "Matrix3x3.h"
 
+#include <d2d1effects.h>     
+#pragma comment(lib, "dxguid.lib")
+
 using namespace Microsoft::WRL;
 
 namespace GOTOEngine

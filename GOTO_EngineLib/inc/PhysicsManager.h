@@ -93,11 +93,6 @@ namespace GOTOEngine
 
 		void CheckAtiveBodyWrapper();
 
-		void MakeAndRegisterBodyWrapper2D();
-
-		std::vector<Collider2D*> m_createdCollider2D;
-		std::vector<RigidBody2D*> m_createdRigidBody2D;
-
 		std::unordered_map<GameObject*, Body2DWrapper*> m_currentBody2Ds;
 
 		std::vector<Body*> m_AddPendingBody;
@@ -125,8 +120,6 @@ namespace GOTOEngine
 
 		void Simulate(float deltaTime)
 		{
-			MakeAndRegisterBodyWrapper2D();
-
 			RefreshBodyFromPhysicsWorld2D();
 
 			if (m_physicsWorld2D)

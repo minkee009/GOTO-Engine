@@ -198,6 +198,40 @@ namespace GOTOEngine
         }
     }
 
+    float XInputGamepadDevice::GetAxisRaw(int axisIndex) const
+    {
+        if (!m_isConnected || axisIndex < 0 || axisIndex >= static_cast<int>(GamepadAxis::Count))
+            return 0.0f;
+
+		return GetAxisRaw(static_cast<GamepadAxis>(axisIndex));
+    }
+
+    float XInputGamepadDevice::GetAxisRaw(GamepadAxis axis) const
+    {
+        if (!m_isConnected)
+            return 0.0f;
+
+        const XINPUT_GAMEPAD& gamepad = m_currentState.Gamepad;
+
+        switch (axis)
+        {
+        case GamepadAxis::LeftStickX:
+            return static_cast<float>(gamepad.sThumbLX) / 32767.0f;//std::abs(gamepad.sThumbLX) < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ? 0.0f : static_cast<float>(gamepad.sThumbLX) / 32767.0f;
+        case GamepadAxis::LeftStickY:
+            return static_cast<float>(gamepad.sThumbLY) / 32767.0f;// std::abs(gamepad.sThumbLY) < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ? 0.0f : static_cast<float>(gamepad.sThumbLY) / 32767.0f;
+        case GamepadAxis::RightStickX:
+            return gamepad.sThumbRX;
+        case GamepadAxis::RightStickY:
+            return gamepad.sThumbRY;
+        case GamepadAxis::LeftTrigger:
+            return gamepad.bLeftTrigger;
+        case GamepadAxis::RightTrigger:
+            return gamepad.bRightTrigger;
+        default:
+            return 0.0f;
+        }
+    }
+
     Vector2 XInputGamepadDevice::GetLeftStick() const
     {
         return Vector2{
@@ -236,6 +270,10 @@ namespace GOTOEngine
         case GamepadButton::ButtonR1:     return XINPUT_GAMEPAD_RIGHT_SHOULDER;
         case GamepadButton::ButtonStart:  return XINPUT_GAMEPAD_START;
         case GamepadButton::ButtonSelect: return XINPUT_GAMEPAD_BACK;
+        case GamepadButton::DPadUp:       return XINPUT_GAMEPAD_DPAD_UP;
+        case GamepadButton::DPadDown:     return XINPUT_GAMEPAD_DPAD_DOWN;
+        case GamepadButton::DPadLeft:     return XINPUT_GAMEPAD_DPAD_LEFT;
+        case GamepadButton::DPadRight:    return XINPUT_GAMEPAD_DPAD_RIGHT;
         default: return 0;
         }
     }
@@ -271,5 +309,29 @@ namespace GOTOEngine
             return 0.0f;
 
         return static_cast<float>(value - deadzone) / (255.0f - deadzone);
+    }
+
+    float XInputGamepadDevice::GetDPadX(const XINPUT_GAMEPAD& gamepad) const
+    {
+        float value = 0.0f;
+
+        if (gamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT)
+            value -= 1.0f;
+        if (gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT)
+            value += 1.0f;
+
+        return value;
+    }
+
+    float XInputGamepadDevice::GetDPadY(const XINPUT_GAMEPAD& gamepad) const
+    {
+        float value = 0.0f;
+
+        if (gamepad.wButtons & XINPUT_GAMEPAD_DPAD_DOWN)
+            value -= 1.0f;
+        if (gamepad.wButtons & XINPUT_GAMEPAD_DPAD_UP)
+            value += 1.0f;
+
+        return value;
     }
 }

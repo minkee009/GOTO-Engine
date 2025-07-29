@@ -51,6 +51,10 @@ bool Engine::Initialize(int width, int height, const wchar_t* title)
 	PhysicsManager::Get()->StartUp();
 	SceneManager::Get()->StartUp();
     RenderManager::Get()->StartUp(static_cast<IWindow*>(m_window));
+
+	RenderManager::Get()->SetTargetWidth(static_cast<float>(width));
+	RenderManager::Get()->SetTargetHeight(static_cast<float>(height));
+
 	AudioManager::Get()->StartUp();
 	ResourceManager::Get()->StartUp();
 	BehaviourManager::Get()->StartUp();

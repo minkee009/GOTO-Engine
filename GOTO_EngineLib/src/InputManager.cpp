@@ -106,7 +106,19 @@ float InputManager::GetGamepadAxis(int gamepadIndex, GamepadAxis axis)
 
     IGamepadDevice* pad = m_inputSystem->GetGamepad(gamepadIndex);
     if (pad && pad->IsConnected())
-        return pad->GetAxis(static_cast<int>(axis));
+        return pad->GetAxis(axis);
+
+    return 0.0f;
+}
+
+float InputManager::GetGamepadAxisRaw(int gamepadIndex, GamepadAxis axis)
+{
+    if (!m_inputSystem || gamepadIndex < 0 || gamepadIndex >= MAX_GAMEPADS)
+        return 0.0f;
+
+    IGamepadDevice* pad = m_inputSystem->GetGamepad(gamepadIndex);
+    if (pad && pad->IsConnected())
+        return pad->GetAxisRaw(axis);
 
     return 0.0f;
 }
@@ -155,6 +167,47 @@ float InputManager::GetRightTrigger(int gamepadIndex)
     IGamepadDevice* pad = m_inputSystem->GetGamepad(gamepadIndex);
     if (pad && pad->IsConnected())
         return pad->GetRightTrigger();
+
+    return 0.0f;
+}
+
+Vector2 InputManager::GetDPad(int gamepadIndex)
+{
+    if (!m_inputSystem || gamepadIndex < 0 || gamepadIndex >= MAX_GAMEPADS)
+        return Vector2::Zero();
+
+    IGamepadDevice* pad = m_inputSystem->GetGamepad(gamepadIndex);
+    if (pad && pad->IsConnected())
+    {
+        return Vector2{
+            pad->GetAxis(GamepadAxis::DPadX),
+            pad->GetAxis(GamepadAxis::DPadY)
+        };
+    }
+
+    return Vector2::Zero();
+}
+
+float InputManager::GetDPadX(int gamepadIndex)
+{
+    if (!m_inputSystem || gamepadIndex < 0 || gamepadIndex >= MAX_GAMEPADS)
+        return 0.0f;
+
+    IGamepadDevice* pad = m_inputSystem->GetGamepad(gamepadIndex);
+    if (pad && pad->IsConnected())
+        return pad->GetAxis(GamepadAxis::DPadX);
+
+    return 0.0f;
+}
+
+float InputManager::GetDPadY(int gamepadIndex)
+{
+    if (!m_inputSystem || gamepadIndex < 0 || gamepadIndex >= MAX_GAMEPADS)
+        return 0.0f;
+
+    IGamepadDevice* pad = m_inputSystem->GetGamepad(gamepadIndex);
+    if (pad && pad->IsConnected())
+        return pad->GetAxis(GamepadAxis::DPadY);
 
     return 0.0f;
 }

@@ -3,13 +3,12 @@
 #include "Component.h"
 #include "Matrix3x3.h"
 #include "Mathf.h"
-#include <cmath>
 
 namespace GOTOEngine
 {
 	class Transform : public Component
 	{
-	private:
+	protected:
 		friend class GameObject;
 
 		Vector2 m_localPosition;
@@ -49,7 +48,7 @@ namespace GOTOEngine
 
 		// 자식 그래프
 		void SetParent(Transform* parent);
-		void SetParent(Transform* parent, bool worldPositionStays);
+		virtual void SetParent(Transform* parent, bool worldPositionStays);
 		Transform* GetParent() const { return m_parent; }
 		Transform* GetChild(size_t idx);
 		size_t GetChildCount() const { return m_childs.size(); }
@@ -57,7 +56,7 @@ namespace GOTOEngine
 		Transform* GetRoot();
 		void DetachChildren();
 
-		void SetSiblingIndex(size_t idx);
+		virtual void SetSiblingIndex(size_t idx);
 		size_t GetSiblingIndex() const;
 
 		// 월드 공간 변환

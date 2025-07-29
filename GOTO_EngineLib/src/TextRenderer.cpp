@@ -36,3 +36,8 @@ void GOTOEngine::TextRenderer::SetFont(Font* font)
     }
     m_font = font;
 }
+
+void GOTOEngine::TextRenderer::SetFont(std::wstring filePath)
+{
+	SetFont(Resource::Load<Font>(filePath)); // Resource::Load를 통해 Font 객체를 로드하고 참조 카운트를 관리합니다.
+}

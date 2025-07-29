@@ -40,3 +40,8 @@ void GOTOEngine::Renderer::SetRenderOrder(int value)
 {
 	m_renderOrder = value;
 }
+
+void GOTOEngine::Renderer::SetRenderLayer(size_t layer)
+{
+	m_renderLayer = layer;
+}
