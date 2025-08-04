@@ -299,3 +299,36 @@ void InputManager::ClearGamepadConnectionEvents()
         }
     }
 }
+
+void GOTOEngine::InputManager::SetGamepadVibration(int gamepadIndex, float leftMotor, float rightMotor)
+{
+    if (!m_inputSystem || gamepadIndex < 0 || gamepadIndex >= MAX_GAMEPADS)
+        return;
+    IGamepadDevice* pad = m_inputSystem->GetGamepad(gamepadIndex);
+    if (pad && pad->IsConnected())
+    {
+        pad->SetVibration(leftMotor, rightMotor);
+    }
+}
+
+void GOTOEngine::InputManager::StopGamepadVibration(int gamepadIndex)
+{
+    if (!m_inputSystem || gamepadIndex < 0 || gamepadIndex >= MAX_GAMEPADS)
+        return;
+    IGamepadDevice* pad = m_inputSystem->GetGamepad(gamepadIndex);
+    if (pad && pad->IsConnected())
+    {
+        pad->StopVibration();
+    }
+}
+
+void GOTOEngine::InputManager::PlaySimpleGamepadVibration(int gamepadIndex, float duration, float strength)
+{
+	if (!m_inputSystem || gamepadIndex < 0 || gamepadIndex >= MAX_GAMEPADS)
+		return;
+	IGamepadDevice* pad = m_inputSystem->GetGamepad(gamepadIndex);
+	if (pad && pad->IsConnected())
+	{
+		pad->PlaySimpleVibration(duration, strength);
+	}
+}

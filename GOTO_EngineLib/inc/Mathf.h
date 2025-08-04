@@ -18,6 +18,9 @@ namespace GOTOEngine
 		// 정적 PerlinNoise 함수
 		static float PerlinNoise(float x, float y);
 		static float Clamp(float value, float min, float max);
+		static float Clamp01(float value);
+		static float Max(float a, float b);
+		static float Min(float a, float b);
 
 	private:
 		static std::array<int, 512> p;

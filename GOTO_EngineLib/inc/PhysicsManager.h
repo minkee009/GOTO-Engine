@@ -91,9 +91,12 @@ namespace GOTOEngine
 			m_removePendingBody.push_back(body2DWrapper);
 		}
 
+		std::vector<Body*> OverlapBox2DFromPhysicsWorld2D(const Vec2& center, const Vec2& size);
+
 		void CheckAtiveBodyWrapper();
 
 		std::unordered_map<GameObject*, Body2DWrapper*> m_currentBody2Ds;
+		std::unordered_map<Body*, Body2DWrapper*> m_body2DwrapperMap;
 
 		std::vector<Body*> m_AddPendingBody;
 		std::vector<Body*> m_removePendingBody;
@@ -102,6 +105,8 @@ namespace GOTOEngine
 		{
 			m_physicsWorld2D = new World({ m_gravity.x, m_gravity.y }, m_phyiscsIteration);
 		}
+
+		std::vector<GameObject*> OverlapBox2D(const Vector2& center, const Vector2& size);
 
 		Body2DWrapper* GetBody2DWrapper(GameObject* go)
 		{
@@ -113,6 +118,14 @@ namespace GOTOEngine
 			return nullptr;
 		}
 
+		Body2DWrapper* GetBody2DWrapper(Body* body)
+		{
+			auto it = m_body2DwrapperMap.find(body);
+			if (it != m_body2DwrapperMap.end())
+				return it->second;
+			return nullptr;
+		}
+
 		const std::unordered_map<GameObject*, Body2DWrapper*>& GetBody2DWrappers() const
 		{
 			return m_currentBody2Ds;
@@ -120,14 +133,18 @@ namespace GOTOEngine
 
 		void Simulate(float deltaTime)
 		{
-			RefreshBodyFromPhysicsWorld2D();
-
 			if (m_physicsWorld2D)
 				m_physicsWorld2D->Step(deltaTime);
 		}
 
+		void PreApplyTransform();
 		void ApplyTransform();
 
+		void PreSyncPhysicsWorld()
+		{
+			CheckAtiveBodyWrapper();
+			RefreshBodyFromPhysicsWorld2D();
+		}
 
 		void ShutDown()
 		{
@@ -138,3 +155,5 @@ namespace GOTOEngine
 		}
 	};
 }
+
+#define PHYSICS_OVERLAP_BOX2D(center, size) GOTOEngine::PhysicsManager::Get()->OverlapBox2D(center, size)

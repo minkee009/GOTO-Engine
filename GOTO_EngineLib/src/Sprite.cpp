@@ -72,3 +72,10 @@ void GOTOEngine::Sprite::SetTexture(Texture2D* texture)
     }
     m_texture = texture;
 }
+
+
+
+void GOTOEngine::Sprite::SetTexture(const std::wstring& filePath)
+{
+    SetTexture(Resource::Load<Texture2D>(filePath));
+}

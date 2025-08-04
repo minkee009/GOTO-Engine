@@ -15,7 +15,7 @@ namespace GOTOEngine
 		int m_depth; //카메라 렌더오더
 		Rect m_rect;
 		Color m_backGroundColor;
-		size_t m_renderLayer; //렌더 레이어 -> 컬링용
+		std::uint32_t m_renderLayer; //렌더 레이어 -> 컬링용
 
 		mutable Matrix3x3 m_cachedMatrix;
 		mutable bool m_isMatrixDirty = true;
@@ -42,8 +42,8 @@ namespace GOTOEngine
 		Color GetBackGroundColor() { return m_backGroundColor; }
 		void SetBackGroundColor(const Color& value) { m_backGroundColor = value; }
 
-		size_t GetRenderLayer() { return m_renderLayer; }
-		void SetRenderLayer(size_t layer) { m_renderLayer = layer; }
+		std::uint32_t GetRenderLayer() { return m_renderLayer; }
+		void SetRenderLayer(std::uint32_t layer) { m_renderLayer = layer; }
 
 		Matrix3x3 GetMatrix();
 

@@ -13,7 +13,7 @@ namespace GOTOEngine
 		friend class RenderManager;
 		bool m_enabled;
 		int m_renderOrder; //그릴 순서
-		size_t m_renderLayer; //렌더링 레이어 -> 카메라 별로 레이어 컬링 설정가능
+		std::uint32_t m_renderLayer; //렌더링 레이어 -> 카메라 별로 레이어 컬링 설정가능
 
 	protected:
 		virtual void Render(Matrix3x3& viewMatrix) = 0;
@@ -26,7 +26,7 @@ namespace GOTOEngine
 		void SetEnabled(bool enabled);
 		int GetRenderOrder();
 		void SetRenderOrder(int value);
-		size_t GetRenderLayer() { return m_renderLayer; }
-		void SetRenderLayer(size_t layer);
+		std::uint32_t GetRenderLayer() { return m_renderLayer; }
+		void SetRenderLayer(std::uint32_t layer);
 	};
 }

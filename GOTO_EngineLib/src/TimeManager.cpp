@@ -39,6 +39,8 @@ void GOTOEngine::TimeManager::Shutdown()
 
 void GOTOEngine::TimeManager::Update()
 {
+    m_frameCount++;
+
     // 현재 시간 기록
     m_currentTime = std::chrono::high_resolution_clock::now();
 

@@ -9,6 +9,8 @@ namespace GOTOEngine
 	{
 	private:
 		friend class SpriteRenderer;
+		friend class RadialSpriteRenderer;
+		friend class ParticleSystem;
 		friend class ResourceManager;
 		Texture2D* m_texture;
 
@@ -30,6 +32,7 @@ namespace GOTOEngine
 		void SetRect(const Rect& rect) { m_rect = rect; }
 
 		void SetTexture(Texture2D* texture);
+		void SetTexture(const std::wstring& filePath);
 		Texture2D* GetTexture() { return m_texture; } //참조 카운트 명시적으로 설정하기
 
 		float GetPivotX() const { return m_pivotX; }

@@ -96,6 +96,7 @@ void Engine::ProcessFrame()
 		BehaviourManager::Get()->DisableBehaviours();
 		ResourceManager::Get()->DestroyUnusedResource();
 		ObjectDestructionManager::Get()->Clear();
+		BehaviourManager::Get()->BroadCastBehaviourMessage("OnSceneLoaded");
 	}
 
 	//Behaviour 초기화 메시지 (필요한 객체에 한해)
@@ -121,6 +122,9 @@ void Engine::ProcessFrame()
 		//실제 고정틱 실행
 		accumulator -= fixedDelta;
 		TimeManager::Get()->FixedUpdate();
+
+		PhysicsManager::Get()->PreSyncPhysicsWorld();
+		PhysicsManager::Get()->PreApplyTransform();
 		BehaviourManager::Get()->BroadCastBehaviourMessage("FixedUpdate");
 		PhysicsManager::Get()->Simulate(fixedDelta);
 		PhysicsManager::Get()->ApplyTransform();

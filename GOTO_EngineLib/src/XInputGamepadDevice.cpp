@@ -2,7 +2,9 @@
 #include "Vector2.h"
 #include <cstring>
 #include <cmath>
+#include "TimeManager.h"
 #include "InputManager.h" 
+#include "Mathf.h"
 
 namespace GOTOEngine
 {
@@ -15,6 +17,7 @@ namespace GOTOEngine
         , m_connectionCallback(nullptr)
     {
         ResetState();
+
     }
 
     bool XInputGamepadDevice::IsConnected() const
@@ -42,6 +45,15 @@ namespace GOTOEngine
             // 연결되지 않은 경우 입력 상태 초기화
             memset(&m_currentState, 0, sizeof(XINPUT_STATE));
         }
+
+		m_vibrationTimer -= TIME_GET_DELTATIME();
+		m_vibrationTimer = Mathf::Max(m_vibrationTimer, 0.0f);
+		if (m_vibrationTimer <= 0.0f)
+		{
+			// 진동 타이머가 0이 되면 진동 중지
+			XINPUT_VIBRATION vibration = { 0, 0 };
+			XInputSetState(m_controllerIndex, &vibration);
+		}
     }
 
     void XInputGamepadDevice::HandleConnectionStateChange()
@@ -104,6 +116,38 @@ namespace GOTOEngine
     {
         m_wasJustConnected = false;
         m_wasJustDisconnected = false;
+    }
+
+    void XInputGamepadDevice::SetVibration(float leftMotor, float rightMotor)
+    {
+        if (!m_isConnected)
+            return;
+        XINPUT_VIBRATION vibration;
+        vibration.wLeftMotorSpeed = static_cast<WORD>(leftMotor * 65535.0f);
+        vibration.wRightMotorSpeed = static_cast<WORD>(rightMotor * 65535.0f);
+        XInputSetState(m_controllerIndex, &vibration);
+    }
+
+    void XInputGamepadDevice::StopVibration()
+    {
+        if (!m_isConnected)
+            return;
+        XINPUT_VIBRATION vibration;
+        vibration.wLeftMotorSpeed = static_cast<WORD>(0.0f);
+        vibration.wRightMotorSpeed = static_cast<WORD>(0.0f);
+        XInputSetState(m_controllerIndex, &vibration);
+    }
+
+    void XInputGamepadDevice::PlaySimpleVibration(float duration, float strength)
+    {
+		if (!m_isConnected)
+			return;
+		XINPUT_VIBRATION vibration;
+		vibration.wLeftMotorSpeed = static_cast<WORD>(strength * 65535.0f);
+		vibration.wRightMotorSpeed = static_cast<WORD>(strength * 65535.0f);
+		XInputSetState(m_controllerIndex, &vibration);
+		// 진동 타이머 설정
+		m_vibrationTimer = duration;
     }
 
     bool XInputGamepadDevice::GetButton(int buttonIndex) const
@@ -216,17 +260,17 @@ namespace GOTOEngine
         switch (axis)
         {
         case GamepadAxis::LeftStickX:
-            return static_cast<float>(gamepad.sThumbLX) / 32767.0f;//std::abs(gamepad.sThumbLX) < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ? 0.0f : static_cast<float>(gamepad.sThumbLX) / 32767.0f;
+            return NormalizeAxisWithRaw(gamepad.sThumbLX);
         case GamepadAxis::LeftStickY:
-            return static_cast<float>(gamepad.sThumbLY) / 32767.0f;// std::abs(gamepad.sThumbLY) < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ? 0.0f : static_cast<float>(gamepad.sThumbLY) / 32767.0f;
+            return NormalizeAxisWithRaw(gamepad.sThumbLY);
         case GamepadAxis::RightStickX:
-            return gamepad.sThumbRX;
+            return NormalizeAxisWithRaw(gamepad.sThumbRX);
         case GamepadAxis::RightStickY:
-            return gamepad.sThumbRY;
+            return NormalizeAxisWithRaw(gamepad.sThumbRY);
         case GamepadAxis::LeftTrigger:
-            return gamepad.bLeftTrigger;
+            return NormalizeTriggerWithRaw(gamepad.bLeftTrigger);
         case GamepadAxis::RightTrigger:
-            return gamepad.bRightTrigger;
+            return NormalizeTriggerWithRaw(gamepad.bRightTrigger);
         default:
             return 0.0f;
         }
@@ -302,6 +346,15 @@ namespace GOTOEngine
         return (value < 0 ? -norm : norm);
     }
 
+    float XInputGamepadDevice::NormalizeAxisWithRaw(SHORT value) const
+    {
+        const float max = 32767.0f;
+
+        // 부호 보존
+        float norm = (std::abs(value)) / (max);
+        return (value < 0 ? -norm : norm);
+    }
+
     float XInputGamepadDevice::NormalizeTrigger(BYTE value) const
     {
         const BYTE deadzone = XINPUT_GAMEPAD_TRIGGER_THRESHOLD;
@@ -309,6 +362,11 @@ namespace GOTOEngine
             return 0.0f;
 
         return static_cast<float>(value - deadzone) / (255.0f - deadzone);
+    }
+
+    float XInputGamepadDevice::NormalizeTriggerWithRaw(BYTE value) const
+    {
+        return static_cast<float>(value) / (255.0f);
     }
 
     float XInputGamepadDevice::GetDPadX(const XINPUT_GAMEPAD& gamepad) const

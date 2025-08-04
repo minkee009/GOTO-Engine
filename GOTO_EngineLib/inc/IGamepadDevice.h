@@ -49,5 +49,13 @@ namespace GOTOEngine
         virtual bool WasJustConnected() const = 0;
         virtual bool WasJustDisconnected() const = 0;
         virtual void ClearConnectionEvents() = 0;
+
+		// 진동 기능 
+        virtual void SetVibration(float leftMotor, float rightMotor) = 0;
+        virtual void StopVibration() = 0;
+		virtual void PlaySimpleVibration(float duration, float strength) = 0;
+
+		// 게임패드 인덱스
+		virtual int GetGamepadIndex() const = 0;
     };
 }

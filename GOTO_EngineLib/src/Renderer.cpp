@@ -1,7 +1,7 @@
 #include "Renderer.h"
 #include "RenderManager.h"
 
-GOTOEngine::Renderer::Renderer() : m_enabled(true), m_renderOrder(0), m_renderLayer(static_cast<size_t>(-1))
+GOTOEngine::Renderer::Renderer() : m_enabled(true), m_renderOrder(0), m_renderLayer(static_cast<std::uint32_t>(-1))
 {
 	RenderManager::Get()->RegisterRenderer(this);
 }
@@ -26,7 +26,7 @@ bool GOTOEngine::Renderer::GetEnabled()
 void GOTOEngine::Renderer::SetEnabled(bool enabled)
 {
 	auto lastValue = m_enabled;
-	m_enabled = true;
+	m_enabled = enabled;
 
 	//렌더러에 보낼 메시지 혹은 마킹
 }
@@ -39,9 +39,10 @@ int GOTOEngine::Renderer::GetRenderOrder()
 void GOTOEngine::Renderer::SetRenderOrder(int value)
 {
 	m_renderOrder = value;
+	RenderManager::Get()->SetRendererSortDirty();
 }
 
-void GOTOEngine::Renderer::SetRenderLayer(size_t layer)
+void GOTOEngine::Renderer::SetRenderLayer(std::uint32_t layer)
 {
 	m_renderLayer = layer;
 }

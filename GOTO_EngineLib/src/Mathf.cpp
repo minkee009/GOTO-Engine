@@ -41,6 +41,32 @@ float GOTOEngine::Mathf::Clamp(float value, float min, float max)
 		return value;
 }
 
+float GOTOEngine::Mathf::Clamp01(float value)
+{
+	if (value < 0.0f)
+		return 0.0f;
+	else if (value > 1.0f)
+		return 1.0f;
+	else
+		return value;
+}
+
+float GOTOEngine::Mathf::Max(float a, float b)
+{
+	if (a > b)
+		return a;
+	else
+		return b;
+}
+
+float GOTOEngine::Mathf::Min(float a, float b)
+{
+	if (a < b)
+		return a;
+	else
+		return b;
+}
+
 // ----------------------
 // Perlin Noise ±¸ÇöºÎ
 // ----------------------

@@ -52,6 +52,17 @@ void GOTOEngine::Text::SetFont(const std::wstring filePath, size_t size)
 	}
 }
 
+void GOTOEngine::Text::Dispose()
+{
+    Graphic::Dispose();
+    if (IsValidObject(m_font)
+        && !m_font->IsDestroyed())
+    {
+        m_font->DecreaseRefCount();
+        m_font = nullptr;
+    }
+}
+
 void GOTOEngine::Text::Render()
 {
     auto renderAPI = GetRenderAPIFromManager();

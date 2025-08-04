@@ -19,6 +19,7 @@ namespace GOTOEngine
 		float GetUnscaledDeltaTime() const { return m_unscaledDeltaTime; }
 		float GetTimeScale() const { return m_timeScale; }
 		float GetMaximumAllowedTimestep() const { return m_maximumAllowedTimestep; }
+		std::uint32_t GetFrameCount() const { return m_frameCount; }
 
 		void SetTimeScale(float value) { m_timeScale = value; }
 		void SetFixedDeltaTime(float value) { m_fixedDeltaTime = value; }
@@ -50,6 +51,7 @@ namespace GOTOEngine
 		float m_timeScale = 1.0f;
 		float m_unscaledDeltaTime = 0;
 		float m_unscaledTotalTime = 0;
+		std::uint32_t m_frameCount = 0;
 
 		void StartUp();
 		void Shutdown();
@@ -66,3 +68,4 @@ namespace GOTOEngine
 #define TIME_GET_UNSCALED_TOTALTIME GOTOEngine::TimeManager::Get()->GetUnscaledTime
 #define TIME_GET_TIMESCALE GOTOEngine::TimeManager::Get()->SetTimeScale
 #define TIME_SET_TIMESCALE GOTOEngine::TimeManager::Get()->GetTimeScale
+#define TIME_GET_FRAMECOUNT GOTOEngine::TimeManager::Get()->GetFrameCount

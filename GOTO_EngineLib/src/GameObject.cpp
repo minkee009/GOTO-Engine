@@ -5,6 +5,7 @@
 #include "Canvas.h"
 #include "Graphic.h"
 #include "RectTransform.h"
+#include "Behaviour.h"
 
 std::vector<GOTOEngine::GameObject*> GOTOEngine::GameObject::s_allGameObjects;
 
@@ -94,15 +95,17 @@ void GOTOEngine::GameObject::EnsureRectTransform()
 		auto parent = m_transform->GetParent();
 		auto childs = m_transform->m_childs;
 
-		UnregisterComponent(m_transform);
+		if (IsValidObject(parent))
+			parent->RemoveChild(m_transform);
 		delete m_transform;
 		rectTransform = new RectTransform();
 		m_transform = rectTransform;
 		m_transform->m_gameObject = this;
-		m_transform->SetParent(parent);
+		m_transform->SetParent(parent, false);
 
 		for (auto& child : childs)
 		{
+			child->m_parent = nullptr;
 			child->SetParent(m_transform, false); // 부모를 새로 만든 RectTransform으로 설정
 		}
 		RegisterComponent(m_transform); // Transform을 컴포넌트로 등록

@@ -35,6 +35,8 @@ GOTOEngine::Graphic::~Graphic()
 
 void GOTOEngine::Graphic::Dispose()
 {
+    if (IsValidObject(m_canvas))
+        m_canvas->UnregisterGraphic(this);
 }
 
 void GOTOEngine::Graphic::OnEnable()
@@ -76,6 +78,7 @@ void GOTOEngine::Graphic::AdditionalInitialize()
 
 void GOTOEngine::Graphic::SetColor(const Color& color)
 {
+    m_color = color;
 }
 
 const GOTOEngine::Color & GOTOEngine::Graphic::GetColor() const

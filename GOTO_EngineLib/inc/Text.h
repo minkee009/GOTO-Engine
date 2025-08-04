@@ -19,6 +19,8 @@ namespace GOTOEngine
 
 		Font* GetFont() { return m_font; };
 
+		void Dispose() override;
+
 		TextHoriAlign horizontalAlign = TextHoriAlign::Left;
 		TextVertAlign verticalAlign = TextVertAlign::Up;
 

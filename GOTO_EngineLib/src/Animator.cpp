@@ -3,7 +3,7 @@
 
 void GOTOEngine::Animator::OnAnimationUpdate()
 {
-	if (m_runtimeController)
+	if (m_runtimeController && IsActiveAndEnabled())
 	{
 		m_runtimeController->Update(TIME_GET_DELTATIME());
 
@@ -49,6 +49,11 @@ void GOTOEngine::Animator::SetAnimatorController(AnimatorController* controller)
 		if (m_controller)
 			m_controller->DecreaseRefCount();
 	}
+}
+
+void GOTOEngine::Animator::SetAnimatorController(const std::wstring& filePath)
+{
+	SetAnimatorController(Resource::Load<AnimatorController>(filePath));
 }
 
 void GOTOEngine::Animator::Play(std::wstring stateName)

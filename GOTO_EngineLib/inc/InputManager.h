@@ -110,6 +110,10 @@ namespace GOTOEngine
         bool WasGamepadJustDisconnected(int gamepadIndex);
         void ClearGamepadConnectionEvents();
 
+		// === 게임패드 진동 기능 ===
+		void SetGamepadVibration(int gamepadIndex, float leftMotor, float rightMotor);
+		void StopGamepadVibration(int gamepadIndex);
+		void PlaySimpleGamepadVibration(int gamepadIndex, float duration, float strength);
     private:
         IInputSystem* m_inputSystem = nullptr;
         GamepadConnectionCallback m_connectionCallback;
@@ -142,3 +146,8 @@ namespace GOTOEngine
 // === 핫플러그 매크로 ===
 #define INPUT_GAMEPAD_JUST_CONNECTED(index) GOTOEngine::InputManager::Get()->WasGamepadJustConnected(index)
 #define INPUT_GAMEPAD_JUST_DISCONNECTED(index) GOTOEngine::InputManager::Get()->WasGamepadJustDisconnected(index)
+
+// === 게임패드 진동 매크로 ===
+#define INPUT_SET_GAMEPAD_VIBRATION(index, leftMotor, rightMotor) GOTOEngine::InputManager::Get()->SetGamepadVibration(index, leftMotor, rightMotor)
+#define INPUT_STOP_GAMEPAD_VIBRATION(index) GOTOEngine::InputManager::Get()->StopGamepadVibration(index)
+#define INPUT_PLAY_SIMPLE_GAMEPAD_VIBRATION(index, duration, strength) GOTOEngine::InputManager::Get()->PlaySimpleGamepadVibration(index, duration, strength)

@@ -33,7 +33,18 @@ void GOTOEngine::Image::Render()
             filter = TextureFiltering::Linear;
             break;
         }
-        renderAPI->DrawBitmap(m_sprite->GetTexture()->GetBitmap(), {}, { currentPos.x * sizeFactorX,currentPos.y * sizeFactorY,sizeDelta.x,sizeDelta.y }, m_sprite->GetRect(),filter, true);
+        renderAPI->DrawBitmap(m_sprite->GetTexture()->GetBitmap(), {}, { currentPos.x * sizeFactorX,currentPos.y * sizeFactorY,sizeDelta.x,sizeDelta.y }, m_sprite->GetRect(),m_color,filter, true);
+    }
+}
+
+void GOTOEngine::Image::Dispose()
+{
+    Graphic::Dispose();
+    if (IsValidObject(m_sprite)
+        && !m_sprite->IsDestroyed())
+    {
+        m_sprite->DecreaseRefCount();
+        m_sprite = nullptr;
     }
 }
 
