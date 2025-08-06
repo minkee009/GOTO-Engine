@@ -2,7 +2,7 @@
 
 
 a = Analysis(
-    ['animation_curve_tools.py'],
+    ['animation_curve_editor.py'],
     pathex=[],
     binaries=[],
     datas=[],
@@ -22,7 +22,7 @@ exe = EXE(
     a.binaries,
     a.datas,
     [],
-    name='animation_curve_tools',
+    name='animation_curve_editor',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
