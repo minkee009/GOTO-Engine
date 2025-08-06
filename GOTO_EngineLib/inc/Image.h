@@ -1,6 +1,7 @@
 #pragma once
 #include "Graphic.h"
 #include "Sprite.h"
+#include "Mathf.h"
 
 namespace GOTOEngine
 {
@@ -8,6 +9,7 @@ namespace GOTOEngine
 	{
 		Simple = 0,
 		RadialFill,
+		FilledRect
 	};
 	class Image : public Graphic
 	{
@@ -16,6 +18,8 @@ namespace GOTOEngine
 		ImageType m_type = ImageType::Simple;
 
 		float m_fillAmount = 1.0f;
+		float m_startAngle = 0.0f;      // 시작 각도 (도 단위, 0 = 위쪽)
+		bool m_clockwise = true;
 	public:
 		Image() : Graphic() {}
 		void Dispose() override;
@@ -24,6 +28,12 @@ namespace GOTOEngine
 
 		void SetSprite(const std::wstring filePath);
 		void SetSprite(const std::wstring filePath, Rect srcRect);
+
+		void SetStartAngle(float angle) { m_startAngle = angle; }
+		void SetClockwise(bool clockwise) { m_clockwise = clockwise; }
+
+		float GetStartAngle() const { return m_startAngle; }
+		bool GetClockwise() const { return m_clockwise; }
 
 		void SetImageType(ImageType type) { m_type = type; }
 		ImageType GetImageType() { return m_type; }

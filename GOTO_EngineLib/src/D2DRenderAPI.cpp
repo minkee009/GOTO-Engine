@@ -146,12 +146,9 @@ void GOTOEngine::D2DRenderAPI::DrawBitmap(const IRenderBitmap* bitmap, const Mat
 {
 	auto d2dTransform = ConvertToD2DMatrix(mat);
 	auto d2dBitmap = static_cast<D2DBitmap*>(const_cast<IRenderBitmap*>(bitmap))->GetRaw();
-
 	float screenHeight = static_cast<float>(m_window->GetHeight());
 
-
 	D2D1_RECT_F dstRect;
-
 	if (useScreenPos)
 	{
 		dstRect = D2D1::RectF(
@@ -172,7 +169,6 @@ void GOTOEngine::D2DRenderAPI::DrawBitmap(const IRenderBitmap* bitmap, const Mat
 	}
 
 	auto d2dDestY = bitmap->GetHeight() - sourceRect.y - sourceRect.height;
-
 	D2D1_RECT_F srcRect = D2D1::RectF(
 		sourceRect.x,
 		d2dDestY,
@@ -181,50 +177,109 @@ void GOTOEngine::D2DRenderAPI::DrawBitmap(const IRenderBitmap* bitmap, const Mat
 	);
 
 	D2D1_BITMAP_INTERPOLATION_MODE mode = D2D1_BITMAP_INTERPOLATION_MODE_LINEAR;
-
 	switch (filter)
 	{
 	case TextureFiltering::Nearest:
 		mode = D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR;
-		break;	
+		break;
 	case TextureFiltering::Linear:
 		mode = D2D1_BITMAP_INTERPOLATION_MODE_LINEAR;
 		break;
 	}
 
-	//// 1. Blur Effect 생성
-	//Microsoft::WRL::ComPtr<ID2D1Effect> blurEffect;
-	//m_d2dContext->CreateEffect(CLSID_D2D1GaussianBlur, &blurEffect);
-	//blurEffect->SetInput(0, d2dBitmap);
-	//blurEffect->SetValue(D2D1_GAUSSIANBLUR_PROP_STANDARD_DEVIATION, 3.0f);
-
-	//// 2. Optional: 색상 변경
-	//Microsoft::WRL::ComPtr<ID2D1Effect> colorEffect;
-	//m_d2dContext->CreateEffect(CLSID_D2D1ColorMatrix, &colorEffect);
-	//colorEffect->SetInputEffect(0, blurEffect.Get());
-
-	//D2D1_COLOR_F outlineColor = D2D1::ColorF(D2D1::ColorF::Black);
-	//D2D1_MATRIX_5X4_F colorMatrix = {
-	//	0, 0, 0, 0,  // R
-	//	0, 0, 0, 0,  // G
-	//	0, 0, 0, 0,  // B
-	//	0, 0, 0, 1,  // A
-	//	outlineColor.r, outlineColor.g, outlineColor.b, 0 // 색상 대체
-	//};
-	//colorEffect->SetValue(D2D1_COLORMATRIX_PROP_COLOR_MATRIX, colorMatrix);
-
-	
-
 	m_d2dContext->SetTransform(d2dTransform);
-	// 3. Draw: Blur된 외곽선 먼저
-	//m_d2dContext->DrawImage(colorEffect.Get());
-	m_d2dContext->DrawBitmap(
-		d2dBitmap,
-		&dstRect,
-		static_cast<float>(color.A / 255), // 불투명도
-		mode,
-		&srcRect
-	);
+
+	// 색상 변경이 필요한지 확인 (RGB가 모두 255가 아니거나 알파가 255가 아닌 경우)
+	//bool needColorEffect = (color.R != 255 || color.G != 255 || color.B != 255 || color.A != 255);
+
+	//if (needColorEffect)
+	//{
+	//	// Color Matrix Effect 사용
+	//	ID2D1Effect* pColorMatrixEffect = nullptr;
+	//	HRESULT hr = m_d2dContext->CreateEffect(CLSID_D2D1ColorMatrix, &pColorMatrixEffect);
+
+	//	if (SUCCEEDED(hr))
+	//	{
+	//		// 색상 매트릭스 설정
+	//		float rTint = static_cast<float>(color.R) / 255.0f;
+	//		float gTint = static_cast<float>(color.G) / 255.0f;
+	//		float bTint = static_cast<float>(color.B) / 255.0f;
+	//		float alpha = static_cast<float>(color.A) / 255.0f;
+
+	//		D2D1_MATRIX_5X4_F colorMatrix = {
+	//			rTint, 0, 0, 0,        // R 채널
+	//			0, gTint, 0, 0,        // G 채널
+	//			0, 0, bTint, 0,        // B 채널
+	//			0, 0, 0, alpha,        // A 채널
+	//			0, 0, 0, 0             // 오프셋
+	//		};
+
+	//		pColorMatrixEffect->SetValue(D2D1_COLORMATRIX_PROP_COLOR_MATRIX, colorMatrix);
+	//		pColorMatrixEffect->SetInput(0, d2dBitmap);
+
+	//		ID2D1Image* pOutputImage = nullptr;
+	//		pColorMatrixEffect->GetOutput(&pOutputImage);
+
+	//		if (pOutputImage)
+	//		{
+	//			// DrawImage는 픽셀 좌표를 직접 사용 (UV 변환 불필요)
+	//			// 하지만 스케일링을 위해서는 transform을 사용해야 함
+
+	//			if (useScreenPos)
+	//			{
+	//				// 스케일 계산
+	//				float scaleX = (dstRect.right - dstRect.left) / (srcRect.right - srcRect.left);
+	//				float scaleY = (dstRect.bottom - dstRect.top) / (srcRect.bottom - srcRect.top);
+
+	//				// 새로운 transform 계산 (기존 transform * 스케일 + 위치)
+	//				D2D1_MATRIX_3X2_F scaleTransform = D2D1::Matrix3x2F::Scale(scaleX, scaleY);
+	//				D2D1_MATRIX_3X2_F translateTransform = D2D1::Matrix3x2F::Translation(
+	//					dstRect.left - srcRect.left * scaleX,
+	//					dstRect.top - srcRect.top * scaleY
+	//				);
+
+	//				D2D1_MATRIX_3X2_F finalTransform = scaleTransform * translateTransform * d2dTransform;
+	//				m_d2dContext->SetTransform(finalTransform);
+	//			}
+	//			
+	//			// DrawImage에서는 srcRect를 픽셀 좌표로 직접 사용
+	//			m_d2dContext->DrawImage(
+	//				pOutputImage,
+	//				D2D1::Point2F(srcRect.left, srcRect.top), // 소스 위치
+	//				srcRect,                                   // 소스 사각형 (픽셀 좌표)
+	//				D2D1_INTERPOLATION_MODE_LINEAR
+	//			);
+
+	//			pOutputImage->Release();
+	//		}
+
+	//		pColorMatrixEffect->Release();
+	//	}
+	//	else
+	//	{
+	//		// Effect 생성 실패시 기본 DrawBitmap 사용 (색상 틴트 없이)
+	//		m_d2dContext->DrawBitmap(
+	//			d2dBitmap,
+	//			&dstRect,
+	//			(static_cast<float>(color.A) / 255.0f),
+	//			mode,
+	//			&srcRect
+	//		);
+	//	}
+	//}
+	//else
+	{
+		// 색상 변경이 필요없는 경우 기존 방식 사용
+		m_d2dContext->DrawBitmap(
+			d2dBitmap,
+			&dstRect,
+			(static_cast<float>(color.A) / 255.0f),
+			mode,
+			&srcRect
+		);
+	}
+
+	m_d2dContext->SetTransform(D2D1::Matrix3x2F::Identity());
 }
 
 void D2DRenderAPI::DrawString(const wchar_t* string, const Rect& rect, const IRenderFont* font, size_t size, const IRenderFontStyle& fontStyle, Color color, const Matrix3x3& mat, int hAlignment, int vAlignment, bool useScreenPos)
@@ -303,7 +358,9 @@ void GOTOEngine::D2DRenderAPI::DrawRect(const Rect& rect, bool fill, const Matri
 
 	float screenHeight = static_cast<float>(m_window->GetHeight());
 	m_d2dContext->SetTransform(d2dTransform);
-	m_solidColorBrush->SetColor(D2D1::ColorF(color.R / 255.0f, color.G / 255.0f, color.B / 255.0f, color.A / 255.0f));
+	m_solidColorBrush->SetColor(D2D1::ColorF(static_cast<float>(color.R) / 255.0f, static_cast<float>(color.G) / 255.0f, static_cast<float>(color.B) / 255.0f, static_cast<float>(color.A) / 255.0f));
+
+	auto col = D2D1::ColorF(static_cast<float>(color.R) / 255.0f, static_cast<float>(color.G) / 255.0f, static_cast<float>(color.B) / 255.0f, static_cast<float>(color.A) / 255.0f);
 
 	D2D1_RECT_F dstRect;
 
@@ -557,9 +614,7 @@ void D2DRenderAPI::DrawRadialFillBitmap(
 {
 	if (!bitmap || fillAmount <= 0.0f) return;
 
-	// fillAmount를 0~1로 클램프
 	fillAmount = max(0.0f, min(1.0f, fillAmount));
-
 	if (fillAmount >= 1.0f)
 	{
 		DrawBitmap(bitmap, mat, destRect, sourceRect, color, filter, useScreenPos);
@@ -570,12 +625,36 @@ void D2DRenderAPI::DrawRadialFillBitmap(
 	auto d2dTransform = ConvertToD2DMatrix(mat);
 	float screenHeight = static_cast<float>(m_window->GetHeight());
 
-	// 원형 중심점과 반지름 계산
-	float centerX = destRect.width * 0.5f;
-	float centerY = destRect.height * 0.5f;
-	float radius = min(destRect.width, destRect.height) * 0.5f;
+	// DrawRect와 동일한 방식으로 변환 행렬 적용
+	m_d2dContext->SetTransform(d2dTransform);
 
-	// 각도를 라디안으로 변환 (startAngle은 도 단위, 0 = 위쪽)
+	// 목적지 사각형 설정 (DrawRect와 동일한 로직)
+	D2D1_RECT_F dstRect;
+	if (useScreenPos)
+	{
+		dstRect = D2D1::RectF(
+			destRect.x,
+			(screenHeight - destRect.y - destRect.height),
+			(destRect.x + destRect.width),
+			(screenHeight - destRect.y)
+		);
+	}
+	else
+	{
+		dstRect = D2D1::RectF(
+			0,
+			0,
+			destRect.width,
+			destRect.height
+		);
+	}
+
+	// pathGeometry용 중심점과 반지름 계산 (dstRect 기준)
+	float centerX = (dstRect.left + dstRect.right) * 0.5f;
+	float centerY = (dstRect.top + dstRect.bottom) * 0.5f;
+	float radius = min(dstRect.right - dstRect.left, dstRect.bottom - dstRect.top) * 0.5f;
+
+	// 각도를 라디안으로 변환
 	float startRad = (startAngle - 90.0f) * (M_PI / 180.0f);
 	float sweepAngle = 360.0f * fillAmount;
 	if (!clockwise) sweepAngle = -sweepAngle;
@@ -584,19 +663,17 @@ void D2DRenderAPI::DrawRadialFillBitmap(
 	// 기하학적 경로 생성
 	ComPtr<ID2D1PathGeometry> pathGeometry;
 	ComPtr<ID2D1GeometrySink> geometrySink;
-
 	HRESULT hr = m_d2dFactory->CreatePathGeometry(&pathGeometry);
 	if (FAILED(hr)) return;
 
 	hr = pathGeometry->Open(&geometrySink);
 	if (FAILED(hr)) return;
 
-	// 부채꼴
+	// 부채꼴 생성 (dstRect 좌표계 기준)
 	D2D1_POINT_2F startPoint = {
 		centerX + radius * cosf(startRad),
 		centerY + radius * sinf(startRad)
 	};
-
 	D2D1_POINT_2F endPoint = {
 		centerX + radius * cosf(endRad),
 		centerY + radius * sinf(endRad)
@@ -620,34 +697,18 @@ void D2DRenderAPI::DrawRadialFillBitmap(
 	hr = geometrySink->Close();
 	if (FAILED(hr)) return;
 
-	// Layer를 사용하여 클리핑 마스크 적용
+	// Layer 생성
 	ComPtr<ID2D1Layer> layer;
 	hr = m_d2dContext->CreateLayer(&layer);
 	if (FAILED(hr)) return;
 
-	// 목적지 사각형 설정
-	D2D1_RECT_F dstRect;
-	if (useScreenPos)
-	{
-		dstRect = D2D1::RectF(
-			destRect.x,
-			(screenHeight - destRect.y - destRect.height),
-			(destRect.x + destRect.width),
-			(screenHeight - destRect.y)
-		);
-	}
-	else
-	{
-		dstRect = D2D1::RectF(0, 0, destRect.width, destRect.height);
-	}
-
-	// 소스 사각형 설정
-	auto d2dDestY = bitmap->GetHeight() - sourceRect.y - sourceRect.height;
+	// 소스 사각형 설정 (Unity → D2D 텍스처 좌표계 변환)
+	auto d2dSourceY = bitmap->GetHeight() - sourceRect.y - sourceRect.height;
 	D2D1_RECT_F srcRect = D2D1::RectF(
 		sourceRect.x,
-		d2dDestY,
+		d2dSourceY,
 		sourceRect.x + sourceRect.width,
-		d2dDestY + sourceRect.height
+		d2dSourceY + sourceRect.height
 	);
 
 	// 필터링 모드 설정
@@ -662,9 +723,7 @@ void D2DRenderAPI::DrawRadialFillBitmap(
 		break;
 	}
 
-	// 변환 행렬 적용 및 레이어로 클리핑하여 그리기
-	m_d2dContext->SetTransform(d2dTransform);
-
+	// Layer로 클리핑하여 그리기
 	m_d2dContext->PushLayer(
 		D2D1::LayerParameters(
 			D2D1::InfiniteRect(),
