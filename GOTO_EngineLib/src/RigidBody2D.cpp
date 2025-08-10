@@ -23,6 +23,12 @@ void GOTOEngine::RigidBody2D::AddForce(Vector2 force)
 		m_wrapperBody->GetBody()->AddForce({ force.x, force.y });
 }
 
+void GOTOEngine::RigidBody2D::AddTorque(float torque)
+{
+	if (GetWrapperBody())
+		m_wrapperBody->GetBody()->AddTorque(torque);
+}
+
 GOTOEngine::Vector2 GOTOEngine::RigidBody2D::GetPosition()
 {
 	if (GetWrapperBody() && GetWrapperBody()->m_pBody)
@@ -42,6 +48,7 @@ void GOTOEngine::RigidBody2D::SetPosition(Vector2 pos)
 	}
 }
 
+
 float GOTOEngine::RigidBody2D::GetRotation()
 {
 	if (GetWrapperBody() && GetWrapperBody()->m_pBody)
@@ -59,7 +66,6 @@ void GOTOEngine::RigidBody2D::SetRotation(float rot)
 			GetTransform()->SetRotation(rot);
 	}
 }
-
 float GOTOEngine::RigidBody2D::GetMass()
 {
 	if (GetWrapperBody() && GetWrapperBody()->m_pBody)

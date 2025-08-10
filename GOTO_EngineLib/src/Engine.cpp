@@ -96,7 +96,11 @@ void Engine::ProcessFrame()
 		BehaviourManager::Get()->DisableBehaviours();
 		ResourceManager::Get()->DestroyUnusedResource();
 		ObjectDestructionManager::Get()->Clear();
-		BehaviourManager::Get()->BroadCastBehaviourMessage("OnSceneLoaded");
+
+		AudioManager::Get()->PreloadSceneAudioClips();
+
+		BehaviourManager::Get()->SortBehaviours();
+		BehaviourManager::Get()->AllBroadCastBehaviourMessage("OnSceneLoaded");
 	}
 
 	//Behaviour 초기화 메시지 (필요한 객체에 한해)

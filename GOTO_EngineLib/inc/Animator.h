@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Behaviour.h"
 #include "AnimatorController.h"
 #include "RuntimeAnimatorController.h"
@@ -9,8 +9,8 @@ namespace GOTOEngine
 	class Animator : public Behaviour
 	{
 	private:
-		AnimatorController* m_controller; //¸ŞÅ¸µ¥ÀÌÅÍ
-		RuntimeAnimatorController* m_runtimeController; //fsm, »ı¼º ¹× ÆÄ±« Ã¥ÀÓÀº ¿À·ÎÁö Animator¿¡°Ô¸¸
+		AnimatorController* m_controller; //ë©”íƒ€ë°ì´í„°
+		RuntimeAnimatorController* m_runtimeController; //fsm, ìƒì„± ë° íŒŒê´´ ì±…ì„ì€ ì˜¤ë¡œì§€ Animatorì—ê²Œë§Œ
 		SpriteRenderer* m_spriteRenderer;
 
 		void Dispose() override;
@@ -22,11 +22,11 @@ namespace GOTOEngine
 
 		void OnAnimationUpdate();
 
-		AnimatorController* GetAnimatorController() { return m_controller; } //ÂüÁ¶ Ä«¿îÆ® ²À ÇÏ±â
+		AnimatorController* GetAnimatorController() { return m_controller; } //ì°¸ì¡° ì¹´ìš´íŠ¸ ê¼­ í•˜ê¸°
 		void SetAnimatorController(AnimatorController* controller);
 		void SetAnimatorController(const std::wstring& filePath);
 
-		const RuntimeAnimatorController* GetRuntimeAnimatorController() const { return m_runtimeController; }
+		RuntimeAnimatorController* GetRuntimeAnimatorController() const { return m_runtimeController; }
 
 		void Play(std::wstring stateName);
 
