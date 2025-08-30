@@ -45,7 +45,8 @@ void GOTOEngine::Camera::OnDestroy()
 
 void GOTOEngine::Camera::SetDepth(int value)
 {
-	RenderManager::Get()->SetCamSortDirty(); m_depth = value;
+	RenderManager::Get()->SetCamSortDirty(); 
+	m_depth = value;
 }
 
 GOTOEngine::Matrix3x3 GOTOEngine::Camera::GetMatrix()
@@ -116,7 +117,8 @@ GOTOEngine::GameObject* GOTOEngine::Camera::CreateMainCamera()
 	auto cameraGO = new GameObject(L"MainCamera");
 	cameraGO->SetTag("MainCamera");
 	auto cam = cameraGO->AddComponent<Camera>();
-	cameraGO->AddComponent<AudioListener>();
+	auto listener = cameraGO->AddComponent<AudioListener>();
+	listener->SetAsMainListener();
 
 	if (!s_mainCam)
 		s_mainCam = cam;

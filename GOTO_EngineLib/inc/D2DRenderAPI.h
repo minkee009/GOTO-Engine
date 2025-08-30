@@ -35,10 +35,10 @@ namespace GOTOEngine
         void ChangeBufferSize(int newWidth, int newHeight) override;
         void Clear() override;
         //void DrawImage(int x, int y, float scale, bool flipX, const IRenderImage* image) override;
-        void DrawBitmap(const IRenderBitmap* bitmap, const Matrix3x3& mat, const Rect& destRect, const Rect& sourceRect, Color color, TextureFiltering filter = TextureFiltering::Linear,  bool useScreenPos = false) override;
-        void DrawString(const wchar_t* string, const Rect& rect, const IRenderFont* font, size_t size, const IRenderFontStyle& fontStyle, Color color, const Matrix3x3& mat, int hAlignment, int vAlignment, bool useScreenPos) override;
-        void DrawRect(const Rect& rect, bool fill, const Matrix3x3& mat, Color color, bool useScreenPos) override;
-        void DrawSpriteBatch(const IRenderBitmap* bitmap, size_t count, const std::vector<Matrix3x3>& mats, const Rect& destRect, const Rect& sourceRect, const std::vector<Color>& colors, TextureFiltering filter, bool useScreenPos) override;
+        void DrawBitmap(const IRenderBitmap* bitmap, const Matrix3x3& mat, const Rect& destRect, const Rect& sourceRect, Color color, TextureFiltering filter = TextureFiltering::Linear) override;
+        void DrawString(const wchar_t* string, const Rect& rect, const IRenderFont* font, size_t size, const IRenderFontStyle& fontStyle, Color color, const Matrix3x3& mat, int hAlignment, int vAlignment) override;
+        void DrawRect(const Rect& rect, bool fill, const Matrix3x3& mat, Color color) override;
+        void DrawSpriteBatch(const IRenderBitmap* bitmap, size_t count, const std::vector<Matrix3x3>& mats, const Rect& destRect, const Rect& sourceRect, const std::vector<Color>& colors, TextureFiltering filter) override;
         void DrawRadialFillBitmap(
             const IRenderBitmap* bitmap,
             const Matrix3x3& mat,
@@ -48,8 +48,9 @@ namespace GOTOEngine
             float startAngle,
             bool clockwise,
             Color color,
-            TextureFiltering filter,
-            bool useScreenPos) override;
+            TextureFiltering filter) override;
+
+        void DrawRectSimple(const Rect& rect, bool fill, Color color) override;
 
         void SetViewport(Rect rect) override;
         void ResetViewport() override;
@@ -62,7 +63,7 @@ namespace GOTOEngine
         void SetVSyncInterval(int interval) override { m_vSyncInterval = interval; }
         ~D2DRenderAPI() override;
 
-        ID2D1DeviceContext7* GetContext() { return m_d2dContext.Get(); }
+        ID2D1DeviceContext* GetContext() { return m_d2dContext.Get(); }
         ID2D1Bitmap1* GetRenderTarget() { return m_renderTarget.Get(); }
 
         const D2D1_RECT_F& GetClipRect() const { return m_clipRect; }
@@ -78,27 +79,37 @@ namespace GOTOEngine
 
         std::string FormatBytes(UINT64 bytes);
         RenderAPIMemoryStatus CollectMemoryUsage() override;
-    private:
 
+        bool SupportsSpriteBatch() const;
+        bool SupportsVRAMQuery() const;
+        bool SupportsAdvancedFeatures() const;
+    private:
         ComPtr<ID3D11Device> m_d3dDevice;
         ComPtr<IDXGISwapChain1> m_swapChain;
-        ComPtr<ID2D1DeviceContext7> m_d2dContext;
+
+        // 기본 인터페이스들 (모든 윈도우 버전에서 지원)
+        ComPtr<ID2D1DeviceContext> m_d2dContext;
         ComPtr<ID2D1Bitmap1> m_renderTarget;
-        ComPtr<ID2D1Factory8> m_d2dFactory;
-
-        ComPtr<IDXGIAdapter3> m_dxgiAdapter;
-        ComPtr<IDXGIDevice3> m_dxgiDevice;
-
+        ComPtr<ID2D1Factory> m_d2dFactory;
+        ComPtr<IDXGIAdapter> m_dxgiAdapter;
+        ComPtr<IDXGIDevice> m_dxgiDevice;
         ComPtr<ID2D1SolidColorBrush> m_solidColorBrush;
 
-        ComPtr<ID2D1SpriteBatch> m_spriteBatch;
+        // 고급 인터페이스들 (최신 윈도우 버전에서만 지원)
+        ComPtr<ID2D1DeviceContext7> m_d2dContextAdvanced;    // SpriteBatch 기능용
+        ComPtr<ID2D1Factory8> m_d2dFactoryAdvanced;          // 고급 기능용
+        ComPtr<IDXGIAdapter3> m_dxgiAdapterAdvanced;         // VRAM 쿼리용
+        ComPtr<ID2D1SpriteBatch> m_spriteBatch;              // SpriteBatch 객체
 
         IWindow* m_window;
         D2D1_RECT_F m_clipRect;
-
         IRenderFont* m_defaultFont;
+        int m_vSyncInterval = 1;
 
-		int m_vSyncInterval = 1; // 기본 VSync 간격
+        // 기능 지원 여부 플래그
+        bool m_supportsSpriteBatch = false;
+        bool m_supportsVRAMQuery = false;
+        bool m_useAdvancedFeatures = false;
     };
 }
 

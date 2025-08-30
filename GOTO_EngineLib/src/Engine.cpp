@@ -95,11 +95,12 @@ void Engine::ProcessFrame()
 		ObjectDestructionManager::Get()->Update();
 		BehaviourManager::Get()->DisableBehaviours();
 		ResourceManager::Get()->DestroyUnusedResource();
+		ObjectDestructionManager::Get()->Update();
 		ObjectDestructionManager::Get()->Clear();
 
 		AudioManager::Get()->PreloadSceneAudioClips();
 
-		BehaviourManager::Get()->SortBehaviours();
+		BehaviourManager::Get()->AllSortBehaviours();
 		BehaviourManager::Get()->AllBroadCastBehaviourMessage("OnSceneLoaded");
 	}
 

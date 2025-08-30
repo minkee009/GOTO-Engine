@@ -12,6 +12,26 @@ namespace GOTOEngine
 	private:
 		friend class AudioManager;
 
+		struct OneShotSound {
+			ma_sound sound;
+			bool initialized = false;
+			float startTime = 0.0f;  // 재생 시작 시간 (정리용)
+
+			~OneShotSound() {
+				if (initialized) {
+					ma_sound_uninit(&sound);
+				}
+			}
+		};
+
+		// OneShot 사운드들을 관리하는 컨테이너
+		std::vector<std::unique_ptr<OneShotSound>> m_oneShotSounds;
+
+		// OneShot 정리 함수 추가
+		void CleanupFinishedOneShots();
+		float m_lastCleanupTime;
+		static constexpr float CLEANUP_INTERVAL = 1.0f;  // 1초마다 정리
+
 		AudioClip* m_clip;
 
 		// 메모리 기반 재생용
@@ -44,10 +64,11 @@ namespace GOTOEngine
 
 		void OnEnable();
 		void OnDisable();
-		void OnDestroy();
 
 		void InitializeMemorySound();    // 메모리 기반 사운드 초기화
 		void InitializeStreamSound();    // 스트리밍 사운드 초기화
+		void InitializeStreamSoundWithFirstChunk();
+		void InitializeCompressedMemorySound();
 		void CleanupSounds();           // 모든 사운드 정리
 		void ApplySettings();
 		void AutoPrepareIfNeeded();
@@ -56,20 +77,22 @@ namespace GOTOEngine
 		void InternalUpdate();
 		void MarkNeedsPrepare() { m_needsPrepare = true; m_soundReady = false; }
 
+	
+
 		// 현재 사용할 사운드 객체 반환
 		ma_sound* GetActiveSound();
-
-	protected:
 		~AudioSource();
-
 	public:
 		AudioSource();
+
+		void Dispose() override;
 
 		void SetClip(AudioClip* clip);
 		AudioClip* GetClip() const { return m_clip; }
 
 		void Play();
 		void PlayOneShot();
+		void PlayOneShot(AudioClip* clip, float volumeScale = 1.0f);
 		void Stop();
 		void Pause();
 		void Resume();
@@ -101,6 +124,13 @@ namespace GOTOEngine
 
 		void UpdateTransform();
 
-		void RegisterMessages();
+
+		void PrintDebugInfo() const;
+
+		void FullAudioDiagnosis();
+
+		void DiagnosePlaybackIssues();
+		void ForceAudioSystemTest();
+		void PlayTestTone();
 	};
 }
