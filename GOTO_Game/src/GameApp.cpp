@@ -25,7 +25,7 @@ void StartEngineLoop()
 	SCENE_ADD_SCENE<PhysicsScene>(L"PhysicsScene");
 
 	//첫 씬으로 변환
-	SCENE_CHANGE_SCENE(L"PhysicsScene");
+	SCENE_CHANGE_SCENE(L"Title");
 
 	ENGINE_RUN();
 	ENGINE_SHUTDOWN();
