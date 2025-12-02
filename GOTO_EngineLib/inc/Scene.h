@@ -16,8 +16,6 @@ namespace GOTOEngine
 	protected:
 		const std::wstring m_sceneName;
 		std::vector<GameObject*> m_gameObjects;
-		GameObject* CreateGameObject(std::wstring name);
-		GameObject* CreateGameObject();
 	public:
 		Scene(const std::wstring sceneName) : m_sceneName(sceneName) {}
 		virtual ~Scene() { Clear(); }

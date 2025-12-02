@@ -19,7 +19,7 @@ namespace GOTOEngine
 		void OnGUI()
 		{
 			auto window = RenderManager::Get()->GetWindow();
-			RenderManager::Get()->DrawString(L"W,A,S,D - 메인 카메라 이동, 방향키 - 서브 카메라 이동", { 0, (float)window->GetHeight() - 540, 680, 540 }, { 255,127,0,255 });
+			RenderManager::Get()->DrawString(L"W,A,S,D - 메인 카메라 이동, 방향키 - 서브 카메라 이동", { 0, 0, 680, 540 }, { 255,127,0,255 });
 		}
 	};
 }

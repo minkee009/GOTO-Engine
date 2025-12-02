@@ -52,6 +52,9 @@ namespace GOTOEngine
 
         void DrawRectSimple(const Rect& rect, bool fill, Color color) override;
 
+        void SetDebugMode(bool mode) override;
+        bool GetDebugMode() override;
+
         void SetViewport(Rect rect) override;
         void ResetViewport() override;
         IRenderBitmap* CreateRenderBitmap(std::wstring filePath);
@@ -110,6 +113,8 @@ namespace GOTOEngine
         bool m_supportsSpriteBatch = false;
         bool m_supportsVRAMQuery = false;
         bool m_useAdvancedFeatures = false;
+
+        bool m_debugMode = false;
     };
 }
 

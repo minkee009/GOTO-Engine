@@ -42,6 +42,9 @@ namespace GOTOEngine
 		virtual IRenderFont* CreateRenderFontFromOS(std::wstring fontName) = 0;
 		virtual RenderAPIMemoryStatus CollectMemoryUsage() = 0;
 
+		virtual void SetDebugMode(bool mode) = 0;
+		virtual bool GetDebugMode() = 0;
+
 		virtual void SetViewport(Rect rect) = 0;
 		virtual void ResetViewport() = 0;
 
